@@ -13,9 +13,15 @@ function insertarPuesto(data, callback) {
     conectDB.conexion.query(query, data, callback);
 };
 
+function editarPuesto(nombre_puesto, monto_por_hora, id_puesto, callback) {
+    
+    const query = 'UPDATE Puesto SET nombre_puesto = ?, monto_por_hora = ? WHERE id_puesto = ?';
+    conectDB.conexion.query(query, [nombre_puesto, monto_por_hora, id_puesto], callback);
+}
 
 
 module.exports = {
     consultarPuestos,
-    insertarPuesto
+    insertarPuesto,
+    editarPuesto
 }

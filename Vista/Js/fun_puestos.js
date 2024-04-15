@@ -1,7 +1,5 @@
 'use strict'
 
-
-
 //VARIABLES
 const url = 'http://localhost:8000/api/puestos/';
 const contenedorPuestos = document.querySelector('tbody');
@@ -46,14 +44,31 @@ function cargar () {
         .catch(error => alert(error))
 };
 
-const on = (element, event, selector, handler) => { // on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
-    element.addEventListener(event, e => { //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
+//Configuración de botones
+// on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
+const on = (element, event, selector, handler) => { 
+    //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
+    element.addEventListener(event, e => { 
 
         if(e.target.closest(selector)){
             handler(e)
         };
     });
 };
+
+//Editar 
+let idForm = 0;
+on(document, 'click', '.btnEditar', e => {
+    //Se asigna una posición a cada valor en la tabla para identificar el id
+    const fila = e.target.parentNode.parentNode;
+    idForm = fila.children[0].innerHTML;
+    const puestoForm = fila.children[1].innerHTML;
+    const salarioBaseForm = fila.children[2].innerHTML;
+    puesto.value = puestoForm;
+    salarioBase.value = salarioBaseForm;
+    opcion = 'editar';
+    modalPuestos.show();
+});
 
 //Guardar cambios editados o creados
 formPuestos.addEventListener('submit', (e)=> {
@@ -78,7 +93,7 @@ formPuestos.addEventListener('submit', (e)=> {
         .then( data =>{
             console.log(data);
             if (data.error) {
-                console.error("Error:", data.error);
+                
                 alertify
                     .alert(data.error, function(){
                         alertify.message('OK');
@@ -90,7 +105,7 @@ formPuestos.addEventListener('submit', (e)=> {
         })
         .catch((error) => console.error("Error en la solicitud:", error));
     };
-    /*/Update
+    //Update
     if(opcion == 'editar'){
         fetch(url+idForm, {
             method: 'PUT',
@@ -105,18 +120,19 @@ formPuestos.addEventListener('submit', (e)=> {
         .then( response => response.json())
         .then( data =>{
             if (data.error) {
-                console.error("Error:", data.error);
-                console.log(data.error)
-                alert(data.error)
+                
+                alertify
+                    .alert(data.error, function(){
+                        alertify.message('OK');
+                    });
+                //alert(data.error)
             } else {
-                //console.log("resultado", data.filas);
+                
                 location.reload();
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
-    }*/
-    
-    
+    };
     
     modalPuestos.hide();
 
