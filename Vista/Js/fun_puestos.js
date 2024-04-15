@@ -70,6 +70,24 @@ on(document, 'click', '.btnEditar', e => {
     modalPuestos.show();
 });
 
+//Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target
+    
+on(document, 'click', '.btnBorrar', e => {
+    const fila = e.target.parentNode.parentNode;
+    const id_puesto = fila.firstElementChild.innerHTML;
+    alertify.confirm("¿Seguro que desea borrar este registro?",
+  function(){
+    fetch(url+id_puesto, {
+        method: 'DELETE'
+    })
+    .then( res => res.json() )
+    .then( ()=> location.reload())
+  },
+  function(){
+    alertify.error('Cancelado');
+  });
+});
+
 //Guardar cambios editados o creados
 formPuestos.addEventListener('submit', (e)=> {
  
