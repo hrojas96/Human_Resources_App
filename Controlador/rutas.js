@@ -9,6 +9,8 @@ app.use(cors());
 app.use('/api/puestos', puestosApp);
 
 
+
+
 //Errutamiento. Escucha del archhivo
 const puerto = process.env.PUERTO || 8000;
 app.listen(puerto, () => {
