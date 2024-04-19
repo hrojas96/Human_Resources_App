@@ -77,8 +77,7 @@ app.put('/:id_puesto', (req, res)=>{
 });
 
 app.delete('/:id_puesto', (req,res)=>{
-    
-    let id_puesto = req.params.id_puesto
+    let id_puesto = req.params.id_puesto;
     accesos.eliminarPuesto(id_puesto, (error, filas) => {
         if (error) {
             console.log('Hubo un error');

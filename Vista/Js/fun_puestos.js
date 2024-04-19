@@ -9,6 +9,7 @@ const puesto = document.getElementById('puesto');
 const salarioBase = document.getElementById('salarioBase');
 let opcion = '';
 let resultados = '';
+let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
 
 //Boton de crear abre modal y limpio
@@ -23,13 +24,20 @@ btnCrear.addEventListener('click', ()=>{
 
 
 //Función para Mostrar resultados
-const mostrar = (puestos) =>{
+function mostrar(puestos) {
     puestos.forEach(p =>{
         resultados += ` <tr>
-                            <td>${p.id_puesto}</td>
-                            <td>${p.nombre_puesto}</td> 
-                            <td>${p.monto_por_hora}</td>   
-                            <td class="text-center"> <a class="btnEditar btn btn-primary">Editar</a><a class="btnBorrar btn btn-danger">Borrar</a></td> 
+                            <td class="text-center">${p.id_puesto}</td>
+                            <td class="text-center">${p.nombre_puesto}</td> 
+                            <td class="text-end">${colon.format(p.monto_por_hora)}</td>   
+                            <td class="centrar"> 
+                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a class="btnBorrar btn btn-danger btn-sm"> 
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </td> 
                         </tr>`
     });
     contenedorPuestos.innerHTML = resultados;
@@ -60,7 +68,7 @@ const on = (element, event, selector, handler) => {
 let idForm = 0;
 on(document, 'click', '.btnEditar', e => {
     //Se asigna una posición a cada valor en la tabla para identificar el id
-    const fila = e.target.parentNode.parentNode;
+    const fila = e.target.closest('tr');
     idForm = fila.children[0].innerHTML;
     const puestoForm = fila.children[1].innerHTML;
     const salarioBaseForm = fila.children[2].innerHTML;
@@ -70,22 +78,25 @@ on(document, 'click', '.btnEditar', e => {
     modalPuestos.show();
 });
 
-//Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target
-    
+//Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
 on(document, 'click', '.btnBorrar', e => {
-    const fila = e.target.parentNode.parentNode;
+    const fila = e.target.closest('tr');
     const id_puesto = fila.firstElementChild.innerHTML;
-    alertify.confirm("¿Seguro que desea borrar este registro?",
-  function(){
-    fetch(url+id_puesto, {
-        method: 'DELETE'
-    })
-    .then( res => res.json() )
-    .then( ()=> location.reload())
-  },
-  function(){
-    alertify.error('Cancelado');
-  });
+    //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
+
+    alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
+    function(){
+
+        fetch(url+id_puesto, {
+            method: 'DELETE'
+        })
+        .then( res => res.json() )
+        .then( ()=> location.reload())
+        
+    },
+    function(){
+        alertify.error('Cancelado');
+    });
 });
 
 //Guardar cambios editados o creados

@@ -1,9 +1,9 @@
 const header = document.getElementById('header');
 const footer = document.getElementById('footer');
 
-header.innerHTML = 
+//header.innerHTML = 
             `<nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
+                <div id="prueba" class="container-fluid">
                     <a class="navbar-brand" href="principal.html">
                         <img id="logo" src="Img/logo.png" alt="logo" style="text-align: center;">
                     </a>
@@ -27,6 +27,6 @@ header.innerHTML =
                 </div>
             </nav>`;
 
-footer.innerHTML = 
+//footer.innerHTML = 
                     `<p>este es el footer</p>
                     `
