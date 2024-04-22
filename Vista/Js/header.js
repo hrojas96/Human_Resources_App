@@ -1,31 +1,47 @@
 const header = document.getElementById('header');
 const footer = document.getElementById('footer');
 
-//header.innerHTML = 
-            `<nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div id="prueba" class="container-fluid">
-                    <a class="navbar-brand" href="principal.html">
-                        <img id="logo" src="Img/logo.png" alt="logo" style="text-align: center;">
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="principal.html">Principal</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="puestos.html">Puestos</a>
-                            </li>
-                        </ul>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div>
+header.innerHTML = 
+            `
+            <!--Menu Vertical-->
+            <div>
+                <div class="container">
+                <div class="btn-menu">
+                    <label for="btn-menu"><i class="fa-solid fa-bars"></i></label>
                 </div>
-            </nav>`;
+                    <div class="logo">
+                        <h1>Faustica S.A.</h1>
+                    </div>
+                    <nav class="menu">
+                        <a href="#"><i class="fa-solid fa-circle-user"></i></a>
+                    </nav>
+                </div>
+            </div>
+        
+
+            <!--Menu Horizontal-->
+            <input type="checkbox" id="btn-menu">
+            <div class="container-menu">
+                <div class="cont-menu">
+                    <nav>
+                        <img src="Img/logo.png" href="principal.html" alt="logo">
+                        <a href="">Vacaciones</a>
+                        <a href="">Incapacidades</a>  
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="droplist" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
+                                Mantenimientos
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end content" id="drop">
+                                <li><a class="" href="puestos.html">Puestos</a></li>
+                                <li><a class="" href="tipoIncapacidad.html">Tipo de Incapacidad</a></li>
+                                <li><a class="" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </nav>
+                    <label for="btn-menu"><i class="fa-solid fa-xmark"></i></label>
+                </div>
+            </div>
+            `;
 
 //footer.innerHTML = 
                     `<p>este es el footer</p>

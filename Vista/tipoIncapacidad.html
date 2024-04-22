@@ -19,45 +19,7 @@
 <body>
     
     <header class="header" id="header">
-        <!--Menu Vertical
-        <div>
-            <div class="container">
-            <div class="btn-menu">
-                <label for="btn-menu"><i class="fa-solid fa-bars"></i></label>
-            </div>
-                <div class="logo">
-                    <h1>Faustica S.A.</h1>
-                </div>
-                <nav class="menu">
-                    <a href="#"><i class="fa-solid fa-circle-user"></i></a>
-                </nav>
-            </div>
-        </div>-->
         
-
-        <!--Menu Horizontal
-        <input type="checkbox" id="btn-menu">
-        <div class="container-menu">
-            <div class="cont-menu">
-                <nav>
-                    <img src="Img/logo.png" href="principal.html" alt="logo">
-                    <a href="">Vacaciones</a>
-                    <a href="">Incapacidades</a>  
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" id="droplist" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
-                            Mantenimientos
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end content" id="drop">
-                            <li><a class="" href="puestos.html">Puestos</a></li>
-                            <li><a class="" href="#">Another action</a></li>
-                            <li><a class="" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </nav>
-                <label for="btn-menu"><i class="fa-solid fa-xmark"></i></label>
-            </div>
-        </div>-->
-        <!--<div id="header"></div>-->
     </header>
    
     
@@ -67,10 +29,10 @@
         <section>
             <div id="" class="container">
                 <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Registro de Puestos</h4>
+                    <h4 id="titulo">Registro de Tipos de Incapacidades</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalPuestos" ></button>
+                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalIncapacidad" ></button>
                           <form class="d-flex" role="search">
                             <input class="form-control me-2" id="buscador" type="search" placeholder="..." aria-label="Search">
                             <button class="btn btn-outline-success" id="buscador" type="submit">Buscar</button>
@@ -82,8 +44,8 @@
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 5%;">N.</th>
-                                    <th style="width: 35%;">Puesto</th>
-                                    <th style="width: 15%;">Salario Base</th>
+                                    <th style="width: 35%;">Incapacidad</th>
+                                    <th style="width: 15%;">Porcentaje Salarial</th>
                                     <th style="width: 7%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -96,21 +58,21 @@
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPuestos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalIncapacidad" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Puesto</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Tipo de Incapacidad</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPuestos" class="row g-2">
-                            <div class="col-md-4">
-                                <label for="puesto" class="form-label">Puesto:</label>
-                                <input type="text" class="form-control" id="puesto" required>
+                        <form id="formIncapacidad" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="incapacidad" class="form-label">Tipo de Incapacidad:</label>
+                                <input type="text" class="form-control" id="incapacidad" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="salarioBase" class="form-label">Salario Base:</label>
-                                <input type="number" step="any" class="form-control" id="salarioBase" required>
+                                <label for="porcentajeSalarial" class="form-label">Porcentaje Salarial:</label>
+                                <input type="number" step="any" class="form-control" id="porcentajeSalarial" required>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -136,6 +98,6 @@
     <script src="https://alertifyjs.com/build/alertify.js"></script>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
     <script src="./Js/header.js"></script>
-    <script src="./Js/fun_puestos.js"></script>
+    <script src="./Js/fun_tipoIncapacidad.js"></script>
 </body>
 </html>
