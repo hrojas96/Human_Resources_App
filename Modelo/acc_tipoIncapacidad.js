@@ -31,4 +31,4 @@ module.exports = {
     insertarTipoIncapacidad,
     editarTipoIncapacidad,
     eliminarTipoIncapacidad
-}
+};

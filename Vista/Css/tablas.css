@@ -1,4 +1,6 @@
-
+.table thead th{
+    font-size: 15px;
+}
 
 .table tbody td{
     font-size: 15px;

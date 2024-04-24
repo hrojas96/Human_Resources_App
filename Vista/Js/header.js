@@ -25,6 +25,7 @@ header.innerHTML =
                 <div class="cont-menu">
                     <nav>
                         <img src="Img/logo.png" href="principal.html" alt="logo">
+                        <a href="empleados.html">Empleados</a>
                         <a href="">Vacaciones</a>
                         <a href="">Incapacidades</a>  
                         <li class="dropdown">
