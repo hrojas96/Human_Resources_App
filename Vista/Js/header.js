@@ -27,7 +27,8 @@ header.innerHTML =
                         <img src="Img/logo.png" href="principal.html" alt="logo">
                         <a href="empleados.html">Empleados</a>
                         <a href="">Vacaciones</a>
-                        <a href="">Incapacidades</a>  
+                        <a href="">Incapacidades</a> 
+                        <a href="prestamos.html">Préstamos</a> 
                         <li class="dropdown">
                             <a class="dropdown-toggle" id="droplist" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
                                 Mantenimientos

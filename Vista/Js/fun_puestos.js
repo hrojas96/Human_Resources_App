@@ -72,8 +72,10 @@ on(document, 'click', '.btnEditar', e => {
     idForm = fila.children[0].innerHTML;
     const puestoForm = fila.children[1].innerHTML;
     const salarioBaseForm = fila.children[2].innerHTML;
+    
     puesto.value = puestoForm;
     salarioBase.value = salarioBaseForm;
+    
     opcion = 'editar';
     modalPuestos.show();
 });
