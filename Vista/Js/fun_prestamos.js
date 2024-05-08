@@ -22,7 +22,7 @@ cargarEmpleados();
 function mostrar(prestamos) {
     prestamos[0].forEach(p =>{
         resultados += ` <tr data-fecha="${p.fecha_solicitud.slice(0, 10)}" data-idCliente="${p.id_empleado}" >
-                            <td class="text-center"><a href="abonoPrestamo.html">${p.id_prestamo}</a></td>
+                            <td class="text-center"><a class="numPrestamo" href="abonoPrestamo.html">${p.id_prestamo}</a></td>
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
                             <td class="text-center">${new Date(p.fecha_solicitud).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${p.monto_solicitado}</td> 
@@ -92,6 +92,11 @@ const on = (element, event, selector, handler) => {
         };
     });
 };
+
+on(document, 'click', '.numPrestamo', e => {
+    const idprestamo = e.target.innerText;
+    localStorage.setItem("prestamo", JSON.stringify(idprestamo));
+});
 
 //Editar 
 let idForm = 0;

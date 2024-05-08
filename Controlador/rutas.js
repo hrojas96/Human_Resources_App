@@ -6,6 +6,7 @@ const empleadosApp = require('./log_empleados');
 const puestosEmpleadosApp = require('./log_cargarPuestos');
 const prestamosApp = require('./log_prestamos');
 const listaEmpleadosApp = require('./log_cargar_empleados');
+const abonosApp = require('./log_abonosPrestamo');
 
 
 const app = express();
@@ -24,6 +25,9 @@ app.use('/api/puestosRegistrados', puestosEmpleadosApp);
 // Ruta para prestamos
 app.use('/api/prestamos', prestamosApp);
 app.use('/api/clientesRegistrados', listaEmpleadosApp);
+
+// Ruta para abonos de prestamos
+app.use('/api/abonoPrestamos', abonosApp);
 
 //Errutamiento. Escucha del archhivo
 const puerto = process.env.PUERTO || 8000;
