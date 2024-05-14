@@ -69,7 +69,7 @@ app.put('/:id_prestamo', (req, res)=>{
                     res.status(400).json({ error: "Datos duplicados" });
                 } else {
                     console.log('Hubo un error')
-                    throw error;
+                    //throw error;
                 };
             } else {
                 //console.log('Datos editados')
@@ -84,6 +84,7 @@ app.put('/:id_prestamo', (req, res)=>{
 });
 
 app.delete('/:id_prestamo', (req,res)=>{
+
     let id_prestamo = req.params.id_prestamo;
     accesos.eliminarPrestamo(id_prestamo, (error, filas) => {
         if (error) {

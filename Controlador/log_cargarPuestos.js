@@ -11,7 +11,6 @@ app.use(express.json());
 
 //Carga los empleados en el form
 app.get('/', (req, res) => {
-    //console.log('llegó a la logica cargar empleados');
     accesos.cargarPuestos((error, filas) => {
         if (error) {
             throw error;

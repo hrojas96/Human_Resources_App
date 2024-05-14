@@ -22,13 +22,15 @@ cargarEmpleados();
 function mostrar(prestamos) {
     prestamos[0].forEach(p =>{
         resultados += ` <tr data-fecha="${p.fecha_solicitud.slice(0, 10)}" data-idCliente="${p.id_empleado}" >
-                            <td class="text-center"><a class="numPrestamo" href="abonoPrestamo.html">${p.id_prestamo}</a></td>
+                            <td class="text-center">${p.id_prestamo}</td>
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
                             <td class="text-center">${new Date(p.fecha_solicitud).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${p.monto_solicitado}</td> 
-                            <td class="text-center">${p.rebajo_salarial}</td> 
-                            <td class="text-center">${p.saldo}</td> 
+                            <td class="text-center">${p.rebajo_salarial}</td>
                             <td class="centrar"> 
+                                <a class="btnAbonos btn btn-primary btn-sm" style="background-color:green; border-color: green;">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                </a>
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
@@ -93,10 +95,15 @@ const on = (element, event, selector, handler) => {
     });
 };
 
-on(document, 'click', '.numPrestamo', e => {
-    const idprestamo = e.target.innerText;
-    localStorage.setItem("prestamo", JSON.stringify(idprestamo));
+
+
+on(document, 'click', '.btnAbonos', e => {
+    const fila = e.target.closest('tr');
+    let prestamo = fila.children[0].innerHTML;
+    localStorage.setItem("prestamoid", JSON.stringify(prestamo));
+    window.location.assign("abonoPrestamo.html");
 });
+
 
 //Editar 
 let idForm = 0;
@@ -108,7 +115,7 @@ on(document, 'click', '.btnEditar', e => {
     const fechaForm = fila.getAttribute('data-fecha');
     const montoForm = fila.children[3].innerHTML;
     const rebajoForm = fila.children[4].innerHTML;
-    
+   
     empleado.value = empleadoForm;
     fecha.value = fechaForm;
     monto.value = montoForm;
@@ -121,13 +128,13 @@ on(document, 'click', '.btnEditar', e => {
 //Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
-    const id_empleado = fila.firstElementChild.innerHTML;
+    const id_prestamo = fila.firstElementChild.innerHTML;
     //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
 
     alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
     function(){
 
-        fetch(url+id_empleado, {
+        fetch(url+id_prestamo, {
             method: 'DELETE'
         })
         .then( res => res.json() )
@@ -178,6 +185,7 @@ formPrestamos.addEventListener('submit', (e)=> {
     };
     //Update
     if(opcion == 'editar'){
+      
         fetch(url+idForm, {
             method: 'PUT',
             headers: {
@@ -210,3 +218,10 @@ formPrestamos.addEventListener('submit', (e)=> {
     modalPrestamos.hide();
 
 });
+
+
+
+
+
+
+
