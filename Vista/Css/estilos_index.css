@@ -2,26 +2,23 @@ html {
     height: 100%;
 }
 body {
-    background-image: 
-            linear-gradient(to bottom right, 
-                            #33475b, 
-                            #255387,  
-                            rgb(151, 85, 85));
+    background-color:aliceblue;
 }
 
 #contMain{
     padding-top: 10%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:white 
 }
 
 #contImagen{  
     text-align: center;
     padding-bottom: 7%;
-    padding-right: 10%;
+    padding-right: 23%;
 }
 
 #usuario{
-    width: 7%;
+    width: 20%;
     position:absolute;
 }
 
@@ -32,7 +29,7 @@ body {
     border-style: none;
     border-width: 0;
     border-radius:10px;
-    background-color:rgba(232, 232, 239, 0.3);
+    background-color:rgba(129, 125, 118, 0.3);
     padding-top: 5%;
     padding-bottom: 1%;
     padding-right: 3%;
@@ -48,9 +45,9 @@ form{
 }
 
 #numEmpleado, #contrasena{
-    background-color:#255387;
+    background-color:#5a481b;
     border-radius:0px;
-    border-color: #255387;
+    border-color: #5a481b;
     margin-bottom: 4%;
 }
 #numEmpleado::placeholder, #contrasena::placeholder {
@@ -60,15 +57,6 @@ form{
     
 }
 
-#linkRegistro{
-    padding-top: 2%;
-    color:white;
-    font-weight: 50%;
-    font-family:'Courier New', Courier, monospace;
-    font-size: small;
-    text-align: center;
-    text-decoration: none;
-}
 
 #contBoton{
     text-align: center;
@@ -76,13 +64,13 @@ form{
 }
 
 #btn_signin{
-    background-color: rgba(239, 233, 232, 0.3);
-    border-color: #255387;
+    background-color: rgba(72, 68, 67, 0.3);
+    border-color: #5a481b;
     width: 100%;
 
     
 }
 
 #btn_signin:hover {
-    background-color: rgb(93, 133, 219);
+    background-color: #5a481b;
 }

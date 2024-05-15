@@ -23,15 +23,18 @@ app.get('/', (req, res) => {
 
 //Insertar empleados
 app.post('/',(req, res) => {
-    let contrasena = '';
+    let pass = '';
     let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
         'abcdefghijklmnopqrstuvwxyz0123456789@#$';
     for (let i = 1; i <= 8; i++) {
         let char = Math.floor(Math.random()
             * str.length + 1);
-        contrasena += str.charAt(char)
+        pass += str.charAt(char)
     };
-    const pass = crypto.createHash('md5').update(contrasena).digest('hex');
+    //console.log('Esta es la contraseña', contrasena);
+    const contrasena = crypto.createHash('md5').update(pass).digest('hex');
+    console.log('Esta es pass', pass);
+    console.log('Esta es contrasena', contrasena);
     let data = [{
         id_empleado:req.body.id_empleado,
         nombre:req.body.nombre,
@@ -50,7 +53,7 @@ app.post('/',(req, res) => {
         direccion:req.body.direccion
     }];
    try {
-    accesos.insertarEmpleado(data, (error, fila) => {
+    accesos.insertarEmpleado(data, pass, (error, fila) => {
         
         if (error) {
             if (error.code === 'ER_DUP_ENTRY') {
@@ -114,7 +117,7 @@ app.delete('/:id_empleado', (req,res)=>{
     let id_empleado = req.params.id_empleado;
     accesos.eliminarEmpleado(id_empleado, (error, filas) => {
         if (error) {
-            console.log('Hubo un error');
+            console.log('Hubo un error', error);
             //throw error;
         } else {
             res.send(filas);

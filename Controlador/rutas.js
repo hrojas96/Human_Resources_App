@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const loginApp = require('./log_login');
 const puestosApp = require('./log_puestos');
 const tipoIncapacidadApp = require('./log_tipoIncapacidad');
 const empleadosApp = require('./log_empleados');
@@ -11,6 +12,10 @@ const abonosApp = require('./log_abonosPrestamo');
 
 const app = express();
 app.use(cors());
+
+// Ruta para login
+app.use('/api/login', loginApp);
+
 
 // Ruta para puestos
 app.use('/api/puestos', puestosApp);
