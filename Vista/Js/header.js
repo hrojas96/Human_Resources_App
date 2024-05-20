@@ -25,20 +25,20 @@ header.innerHTML =
                 <div class="cont-menu">
                     <nav>
                         <img src="Img/logo.png" href="principal.html" alt="logo">
-                        <a href="empleados.html">Empleados</a>
                         <a href="">Vacaciones</a>
-                        <a href="">Incapacidades</a> 
+                        <a href="permisosAdm.html">Permisos Adm</a> 
                         <a href="prestamos.html">Préstamos</a> 
                         <li class="dropdown">
                             <a class="dropdown-toggle" id="droplist" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
                                 Mantenimientos
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end content" id="drop">
+                                <li><a href="empleados.html">Empleados</a></li>
                                 <li><a class="" href="puestos.html">Puestos</a></li>
                                 <li><a class="" href="tipoIncapacidad.html">Tipo de Incapacidad</a></li>
-                                <li><a class="" href="#">Something else here</a></li>
                             </ul>
                         </li>
+                        <a href="permisosEmp.html">Permisos Emp</a>
                     </nav>
                     <label for="btn-menu"><i class="fa-solid fa-xmark"></i></label>
                 </div>

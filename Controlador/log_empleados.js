@@ -42,6 +42,7 @@ app.post('/',(req, res) => {
         apellido2:req.body.apellido2,
         genero:req.body.genero,
         id_puesto:req.body.id_puesto,
+        id_jefatura:req.body.id_jefatura,
         fecha_ingreso:req.body.fecha_ingreso,
         estado:req.body.estado,
         correo:req.body.correo,
@@ -82,6 +83,7 @@ app.put('/:id_empleado', (req, res)=>{
     let apellido2 = req.body.apellido2;
     let genero = req.body.genero;
     let id_puesto = req.body.id_puesto;
+    let id_jefatura = req.body.id_jefatura;
     let fecha_ingreso = req.body.fecha_ingreso;
     let estado = req.body.estado;
     let correo = req.body.correo;
@@ -92,7 +94,7 @@ app.put('/:id_empleado', (req, res)=>{
     let direccion = req.body.direccion;
 
     try {
-        accesos.editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, (error, fila) => {
+        accesos.editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, (error, fila) => {
             
             if (error) {
                 if (error.code === 'ER_DUP_ENTRY') {

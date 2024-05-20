@@ -8,6 +8,7 @@ const puestosEmpleadosApp = require('./log_cargarPuestos');
 const prestamosApp = require('./log_prestamos');
 const listaEmpleadosApp = require('./log_cargar_empleados');
 const abonosApp = require('./log_abonosPrestamo');
+const permEmpApp = require('./log_permEmp');
 
 
 const app = express();
@@ -29,10 +30,15 @@ app.use('/api/puestosRegistrados', puestosEmpleadosApp);
 
 // Ruta para prestamos
 app.use('/api/prestamos', prestamosApp);
-app.use('/api/clientesRegistrados', listaEmpleadosApp);
+app.use('/api/empleadosRegistrados', listaEmpleadosApp);
 
 // Ruta para abonos de prestamos
 app.use('/api/abonoPrestamos', abonosApp);
+
+// Ruta para abonos de permisosEMpleados
+app.use('/api/permisosEmpl', permEmpApp);
+
+
 
 //Errutamiento. Escucha del archhivo
 const puerto = process.env.PUERTO || 8000;

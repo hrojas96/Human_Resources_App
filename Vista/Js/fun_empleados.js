@@ -11,6 +11,7 @@ const apellido1 = document.getElementById('apellido1');
 const apellido2 = document.getElementById('apellido2');
 const genero = document.getElementById('genero');
 const puesto = document.getElementById('puesto');
+const jefatura = document.getElementById('jefatura');
 const fechaI = document.getElementById('fechaI');
 const estado = document.getElementById('estado');
 const correo = document.getElementById('correo');
@@ -29,19 +30,21 @@ let distritoSelec;
 
 
 cargarTabla();
-cargarPuestos()
+cargarPuestos();
+cargarJefaturas();
 
 
 // Muestra resultados en cuanto la página carga
 function mostrar(empleados) {
     empleados[0].forEach(e =>{
-        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" data-puesto="${e.id_puesto}" >
+        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" data-puesto="${e.id_puesto}" data-jefatura="${e.id_jefatura}" >
                             <td class="text-center">${e.id_empleado}</td>
                             <td class="text-center">${e.nombre}</td> 
                             <td class="text-center">${e.apellido1}</td> 
                             <td class="text-center">${e.apellido2}</td> 
                             <td class="text-center">${e.genero}</td> 
                             <td class="text-center">${e.puesto}</td> 
+                            <td class="text-center">${e.jefaturaN}</td> 
                             <td class="text-center">${new Date(e.fecha_ingreso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${e.estado}</td> 
                             <td class="text-center">${e.correo}</td> 
@@ -79,6 +82,7 @@ btnCrear.addEventListener('click', ()=>{
     apellido2.value = ""; 
     genero.value = ""; 
     puesto.value = ""; 
+    jefatura.value = "";
     fechaI.value = "";
     estado.value = ""; 
     correo.value = ""; 
@@ -174,15 +178,32 @@ function cargarPuestos() {
             console.error("Error al obtener los datos:", error);
         });
 };
-/*/Toma el id del puesto seleccionado (CREO QUE NO VOY A NECESITAR)
-puesto.addEventListener('change', (e) => {
-    puestoSelec = e.target.value;
-    console.log('valor de puesto: '+puestoSelec);
-});*/
+
+//Carga lista de jefaturas registradas
+function cargarJefaturas() {
+    fetch("http://localhost:8000/api/empleadosRegistrados/")
+        .then(response => response.json())
+        .then(data => {
+            // Recorre los datos y crea las opciones
+            data.forEach((optionData) => {
+                // Crea un elemento option
+                const opcion = document.createElement("option");
+
+                // Establece el valor y texto de la opción
+                opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
+                opcion.value = optionData.id_empleado;
+                // Agrega la opción al elemento select
+                jefatura.add(opcion);    
+            });
+        })
+        .catch(error => {
+            console.error("Error al obtener los datos:", error);
+        });
+};
 
 //Configuración de botones
-// on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
 const on = (element, event, selector, handler) => { 
+    // on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
     //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
     element.addEventListener(event, e => { 
 
@@ -201,23 +222,24 @@ on(document, 'click', '.btnEditar', e => {
     const apellido1Form = fila.children[2].innerHTML;
     const apellido2Form = fila.children[3].innerHTML;
     const generoForm = fila.children[4].innerHTML;
-    //const puestoForm = fila.children[5].innerHTML;
     const puestoForm = fila.getAttribute('data-puesto');
+    const jefaturaForm = fila.getAttribute('data-jefatura');
     const fechaIForm = fila.getAttribute('data-fecha');
-    const estadoForm = fila.children[7].innerHTML;
-    const correoForm = fila.children[8].innerHTML;
-    const telefonoForm = fila.children[9].innerHTML;
-    const provinciaForm = fila.children[10].innerHTML;
-    const cantonForm = fila.children[11].innerHTML;
-    const distritoForm = fila.children[12].innerHTML;
-    console.log(distritoForm);
-    const direccionForm = fila.children[13].innerHTML;
+    const estadoForm = fila.children[8].innerHTML;
+    const correoForm = fila.children[9].innerHTML;
+    const telefonoForm = fila.children[10].innerHTML;
+    const provinciaForm = fila.children[11].innerHTML;
+    const cantonForm = fila.children[12].innerHTML;
+    const distritoForm = fila.children[13].innerHTML;
+    const direccionForm = fila.children[14].innerHTML;
+
     cedula.value = cedulaForm;
     nombre.value = nombreForm;
     apellido1.value = apellido1Form;
     apellido2.value = apellido2Form;
     genero.value = generoForm;
     puesto.value = puestoForm;
+    jefatura.value = jefaturaForm;
     fechaI.value = fechaIForm;
     estado.value = estadoForm;
     correo.value = correoForm;
@@ -273,6 +295,7 @@ formEmpleados.addEventListener('submit', (e)=> {
                 apellido2:apellido2.value,
                 genero:genero.value,
                 id_puesto:puesto.value,
+                id_jefatura:jefatura.value,
                 fecha_ingreso:fechaI.value,
                 estado:estado.value,
                 correo:correo.value,
@@ -313,6 +336,7 @@ formEmpleados.addEventListener('submit', (e)=> {
                 apellido2:apellido2.value,
                 genero:genero.value,
                 id_puesto:puesto.value,
+                id_jefatura:jefatura.value,
                 fecha_ingreso:fechaI.value,
                 estado:estado.value,
                 correo:correo.value,

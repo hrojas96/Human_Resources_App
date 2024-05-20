@@ -29,7 +29,7 @@ loginForm.addEventListener("submit", function (e) {
             window.location = "principal.html"; 
         }else {
             alertify
-            .alert("Credenciales inválidas."+ data.error);
+            .alert('Error', '&#191;Credenciales inválidas.');
         }
 
     })

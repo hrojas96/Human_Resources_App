@@ -30,10 +30,10 @@ function insertarEmpleado(data, pass, callback) {
     });
 };
 
-function editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, callback) {
+function editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, callback) {
 
-    const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
-    conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado], callback);
+    const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
+    conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado], callback);
 };
 
 function eliminarEmpleado(id_empleado, callback) {
