@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="alertifyjs/css/themes/default.min.css" />
     <link href="https://alertifyjs.com/build/css/alertify.css" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="Css/menu.css">
     <link rel="stylesheet" href="Css/tablas.css">
     
@@ -23,30 +24,26 @@
     </header>
    
     <main>
+        <div id="notificaciones"></div>
+
         <!--Tabla-->
         <section>
             <div id="" class="">
                 <div class="container mt-4 shadow-lg p-4 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Solicitud de Permisos</h4>
+                    <h4 id="titulo">Solicitudes Pendientes</h4>
                     <div class="navbar ">
-                        <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalPrestamos" ></button>
-                          <form class="d-flex" role="search">
-                            <input class="form-control me-2" id="buscador" type="search" placeholder="..." aria-label="Search">
-                            <button class="btn btn-outline-success" id="buscador" type="submit">Buscar</button>
-                          </form>
-                        </div>
+                        
                     </div>
                     <div class="" id="contTabla">
                         <table class="table table-sm table-bordered table-striped">
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 2%;">N. Permiso</th>
+                                    <th style="width: 5%;">Empleado</th>
                                     <th style="width: 5%;">Desde</th>
                                     <th style="width: 5%;">Hasta</th>
-                                    <th style="width: 10%;">Jefatura</th>
-                                    <th style="width: 10%;">RRHH</th>
-                                    <th style="width: 3%;">Derecho a pago</th>
+                                    <th style="width: 10%;">Razón:</th>
+                                    <th style="width: 10%;">Jefatura:</th>
                                     <th style="width: 5%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -59,31 +56,17 @@
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPrestamos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalPermJefatura" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Préstamo</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Repuesta a Permiso</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPrestamos" class="row g-2">
-                            <div class="col-md-6">
-                                <label for="empleado" class="form-label">Empleado:</label>
-                                <select class="form-select" id="empleado" required>
-                                    <option selected>Seleccione</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="fecha" class="form-label">Fecha de Solicitud:</label>
-                                <input type="date" class="form-control" id="fecha" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="monto" class="form-label">Monto Solicitado:</label>
-                                <input type="number" step="any" class="form-control" id="monto" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="rebajo" class="form-label">Rebajo Salarial:</label>
-                                <input type="number" step="any" class="form-control" id="rebajo" required>
+                        <form id="formPermEmp" class="row g-2">
+                            <div class="col-md-12">
+                                <label for="msjJefatura" class="form-label">Digite por favor su respuesta de acuerdo a la solicitud del empleado:</label>
+                                <input type="text" step="any" class="form-control" id="msjJefatura" required>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -108,8 +91,9 @@
     <script src="alertifyjs/alertify.min.js"></script>
     <script src="https://alertifyjs.com/build/alertify.js"></script>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="./Js/header.js"></script>
     
-    <script src="./Js/fun_prestamos.js"></script>
+    <script src="./Js/fun_permJefatura.js"></script>
 </body>
 </html>

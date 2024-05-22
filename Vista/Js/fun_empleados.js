@@ -11,6 +11,7 @@ const apellido1 = document.getElementById('apellido1');
 const apellido2 = document.getElementById('apellido2');
 const genero = document.getElementById('genero');
 const puesto = document.getElementById('puesto');
+const rolUsuario = document.getElementById('rolUsuario');
 const jefatura = document.getElementById('jefatura');
 const fechaI = document.getElementById('fechaI');
 const estado = document.getElementById('estado');
@@ -31,19 +32,21 @@ let distritoSelec;
 
 cargarTabla();
 cargarPuestos();
+cargarRoles();
 cargarJefaturas();
 
 
 // Muestra resultados en cuanto la página carga
 function mostrar(empleados) {
     empleados[0].forEach(e =>{
-        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" data-puesto="${e.id_puesto}" data-jefatura="${e.id_jefatura}" >
+        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" data-puesto="${e.id_puesto}" data-rol="${e.id_rol}" data-jefatura="${e.id_jefatura}" >
                             <td class="text-center">${e.id_empleado}</td>
                             <td class="text-center">${e.nombre}</td> 
                             <td class="text-center">${e.apellido1}</td> 
                             <td class="text-center">${e.apellido2}</td> 
                             <td class="text-center">${e.genero}</td> 
-                            <td class="text-center">${e.puesto}</td> 
+                            <td class="text-center">${e.puesto}</td>
+                            <td class="text-center">${e.rol}</td>  
                             <td class="text-center">${e.jefaturaN}</td> 
                             <td class="text-center">${new Date(e.fecha_ingreso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${e.estado}</td> 
@@ -82,6 +85,7 @@ btnCrear.addEventListener('click', ()=>{
     apellido2.value = ""; 
     genero.value = ""; 
     puesto.value = ""; 
+    rolUsuario.value = ""; 
     jefatura.value = "";
     fechaI.value = "";
     estado.value = ""; 
@@ -179,6 +183,28 @@ function cargarPuestos() {
         });
 };
 
+//Carga lista de roles registrados
+function cargarRoles() {
+    fetch("http://localhost:8000/api/rolesRegistrados/")
+        .then(response => response.json())
+        .then(data => {
+            // Recorre los datos y crea las opciones
+            data.forEach((optionData) => {
+                // Crea un elemento option
+                const opcion = document.createElement("option");
+
+                // Establece el valor y texto de la opción
+                opcion.text = optionData.nombre_rol;
+                opcion.value = optionData.id_rol;
+                // Agrega la opción al elemento select
+                rolUsuario.add(opcion);    
+            });
+        })
+        .catch(error => {
+            console.error("Error al obtener los datos:", error);
+        });
+};
+
 //Carga lista de jefaturas registradas
 function cargarJefaturas() {
     fetch("http://localhost:8000/api/empleadosRegistrados/")
@@ -223,15 +249,16 @@ on(document, 'click', '.btnEditar', e => {
     const apellido2Form = fila.children[3].innerHTML;
     const generoForm = fila.children[4].innerHTML;
     const puestoForm = fila.getAttribute('data-puesto');
+    const rolUsuarioForm = fila.getAttribute('data-rol');
     const jefaturaForm = fila.getAttribute('data-jefatura');
     const fechaIForm = fila.getAttribute('data-fecha');
-    const estadoForm = fila.children[8].innerHTML;
-    const correoForm = fila.children[9].innerHTML;
-    const telefonoForm = fila.children[10].innerHTML;
-    const provinciaForm = fila.children[11].innerHTML;
-    const cantonForm = fila.children[12].innerHTML;
-    const distritoForm = fila.children[13].innerHTML;
-    const direccionForm = fila.children[14].innerHTML;
+    const estadoForm = fila.children[9].innerHTML;
+    const correoForm = fila.children[10].innerHTML;
+    const telefonoForm = fila.children[11].innerHTML;
+    const provinciaForm = fila.children[12].innerHTML;
+    const cantonForm = fila.children[13].innerHTML;
+    const distritoForm = fila.children[14].innerHTML;
+    const direccionForm = fila.children[15].innerHTML;
 
     cedula.value = cedulaForm;
     nombre.value = nombreForm;
@@ -239,6 +266,7 @@ on(document, 'click', '.btnEditar', e => {
     apellido2.value = apellido2Form;
     genero.value = generoForm;
     puesto.value = puestoForm;
+    rolUsuario.value = rolUsuarioForm;
     jefatura.value = jefaturaForm;
     fechaI.value = fechaIForm;
     estado.value = estadoForm;
@@ -295,6 +323,7 @@ formEmpleados.addEventListener('submit', (e)=> {
                 apellido2:apellido2.value,
                 genero:genero.value,
                 id_puesto:puesto.value,
+                id_rol:rolUsuario.value,
                 id_jefatura:jefatura.value,
                 fecha_ingreso:fechaI.value,
                 estado:estado.value,
@@ -336,6 +365,7 @@ formEmpleados.addEventListener('submit', (e)=> {
                 apellido2:apellido2.value,
                 genero:genero.value,
                 id_puesto:puesto.value,
+                id_rol:rolUsuario.value,
                 id_jefatura:jefatura.value,
                 fecha_ingreso:fechaI.value,
                 estado:estado.value,

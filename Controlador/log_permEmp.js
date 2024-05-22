@@ -7,9 +7,10 @@ const accesos = require('../Modelo/acc_permEmp');
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    
-    accesos.consultarPermEmp((error, filas) => {
+//Consultar los permisos de un único empleado
+app.get('/:empleado', (req, res) => {
+    let id_empleado = req.params.empleado;
+    accesos.consultarPermEmp(id_empleado,(error, filas) => {
         if (error) {
             console.log('Hubo un error');
             //throw err;
@@ -53,7 +54,7 @@ app.post('/',(req, res) => {
     };
 });
 
-//Editar registro de puestos
+//Editar registro de permisos de un único empleado
 app.put('/:id_permiso', (req, res)=>{
     let id_permiso = req.params.id_permiso;
     let inicio_permiso = req.body.inicio_permiso;
@@ -81,6 +82,7 @@ app.put('/:id_permiso', (req, res)=>{
             res.status(500).json({ error: "Error de servidor" });
     };
 });
+
 
 app.delete('/:id_permiso', (req,res)=>{
     let id_permiso = req.params.id_permiso;

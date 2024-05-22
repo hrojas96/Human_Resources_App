@@ -14,6 +14,11 @@ function cargarPuestos(callback) {
     conectDB.conexion.query(query, callback);
 }
 
+function cargarRoles(callback) {
+    const query = 'SELECT id_rol, nombre_rol FROM Rol';
+    conectDB.conexion.query(query, callback);
+}
+
 function insertarEmpleado(data, pass, callback) {
    
     const query = 'INSERT INTO Empleado SET ?';
@@ -30,10 +35,10 @@ function insertarEmpleado(data, pass, callback) {
     });
 };
 
-function editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, callback) {
+function editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, callback) {
 
-    const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
-    conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado], callback);
+    const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_rol = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
+    conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado], callback);
 };
 
 function eliminarEmpleado(id_empleado, callback) {
@@ -65,6 +70,7 @@ function generarEmailCol(idColaborador, pass){
 module.exports = {
     consultarEmpleados,
     cargarPuestos,
+    cargarRoles,
     insertarEmpleado,
     editarEmpleado,
     eliminarEmpleado

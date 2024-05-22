@@ -5,14 +5,16 @@ const url = 'http://localhost:8000/api/permisosEmpl/';
 const contenedorPermEmp = document.querySelector('tbody');
 const modalPermEmp = new bootstrap.Modal(document.getElementById('modalPermEmp'))
 const formPermEmp = document.getElementById('formPermEmp');
+const empleado = JSON.parse(localStorage.getItem("userID")) || false;
 const fechaInicio = document.getElementById('fechaInicio');
 const fechaFinal = document.getElementById('fechaFinal');
 const msjEmp = document.getElementById('msjEmp');
 
+
 let opcion = '';
 let resultados = '';
 
-cargarTabla();
+consultarDatos();
 
 const formatoFechas = {
     minDate: 'today', // Bloquear fechas anteriores a hoy
@@ -23,7 +25,7 @@ const forFechaInico = flatpickr(fechaInicio, formatoFechas);
 const forFechaFinal = flatpickr(fechaFinal, formatoFechas);
 
 // Muestra resultados en cuanto la página carga
-function mostrar(permisos) {
+function cargarTabla(permisos) {
     permisos.forEach(p =>{
         resultados += ` <tr data-fechaInicio="${p.inicio_permiso.slice(0, 10)}" data-fechaFinal="${p.final_permiso.slice(0, 10)}">
                             <td class="text-center">${(p.id_permiso)}</td> 
@@ -46,10 +48,10 @@ function mostrar(permisos) {
     contenedorPermEmp.innerHTML = resultados;
 };
 //Función para Mostrar resultados
-function cargarTabla () {
-    fetch(url)
+function consultarDatos () {
+    fetch(url + empleado)
         .then(response => response.json())
-        .then(data => mostrar(data))
+        .then(data => cargarTabla(data))
         
         .catch(error => console.log(error))
 };
@@ -117,8 +119,6 @@ on(document, 'click', '.btnBorrar', e => {
 formPermEmp.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
-    const empleado = JSON.parse(localStorage.getItem("userID")) || false;
-    console.log(empleado);
     const pendiente = 'Pendiente';
     //Insert
     if (opcion == 'crear'){
