@@ -285,8 +285,7 @@ on(document, 'click', '.btnEditar', e => {
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
     const id_empleado = fila.firstElementChild.innerHTML;
-    //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
-
+    
     alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
     function(){
 
@@ -341,11 +340,10 @@ formEmpleados.addEventListener('submit', (e)=> {
             console.log(data);
             if (data.error) {
                 
-                alertify
-                    .alert(data.error, function(){
+                alertify.alert(data.error, function(){
                         alertify.message('OK');
                     });
-                //alert(data.error)
+                
             } else {
                 location.reload();
             }
@@ -381,11 +379,10 @@ formEmpleados.addEventListener('submit', (e)=> {
         .then( data =>{
             if (data.error) {
                 
-                alertify
-                    .alert(data.error, function(){
+                alertify.alert(data.error, function(){
                         alertify.message('OK');
                     });
-                //alert(data.error)
+                
             } else {
                 //console.log('algo pasó')
                 location.reload();

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const loginApp = require('./log_login');
+const accesosApp = require('./log_header');
 const notificacionApp = require('./log_notificaciones');
 const puestosApp = require('./log_puestos');
 const rolesApp = require('./log_roles');
@@ -20,6 +21,9 @@ app.use(cors());
 
 // Ruta para login
 app.use('/api/login', loginApp);
+
+// Ruta para login
+app.use('/api/accesos', accesosApp)
 
 // Ruta para notificaciones
 app.use('/api/notificaciones', notificacionApp);

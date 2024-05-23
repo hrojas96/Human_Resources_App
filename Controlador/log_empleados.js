@@ -31,10 +31,9 @@ app.post('/',(req, res) => {
             * str.length + 1);
         pass += str.charAt(char)
     };
-    //console.log('Esta es la contraseña', contrasena);
+ 
     const contrasena = crypto.createHash('md5').update(pass).digest('hex');
-    console.log('Esta es pass', pass);
-    console.log('Esta es contrasena', contrasena);
+    
     let data = [{
         id_empleado:req.body.id_empleado,
         nombre:req.body.nombre,
