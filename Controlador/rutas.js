@@ -1,23 +1,24 @@
 const express = require('express');
 const cors = require('cors');
-const loginApp = require('./log_login');
-const accesosApp = require('./log_header');
-const notificacionApp = require('./log_notificaciones');
-const puestosApp = require('./log_puestos');
-const rolesApp = require('./log_roles');
-const tipoIncapacidadApp = require('./log_tipoIncapacidad');
-const empleadosApp = require('./log_empleados');
-const puestosEmpleadosApp = require('./log_cargarPuestos');
-const rolesEmpleadosApp = require('./log_cargarRoles');
-const prestamosApp = require('./log_prestamos');
-const listaEmpleadosApp = require('./log_cargar_empleados');
-const abonosApp = require('./log_abonosPrestamo');
-const permEmpApp = require('./log_permEmp');
-const permJefaturaApp = require('./log_permJefatura');
+const loginApp = require('./LoginController');
+const accesosApp = require('./AccesosController');
+const notificacionApp = require('./NotificacionesController');
+const puestosApp = require('./PuestosController');
+const rolesApp = require('./RolesController');
+const tipoIncapacidadApp = require('./TipoIncapacidadController');
+const empleadosApp = require('./EmpleadoController');
+const puestosEmpleadosApp = require('./Emp_PuestosController');
+const rolesEmpleadosApp = require('./Emp_RolesController');
+const prestamosApp = require('./PrestamosController');
+const listaEmpleadosApp = require('./Prest_EmpleadosController');
+const abonosApp = require('./Prest_AbonoController');
+const permEmpApp = require('./Perm_EmpleadoController');
+const permJefaturaApp = require('./Perm_JefaturaController');
 
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // Ruta para login
 app.use('/api/login', loginApp);
