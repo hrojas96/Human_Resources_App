@@ -9,7 +9,27 @@ const msjJefatura = document.getElementById('msjJefatura');
 
 let resultados = '';
 
+
+verificarUsuario ();
 consultarDatos();
+
+
+//Verifica si el usuario tiene acceso a esta página
+function verificarUsuario () {
+    const urlAccesos = 'http://localhost:8000/api/accesos/';
+    const usuario = JSON.parse(localStorage.getItem("userID")) || false;
+    fetch(urlAccesos + usuario)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data[0])
+            
+            if (data[0].acc_permisos_jefatura!== 1) {
+                window.location = "404.html";
+            }
+        })
+        .catch(error => alert(error))
+};
+
 
 // Muestra resultados en cuanto la página carga
 function cargarTabla(permisos) {

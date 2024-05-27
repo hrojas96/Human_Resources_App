@@ -10,9 +10,9 @@ tipoUsuario ();
 function verificarIngreso() {
 
   if (!usuarioID){
-      
+    
     alertify.alert('Acceso Denegado', ' Por favor, inicie sesión');
-      window.location = "index.html";  
+    window.location = "index.html";
   } ;
 };
 
@@ -50,12 +50,15 @@ menuGeneral.innerHTML =`
                 </div>
                 <div class="offcanvas-body">
                     <div>
-                        <a href="permisosEmp.html">Permisos Emp</a>
+                        <a href="marcasEmpl.html">Marcas</a>
+                    </div>
+                    <div>
+                        <a href="permisosEmp.html">Permisos</a>
                     </div>
                     <br>
                     <spam>___________________ </spam>
                     <br><br>
-                    <div id = "menuVacaciones"> </div>
+                    <div id = "menuHorasExtras"> </div>
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuMantenimientos"> </div>
                     <div id = "menuPermisosJF"> </div>           
@@ -67,10 +70,10 @@ function tipoUsuario () {
         .then(response => response.json())
         .then(data => {
             console.log(data[0])
-            if (data[0].acc_vacaciones_RRHH == 1) {
-                menuVacaciones.innerHTML = 
+            if (data[0].acc_horasExtras_RRHH == 1) {
+                menuHorasExtras.innerHTML = 
                     `<div>
-                        <a href="">Vacaciones</a>
+                        <a href="horasExtras_RRHH.html">Horas Extras</a>
                     </div>`
             };
             if (data[0].acc_prestamos == 1) {
@@ -105,7 +108,7 @@ function tipoUsuario () {
             
         })
         .catch(error => alert(error))
-    };
+};
 
 cerrarSesion.addEventListener("click", function (event) {
     // event.preventDefault(); 

@@ -14,7 +14,24 @@ const rebajoA = document.getElementById('rebajoA');
 const saldoA = document.getElementById('saldoA');
 let datos = '';
 
+verificarUsuario ();
 cargarAbonos();
+
+//Verifica si el usuario tiene acceso a esta página
+function verificarUsuario () {
+    const urlAccesos = 'http://localhost:8000/api/accesos/';
+    const usuario = JSON.parse(localStorage.getItem("userID")) || false;
+    fetch(urlAccesos + usuario)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data[0])
+            
+            if (data[0].acc_prestamos !== 1) {
+                window.location = "404.html";
+            }
+        })
+        .catch(error => alert(error))
+};
 
 function mostrarAbonos(abonos) {
     abonos.forEach(a => {

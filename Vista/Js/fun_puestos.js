@@ -11,6 +11,23 @@ let opcion = '';
 let resultados = '';
 let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
+verificarUsuario ();
+//Verifica si el usuario tiene acceso a esta página
+function verificarUsuario () {
+    const urlAccesos = 'http://localhost:8000/api/accesos/';
+    const usuario = JSON.parse(localStorage.getItem("userID")) || false;
+    fetch(urlAccesos + usuario)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data[0])
+            
+            if (data[0].acc_mantenimeintos !== 1) {
+                window.location = "404.html";
+            }
+        })
+        .catch(error => alert(error))
+};
+
 
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
