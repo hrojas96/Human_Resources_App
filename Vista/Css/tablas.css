@@ -1,0 +1,54 @@
+.table thead th{
+    font-size: 15px;
+}
+
+.table tbody td{
+    font-size: 15px;
+}
+
+#titulo{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    margin-bottom: 2%;
+}
+
+#btnCrear{
+    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}  
+#buscador{
+    font-size: 15px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnEditar, .btnBorrar, .btnAbonos {
+
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+}
+
+.table tr .centrar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-header{
+    background-color: rgb(36, 45, 45);
+}
+
+#labelPrestamos{
+    font-weight: bold;
+}
