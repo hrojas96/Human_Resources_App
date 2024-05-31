@@ -28,50 +28,53 @@
         <section>
             <div id="" class="container">
                 <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Registro de Puestos</h4>
+                    <h4 id="titulo">Planilla</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalPuestos" ></button>
-                          <form class="d-flex" role="search">
-                            <input class="form-control me-2" id="buscador" type="search" placeholder="..." aria-label="Search">
-                            <button class="btn btn-outline-success" id="buscador" type="submit">Buscar</button>
-                          </form>
+                            <button id="nuevaPlanilla" type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalPlanilla" >Calcular Planilla <i class="fa-solid fa-dollar-sign"></i></button>
+                            <a id="btnBorrar" class="btnBorra btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalPlanilla"> 
+                                Borrar Planilla <i class="fa-regular fa-trash-can" ></i>
+                            </a>
                         </div>
+                        
                     </div>
                     <div class="" id="contTabla">
                         <table class="table table-sm table-bordered table-striped">
-                            <thead>
+                            <thead><br>
                                 <tr class="text-center">
-                                    <th style="width: 5%;">N.</th>
-                                    <th style="width: 35%;">Puesto</th>
-                                    <th style="width: 15%;">Pago por Hora</th>
-                                    <th style="width: 7%;">Acciones</th>
+                                    <th style="width: 4%;">ID</th>
+                                    <th style="width: 10%;">Desde</th>
+                                    <th style="width: 10%;">Hasta</th>
+                                    <th style="width: 10%;">Empleado</th>
+                                    <th style="width: 10%;">Salario</th>
+                                    <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider"> 
                             </tbody>
                         </table> 
-                    </div>  
+                    </div> 
+                     
                 </div>
             </div>
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPuestos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalPlanilla" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Puesto</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Gestionar Planilla</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPuestos" class="row g-2">
-                            <div class="col-md-4">
-                                <label for="puesto" class="form-label">Puesto:</label>
-                                <input type="text" class="form-control" id="puesto" required>
+                        <form id="formPlanillas" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="fechaDesde" class="form-label">Desde:</label><br>
+                                <input type="date" class="form-control" id="fechaDesde" required>
                             </div>
-                            <div class="col-md-4">
-                                <label for="salarioBase" class="form-label">Salario Base:</label>
-                                <input type="number" step="any" class="form-control" id="salarioBase" required>
+                            <div class="col-md-6">
+                                <label for="fechaHasta" class="form-label">Hasta:</label><br>
+                                <input type="date" class="form-control" id="fechaHasta" required>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -91,7 +94,8 @@
     <script src="alertifyjs/alertify.min.js"></script>
     <script src="https://alertifyjs.com/build/alertify.js"></script>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
+    
     <script src="./Js/header.js"></script>
-    <script src="./Js/fun_puestos.js"></script>
+    <script src="./Js/fun_planilla.js"></script>
 </body>
 </html>

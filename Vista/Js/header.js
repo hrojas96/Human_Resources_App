@@ -58,6 +58,7 @@ menuGeneral.innerHTML =`
                     <br>
                     <spam>___________________ </spam>
                     <br><br>
+                    <div id = "planilla"> </div>
                     <div id = "menuHorasExtras"> </div>
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuMantenimientos"> </div>
@@ -70,6 +71,12 @@ function tipoUsuario () {
         .then(response => response.json())
         .then(data => {
             console.log(data[0])
+            if (data[0].acc_planilla == 1) {
+                planilla.innerHTML = 
+                    `<div>
+                        <a href="planilla.html">Planilla</a>
+                    </div>`
+            };
             if (data[0].acc_horasExtras_RRHH == 1) {
                 menuHorasExtras.innerHTML = 
                     `<div>

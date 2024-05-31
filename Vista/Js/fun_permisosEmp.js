@@ -120,6 +120,7 @@ formPermEmp.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
     const pendiente = 'Pendiente';
+    const cantidad = 1;
     //Insert
     if (opcion == 'crear'){
         fetch(url, {
@@ -134,7 +135,8 @@ formPermEmp.addEventListener('submit', (e)=> {
                 msj_empleado:msjEmp.value,
                 decision_jefatura:pendiente,
                 decision_RRHH:pendiente,
-                derecho_pago:pendiente
+                derecho_pago:pendiente,
+                cant_perm_solicitadas:cantidad
                 
             })
         })

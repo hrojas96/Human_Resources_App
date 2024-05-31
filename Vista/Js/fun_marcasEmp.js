@@ -52,7 +52,7 @@ btnEntrada.addEventListener('click', (e)=>{
     let fecha = fechaFormato.slice(0,10)
     console.log('Fecha: '+ fecha);
     let horaFormato = DateTime.toTimeString();
-    let horaEntrada = horaFormato.slice(0,8)
+    let horaEntrada = horaFormato.slice(0,8);
     console.log('hora: '+ horaEntrada);
 
     //Insert

@@ -37,7 +37,8 @@ class PrestamosController {
             id_empleado:req.body.id_empleado,
             fecha_solicitud:req.body.fecha_solicitud,
             monto_solicitado:req.body.monto_solicitado,
-            rebajo_salarial:req.body.rebajo_salarial
+            rebajo_salarial:req.body.rebajo_salarial,
+            saldo:req.body.saldo
         }];
     try {
         accesos.insertarPrestamo(data, (error, fila) => {
@@ -68,9 +69,10 @@ class PrestamosController {
         let fecha_solicitud = req.body.fecha_solicitud;
         let monto_solicitado = req.body.monto_solicitado;
         let rebajo_salarial = req.body.rebajo_salarial;
+        let saldo = req.body.saldo;
 
         try {
-            accesos.editarPrestamo(id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, id_prestamo, (error, fila) => {
+            accesos.editarPrestamo(id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, saldo, id_prestamo, (error, fila) => {
                 
                 if (error) {
                     if (error.code === 'ER_DUP_ENTRY') {

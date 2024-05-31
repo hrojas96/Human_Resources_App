@@ -34,22 +34,22 @@ class PuestosController {
             nombre_puesto:req.body.nombre_puesto,
             monto_por_hora:req.body.monto_por_hora      
         }];
-    try {
-        accesos.insertarPuesto(data, (err, fila) => {
-            
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    res.status(400).json({ error: "Datos duplicados" });
+        try {
+            accesos.insertarPuesto(data, (err, fila) => {
+                
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        res.status(400).json({ error: "Datos duplicados" });
+                    } else {
+                        console.log('Hubo un error');
+                        //throw err;
+                    };
                 } else {
-                    console.log('Hubo un error');
-                    //throw err;
-                };
-            } else {
-                //console.log('Datos insertados')
-                // Enviamos respuesta de BD
-                res.send(fila);
-            }
-        });
+                    //console.log('Datos insertados')
+                    // Enviamos respuesta de BD
+                    res.send(fila);
+                }
+            });
         } catch (error) {
             console.error("Error during database insertion:", error);
             res.status(500).json({ error: "Error de servidor" });

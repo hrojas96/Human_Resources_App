@@ -21,10 +21,10 @@ class PrestamosModel {
         conectDB.conexion.query(query, data, callback);
     };
 
-    editarPrestamo(id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, id_prestamo, callback) {
+    editarPrestamo(id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, saldo, id_prestamo, callback) {
 
-        const query = 'UPDATE Prestamos SET id_empleado = ?, fecha_solicitud = ?, monto_solicitado = ?, rebajo_salarial = ? WHERE id_prestamo = ?';
-        conectDB.conexion.query(query, [id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, id_prestamo], callback);
+        const query = 'UPDATE Prestamos SET id_empleado = ?, fecha_solicitud = ?, monto_solicitado = ?, rebajo_salarial = ?, saldo = ? WHERE id_prestamo = ?';
+        conectDB.conexion.query(query, [id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, saldo, id_prestamo], callback);
     };
 
     eliminarPrestamo(id_prestamo, callback) {

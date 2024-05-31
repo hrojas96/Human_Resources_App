@@ -43,6 +43,7 @@ function mostrar(prestamos) {
                             <td class="text-center">${new Date(p.fecha_solicitud).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${p.monto_solicitado}</td> 
                             <td class="text-center">${p.rebajo_salarial}</td>
+                            <td class="text-center">${p.saldo}</td>
                             <td class="centrar"> 
                                 <a class="btnAbonos btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                     <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -177,7 +178,8 @@ formPrestamos.addEventListener('submit', (e)=> {
                 id_empleado:empleado.value,
                 fecha_solicitud:fecha.value,
                 monto_solicitado:monto.value,
-                rebajo_salarial:rebajo.value
+                rebajo_salarial:rebajo.value,
+                saldo:monto.value,
                 
             })
         })
@@ -209,7 +211,8 @@ formPrestamos.addEventListener('submit', (e)=> {
                 id_empleado:empleado.value,
                 fecha_solicitud:fecha.value,
                 monto_solicitado:monto.value,
-                rebajo_salarial:rebajo.value
+                rebajo_salarial:rebajo.value,
+                saldo:monto.value
             })
         })
         .then( response => response.json())

@@ -15,6 +15,7 @@ const listaEmpleadosApp = require('./Prest_EmpleadosController');
 const abonosApp = require('./Prest_AbonoController');
 const permEmpApp = require('./Perm_EmpleadoController');
 const permJefaturaApp = require('./Perm_JefaturaController');
+const planillaApp = require('./PlanillaController');
 
 
 const app = express();
@@ -58,7 +59,8 @@ app.use('/api/abonoPrestamos', abonosApp);
 app.use('/api/permisosEmpl', permEmpApp);
 app.use('/api/permisosJefatura', permJefaturaApp);
 
-
+// Ruta para cacular planilla
+app.use('/api/planilla', planillaApp);
 
 
 //Errutamiento. Escucha del archhivo

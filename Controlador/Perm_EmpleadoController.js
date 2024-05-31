@@ -38,7 +38,9 @@ class Perm_EmpleadoController {
         msj_empleado:req.body.msj_empleado,
         decision_jefatura:req.body.decision_jefatura,
         decision_RRHH:req.body.decision_RRHH,
-        derecho_pago:req.body.derecho_pago     
+        derecho_pago:req.body.derecho_pago,
+        cant_perm_solicitadas:req.body.cant_perm_solicitadas 
+            
         }];
     try {
         accesos.insertarPermEmp(data, (err, fila) => {
