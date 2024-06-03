@@ -32,7 +32,7 @@ function verificarUsuario () {
 
 // Muestra resultados en cuanto la página carga
 function mostrar(planillas) {
-    planillas[0].forEach(p =>{
+    planillas.forEach(p =>{
         resultados += ` <tr data-idCliente="${p.id_empleado}">
                             <td class="text-center">${p.id_salario}</td>
                             <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
@@ -91,7 +91,6 @@ formPlanillas.addEventListener('submit', (e)=> {
     e.preventDefault();  
     //Insert
     if (opcion == 'crear'){
-        console.log('llego a insertar');
         fetch(url, {
             method: 'POST',
             headers: {
@@ -119,7 +118,7 @@ formPlanillas.addEventListener('submit', (e)=> {
         .catch((error) => console.error("Error en la solicitud:", error));
     };
 
-    /*/Borrar
+    //Borrar
     if(opcion == 'borrar'){
         
         alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
@@ -135,14 +134,19 @@ formPlanillas.addEventListener('submit', (e)=> {
                     fecha_hasta:fechaHasta.value
                 })
             })
-            .then( res => res.json() )
+            .then( res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok ' + res.statusText);
+                }
+                return res.json();
+            })
             .then( ()=> location.reload())
             
         },
         function(){
             alertify.error('Cancelado');
         });
-    };*/
+    };
     
     modalPlanilla.hide();
 

@@ -7,7 +7,7 @@ const modalRoles = new bootstrap.Modal(document.getElementById('modalRoles'))
 const formRoles = document.getElementById('formRoles');
 const rol = document.getElementById('rol');
 const mantenimientos = document.getElementById('mantenimientos');
-const planilla = document.getElementById('planilla');
+const salarios = document.getElementById('salarios');
 const horasExtrasRRHH = document.getElementById('horasExtrasRRHH');
 const prestamos = document.getElementById('prestamos');
 const permisosRRHH = document.getElementById('permisosRRHH');
@@ -43,10 +43,10 @@ function verificarUsuario () {
 
 
 //Boton de crear abre modal y limpio
-btnCrear.addEventListener('click', ()=>{
+btnCrear.addEventListener('click', ()=>{ 
     rol.value = ""; 
     mantenimientos.value = ""; 
-    planilla.value = "";
+    salarios.value = ""; 
     horasExtrasRRHH.value = "";
     prestamos.value = "";
     permisosRRHH.value = "";
@@ -57,7 +57,7 @@ btnCrear.addEventListener('click', ()=>{
     horasExtrasJf.value = "";
     vacacionesJf.value = "";
     permisosJf.value = "";
-    marcas.value = "";
+    marcas.value = ""
     modalRoles.show();
     opcion = 'crear';
 });
@@ -124,7 +124,7 @@ on(document, 'click', '.btnEditar', e => {
     idForm = fila.children[0].innerHTML;
     const rolForm = fila.children[1].innerHTML;
     const mantenimientosForm = fila.children[2].innerHTML;
-    const planillaForm = fila.children[3].innerHTML;
+    const salariosForm = fila.children[3].innerHTML;
     const horasExtrasRRHHForm = fila.children[4].innerHTML;
     const prestamosForm = fila.children[5].innerHTML;
     const permisosRRHHForm = fila.children[6].innerHTML;
@@ -139,7 +139,7 @@ on(document, 'click', '.btnEditar', e => {
 
     rol.value = rolForm;
     mantenimientos.value = mantenimientosForm;
-    planilla.value = planillaForm;
+    salarios.value = salariosForm;
     horasExtrasRRHH.value = horasExtrasRRHHForm;
     prestamos.value = prestamosForm;
     permisosRRHH.value = permisosRRHHForm;
@@ -179,7 +179,6 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formRoles.addEventListener('submit', (e)=> {
- 
     //Previene que se recargue la página
     e.preventDefault();  
 
@@ -194,7 +193,7 @@ formRoles.addEventListener('submit', (e)=> {
             body: JSON.stringify({
                 nombre_rol:rol.value,
                 acc_mantenimeintos:mantenimientos.value,
-                acc_planilla:planilla.value,
+                acc_planilla:salarios.value,
                 acc_horasExtras_RRHH:horasExtrasRRHH.value,
                 acc_prestamos:prestamos.value,
                 acc_permisos_RRHH:permisosRRHH.value,

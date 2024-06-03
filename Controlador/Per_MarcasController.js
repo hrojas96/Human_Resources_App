@@ -48,22 +48,22 @@ class Per_MarcasController {
             id_empleado:req.body.id_empleado,
             hora_entrada:req.body.hora_entrada      
         }];
-    try {
-        console.log('Data 1: '+ JSON.stringify(data[0]));
-        accesos.insertarMarca(data, (err, fila) => {
-            
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    res.status(400).json({ error: "Datos duplicados" });
+        try {
+            console.log('Data 1: '+ JSON.stringify(data[0]));
+            accesos.insertarMarca(data, (err, fila) => {
+                
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        res.status(400).json({ error: "Datos duplicados" });
+                    } else {
+                        console.log('Hubo un error');
+                        //throw err;
+                    };
                 } else {
-                    console.log('Hubo un error');
-                    //throw err;
-                };
-            } else {
-                // Enviamos respuesta de BD
-                res.send(fila);
-            }
-        });
+                    // Enviamos respuesta de BD
+                    res.send(fila);
+                }
+            });
         } catch (error) {
             console.error("Error during database insertion:", error);
             res.status(500).json({ error: "Error de servidor" });

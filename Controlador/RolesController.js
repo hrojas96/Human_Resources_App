@@ -30,7 +30,6 @@ class RolesController {
 
     //Insertar roles
     insertarRol(req, res) {
-        
         let data = [{
             nombre_rol:req.body.nombre_rol,
             acc_mantenimeintos:req.body.acc_mantenimeintos,

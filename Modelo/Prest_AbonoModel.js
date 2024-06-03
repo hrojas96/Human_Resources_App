@@ -8,6 +8,26 @@ class Prest_AbonoModel {
         const query = 'CALL SP_ConsultaAbonosPrestamos(?)';
         conectDB.conexion.query(query, [prestamo],callback);
     };
+
+    registrarAbono(id_prestamo,monto, saldo, pass, callback) {
+    
+        const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES (id_prestamo= ?, monto = ?)'; 
+        conectDB.conexion.query(query, [id_prestamo, monto], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                this.editaPrestamo(id_prestamo, saldo);
+                callback(null, result);
+            };
+        });
+    };
+
+    editaPrestamo(id_prestamo, saldo, callback) {
+
+        const query = 'UPDATE Prestamos SET  saldo = ? WHERE id_prestamo = ?';
+        conectDB.conexion.query(query, [saldo, id_prestamo], callback);
+    };
 }
 
 module.exports = new Prest_AbonoModel();
