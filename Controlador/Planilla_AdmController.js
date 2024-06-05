@@ -48,46 +48,30 @@ class PlanillaController {
                         
                         let CCSS = 0.0967;
                         let BP = 0.01;
-                        
-                        for (let s of filas[0]) {
-                            let id_empleado = s.id_empleado;
-                            let monto_horas_ordinarias = s.pago_horas_ordinarias;
-                            let monto_horas_extras = s.pago_horas_extras;
-                            let vacaciones = s.total_dias_solicitados * 8 * s.monto_por_hora;
+                        //let data = filas[0]
+                        filas[0].forEach((i) => {
+                            let id_empleado = i.id_empleado;
+                            let monto_horas_ordinarias = i.pago_horas_ordinarias;
+                            let monto_horas_extras = i.pago_horas_extras;
+                            let vacaciones = i.total_dias_solicitados * 8 * i.monto_por_hora;
                             let salarioBruto = monto_horas_ordinarias + monto_horas_extras + vacaciones;
                             let deduccion_ccss = salarioBruto * CCSS;
                             let deduccion_bancopopular = salarioBruto * BP;
                             let deduccion_renta = 0;
                             let monto = 0;
-                            let id_prestamo = s.id_prestamo;
-                            let saldo = s.saldo;
+                            let id_prestamo = i.id_prestamo;
+                            let saldo = i.saldo;
                             //Verifica si el empleado tiene salarios
                             if (id_prestamo){
                                 
-                                if (saldo <= s.rebajo_salarial){
+                                if (saldo <= i.rebajo_salarial){
                                     monto = saldo;
                                     saldo = 0;
                                 }else{
-                                    monto = s.rebajo_salarial;
-                                    saldo = saldo - s.rebajo_salarial;
+                                    monto = i.rebajo_salarial;
+                                    saldo = saldo - i.rebajo_salarial;
                                 }
-                                //Hace la afectación a prestamos
-                                try {
-                                    await new Promise((resolve) => {
-                                        accesosAbonos.registrarAbono(id_prestamo,monto, saldo,  (err, fila) => {
-                                            
-                                            if (err) {
-                                                return res.status(500).json({ error: 'Hubo un error al registrar el abono del préstamo' });
-                                            } else {
-                                                
-                                                resolve(filas);
-                                            }
-                                        });
-                                    })
-                                } catch (error) {
-                                    console.error("Error during database insertion:", error);
-                                    res.status(500).json({ error: "Error de servidor" });
-                                };
+                                
                             };
 
                             let monto_cancelado = salarioBruto - deduccion_ccss - deduccion_bancopopular - deduccion_renta - monto;
@@ -104,7 +88,7 @@ class PlanillaController {
                                 monto_cancelado
                             }];
                             try {
-                                await new Promise((resolve, reject) => {
+                                new Promise((resolve, reject) => {
                                     accesos.insertarPlanilla(data, (err, filas) => {
                                         
                                         if (err) {
@@ -118,7 +102,41 @@ class PlanillaController {
                                             // Enviamos respuesta de BD
                                             console.log('Planilla generada correctamente', filas);
                                             resolve(filas);
-                                        }
+
+                                            if (id_prestamo){
+    
+                                                //Hace la afectación a prestamos
+                                                console.log('prestamos 2: ', id_prestamo, monto, saldo);
+                                                try {
+                                                    new Promise((resolve, reject) => {
+                                                        
+                                                        accesosAbonos.registrarAbono(id_prestamo, monto, saldo,  (err, fila) => {
+                                                            
+                                                            if (err) {
+                                                                console.log( 'Hubo un error al registrar el abono del préstamo');
+                                                                return reject(err);
+                                                            } else {
+                                                                
+                                                                resolve(fila);
+                                                            }
+                                                        });
+                                                    })
+                                                } catch (error) {
+                                                    console.error("Error during database insertion:", error);
+                                                    res.status(500).json({ error: "Error de servidor" });
+                                                };
+                                            };
+                                                
+                                            };
+
+                                            
+
+
+
+
+
+
+                                        //}
                                     });
                                 });
                             } catch (error) {
@@ -126,7 +144,7 @@ class PlanillaController {
                                  return res.status(500).json({ error: "Error de servidor" });
                             }
 
-                        }
+                        })
                         return res.status(200).json({ message: 'Planilla generada correctamente' });
 
                     } else {

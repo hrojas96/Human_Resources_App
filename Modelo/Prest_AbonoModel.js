@@ -9,22 +9,21 @@ class Prest_AbonoModel {
         conectDB.conexion.query(query, [prestamo],callback);
     };
 
-    registrarAbono(id_prestamo,monto, saldo, pass, callback) {
-    
-        const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES (id_prestamo= ?, monto = ?)'; 
+    registrarAbono(id_prestamo,monto, saldo, callback) {
+        const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES ( ?, ?)'; 
         conectDB.conexion.query(query, [id_prestamo, monto], (err, result) => {
             if (err) {
                 console.error('Error en la base de datos:', err);
                 callback(err, null);
             } else {
-                this.editaPrestamo(id_prestamo, saldo);
                 callback(null, result);
+                this.editaPrestamo(id_prestamo, saldo);
+                
             };
         });
     };
 
     editaPrestamo(id_prestamo, saldo, callback) {
-
         const query = 'UPDATE Prestamos SET  saldo = ? WHERE id_prestamo = ?';
         conectDB.conexion.query(query, [saldo, id_prestamo], callback);
     };

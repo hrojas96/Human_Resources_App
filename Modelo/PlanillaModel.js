@@ -28,7 +28,7 @@ class PlanillaModel {
 
     eliminarPlanilla(fecha_desde, fecha_hasta, callback) {
         
-        const query = 'DELETE FROM Planilla WHERE fecha_desde = ? AND fecha_hasta = ? ';
+        const query = 'DELETE FROM Planilla WHERE fecha_desde AND fecha_hasta BETWEEN ? AND ?';
         conectDB.conexion.query(query, [fecha_desde, fecha_hasta], callback);
     };
 

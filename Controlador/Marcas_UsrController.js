@@ -1,6 +1,6 @@
 const express = require('express');
 
-const accesos = require('../Modelo/Per_MarcasModel');
+const accesos = require('../Modelo/MarcasModel');
 
 class Per_MarcasController {
     constructor () {

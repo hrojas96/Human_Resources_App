@@ -1,6 +1,6 @@
 const express = require('express');
 
-const accesos = require('../Modelo/PrestamosModel');
+const accesos = require('../Modelo/Prestamos_AdmModel');
 
 class Prest_EmpleadosController {
     constructor () {

@@ -3,19 +3,19 @@ const cors = require('cors');
 const loginApp = require('./LoginController');
 const accesosApp = require('./AccesosController');
 const notificacionApp = require('./NotificacionesController');
-const marcasApp = require('./Per_MarcasController');
+const marcasUsrApp = require('./Marcas_UsrController');
 const puestosApp = require('./PuestosController');
 const rolesApp = require('./RolesController');
 const tipoIncapacidadApp = require('./TipoIncapacidadController');
 const empleadosApp = require('./EmpleadoController');
 const puestosEmpleadosApp = require('./Emp_PuestosController');
 const rolesEmpleadosApp = require('./Emp_RolesController');
-const prestamosApp = require('./PrestamosController');
+const prestamosAdmApp = require('./Prestamos_AdmController');
 const listaEmpleadosApp = require('./Prest_EmpleadosController');
 const abonosApp = require('./Prest_AbonoController');
-const permEmpApp = require('./Perm_EmpleadoController');
-const permJefaturaApp = require('./Perm_JefaturaController');
-const planillaApp = require('./PlanillaController');
+const permisosUsrApp = require('./Permisos_UsrController');
+const permisosJefApp = require('./Permisos_JefController');
+const planillaAdmApp = require('./Planilla_AdmController');
 
 
 const app = express();
@@ -32,7 +32,7 @@ app.use('/api/accesos', accesosApp)
 app.use('/api/notificaciones', notificacionApp);
 
 // Ruta para marcas
-app.use('/api/marcas', marcasApp);
+app.use('/api/marcas', marcasUsrApp);
 
 // Ruta para puestos
 app.use('/api/puestos', puestosApp);
@@ -49,18 +49,18 @@ app.use('/api/puestosRegistrados', puestosEmpleadosApp);
 app.use('/api/rolesRegistrados', rolesEmpleadosApp);
 
 // Ruta para prestamos
-app.use('/api/prestamos', prestamosApp);
+app.use('/api/prestamos', prestamosAdmApp);
 app.use('/api/empleadosRegistrados', listaEmpleadosApp);
 
 // Ruta para abonos de prestamos
 app.use('/api/abonoPrestamos', abonosApp);
 
 // Ruta para abonos de permisos
-app.use('/api/permisosEmpl', permEmpApp);
-app.use('/api/permisosJefatura', permJefaturaApp);
+app.use('/api/permisosEmpl', permisosUsrApp);
+app.use('/api/permisosJefatura', permisosJefApp);
 
 // Ruta para cacular planilla
-app.use('/api/planilla', planillaApp);
+app.use('/api/planilla', planillaAdmApp);
 
 
 //Errutamiento. Escucha del archhivo
