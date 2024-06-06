@@ -7,7 +7,7 @@ const modalRoles = new bootstrap.Modal(document.getElementById('modalRoles'))
 const formRoles = document.getElementById('formRoles');
 const rol = document.getElementById('rol');
 const mantenimientos = document.getElementById('mantenimientos');
-const salarios = document.getElementById('salarios');
+const planillaRol = document.getElementById('planillaRol');
 const horasExtrasRRHH = document.getElementById('horasExtrasRRHH');
 const prestamos = document.getElementById('prestamos');
 const permisosRRHH = document.getElementById('permisosRRHH');
@@ -46,7 +46,7 @@ function verificarUsuario () {
 btnCrear.addEventListener('click', ()=>{ 
     rol.value = ""; 
     mantenimientos.value = ""; 
-    salarios.value = ""; 
+    planillaRol.value = ""; 
     horasExtrasRRHH.value = "";
     prestamos.value = "";
     permisosRRHH.value = "";
@@ -124,7 +124,7 @@ on(document, 'click', '.btnEditar', e => {
     idForm = fila.children[0].innerHTML;
     const rolForm = fila.children[1].innerHTML;
     const mantenimientosForm = fila.children[2].innerHTML;
-    const salariosForm = fila.children[3].innerHTML;
+    const planillaRolForm = fila.children[3].innerHTML;
     const horasExtrasRRHHForm = fila.children[4].innerHTML;
     const prestamosForm = fila.children[5].innerHTML;
     const permisosRRHHForm = fila.children[6].innerHTML;
@@ -139,7 +139,7 @@ on(document, 'click', '.btnEditar', e => {
 
     rol.value = rolForm;
     mantenimientos.value = mantenimientosForm;
-    salarios.value = salariosForm;
+    planillaRol.value = planillaRolForm;
     horasExtrasRRHH.value = horasExtrasRRHHForm;
     prestamos.value = prestamosForm;
     permisosRRHH.value = permisosRRHHForm;
@@ -184,7 +184,7 @@ formRoles.addEventListener('submit', (e)=> {
 
     //Insert
     if (opcion == 'crear'){
-        
+        console.log ('Salario', planillaRol.value)
         fetch(url, {
             method: 'POST',
             headers: {
@@ -193,7 +193,7 @@ formRoles.addEventListener('submit', (e)=> {
             body: JSON.stringify({
                 nombre_rol:rol.value,
                 acc_mantenimeintos:mantenimientos.value,
-                acc_planilla:salarios.value,
+                acc_planilla:planillaRol.value,
                 acc_horasExtras_RRHH:horasExtrasRRHH.value,
                 acc_prestamos:prestamos.value,
                 acc_permisos_RRHH:permisosRRHH.value,
@@ -233,7 +233,7 @@ formRoles.addEventListener('submit', (e)=> {
             body: JSON.stringify({
                 nombre_rol:rol.value,
                 acc_mantenimeintos:mantenimientos.value,
-                acc_planilla:planilla.value,
+                acc_planilla:planillaRol.value,
                 acc_horasExtras_RRHH:horasExtrasRRHH.value,
                 acc_prestamos:prestamos.value,
                 acc_permisos_RRHH:permisosRRHH.value,

@@ -45,6 +45,7 @@
                                     <th style="width: 10%;">Razón:</th>
                                     <th style="width: 10%;">Jefatura:</th>
                                     <th style="width: 10%;">RRHH:</th>
+                                    <th style="width: 10%;">Derecho a Pago:</th>
                                     <th style="width: 5%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -57,25 +58,33 @@
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPermJefatura" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalPermisosAdm" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Repuesta a Permiso</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPermEmp" class="row g-2">
+                        <form id="formPermisosAdm" class="row g-2">
                             <div class="col-md-4">
-                                <label for="desicionJefatura" class="form-label">Desición:</label>
-                                <select class="form-select" id="desicionJefatura" required>
+                                <label for="desicionRRHH" class="form-label">Desición:</label>
+                                <select class="form-select" id="desicionRRHH" required>
                                     <option value="Pendiente">Pendiente</option>
-                                    <option value="Aprobado">Aprobado</option>
+                                    <option value="Abrobado">Aprobado</option>
+                                    <option value="Denegado">Denegado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="derechoPago" class="form-label">Derecho a pago:</label>
+                                <select class="form-select" id="derechoPago" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Abrobado">Aprobado</option>
                                     <option value="Denegado">Denegado</option>
                                 </select>
                             </div>
                             <div class="col-md-12">
-                                <label for="msjJefatura" class="form-label">Mesaje Adicional:</label>
-                                <input type="text" step="any" class="form-control" id="msjJefatura" required>
+                                <label for="msjRRHH" class="form-label">Mesaje Adicional:</label>
+                                <input type="text" step="any" class="form-control" id="msjRRHH">
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -98,6 +107,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="./Js/header.js"></script>
     
-    <script src="./Js/fun_permisosJef.js"></script>
+    <script src="./Js//fun_permisosAdm.js"></script>
 </body>
 </html>

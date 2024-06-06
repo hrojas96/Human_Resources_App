@@ -1,11 +1,13 @@
 'use strict'
 
-//VARIABLES
-const url = 'http://localhost:8000/api/permisosJefatura/';
-const contenedorPermJefatura = document.querySelector('tbody');
-const modalPermJefatura = new bootstrap.Modal(document.getElementById('modalPermJefatura'))
-const formPermEmp = document.getElementById('formPermEmp');
-const msjJefatura = document.getElementById('msjJefatura');
+//VARIABLES 
+const url = 'http://localhost:8000/api/permisosAdm/';
+const contenedorPermisosAdm = document.querySelector('tbody');
+const modalPermisosAdm = new bootstrap.Modal(document.getElementById('modalPermisosAdm'))
+const formPermisosAdm = document.getElementById('formPermisosAdm');
+const desicionRRHH = document.getElementById('desicionRRHH');
+const msjRRHH = document.getElementById('msjRRHH');
+const derechoPago = document.getElementById('derechoPago');
 
 let resultados = '';
 
@@ -23,7 +25,7 @@ function verificarUsuario () {
         .then(data => {
             console.log(data[0])
             
-            if (data[0].acc_permisos_jefatura!== 1) {
+            if (data[0].acc_permisos_RRHH!== 1) {
                 window.location = "404.html";
             }
         })
@@ -34,13 +36,20 @@ function verificarUsuario () {
 // Muestra resultados en cuanto la página carga
 function cargarTabla(permisos) {
     permisos.forEach(p =>{
-        resultados += ` <tr data-idCliente="${p.id_empleado}">
+        if (p.msj_jefatura == null){
+            p.msj_jefatura = " ";
+        } if (p.msj_RRHH == null){
+            p.msj_RRHH = " ";
+        };
+        resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
                             <td class="text-center">${(p.id_permiso)}</td> 
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
                             <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${p.msj_empleado}</td>
-                            <td class="text-center">${p.decision_jefatura}</td>
+                            <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
+                            <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
+                            <td class="text-center">${p.derecho_pago}</td>
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
@@ -50,11 +59,13 @@ function cargarTabla(permisos) {
                                 </a>
                             </td> 
                         </tr>`
+        
     });
-    contenedorPermJefatura.innerHTML = resultados;
+    contenedorPermisosAdm.innerHTML = resultados;
 };
 //Función para Mostrar resultados
 function consultarDatos () {
+
     fetch(url)
         .then(response => response.json())
         .then(data => cargarTabla(data))
@@ -80,11 +91,16 @@ on(document, 'click', '.btnEditar', e => {
     //Se asigna una posición a cada valor en la tabla para identificar el id
     const fila = e.target.closest('tr');
     idForm = fila.children[0].innerHTML;
-    const msjJefaturaForm = fila.children[5].innerHTML;
+    const desicionRRHHForm = fila.getAttribute('data-decision_RRHH');
+    const msjRRHHForm = fila.getAttribute('data-msj_RRHH');
+    const derechoPagoForm = fila.children[7].innerHTML;
 
-    msjJefatura.value = msjJefaturaForm;
+    desicionRRHH.value = desicionRRHHForm;
+    msjRRHH.value = msjRRHHForm;
+    derechoPago.value = derechoPagoForm;
 
-    modalPermJefatura.show();
+
+    modalPermisosAdm.show();
 });
 
 //Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
@@ -109,7 +125,7 @@ on(document, 'click', '.btnBorrar', e => {
 });
 
 //Guardar cambios editados o creados
-formPermEmp.addEventListener('submit', (e)=> {
+formPermisosAdm.addEventListener('submit', (e)=> {
  
     fetch(url+idForm, {
         method: 'PUT',
@@ -117,7 +133,9 @@ formPermEmp.addEventListener('submit', (e)=> {
             'Content-Type':'application/json'
         },
         body: JSON.stringify({
-            decision_jefatura:msjJefatura.value
+            decision_RRHH:desicionRRHH.value,
+            msj_RRHH:msjRRHH.value,
+            derecho_pago:derechoPago.value,
         })
     })
     .then( response => response.json())
@@ -137,6 +155,6 @@ formPermEmp.addEventListener('submit', (e)=> {
     .catch((error) => console.error("Error en la solicitud:", error));
 
     
-    modalPermJefatura.hide();
+    modalPermisosAdm.hide();
 
 });

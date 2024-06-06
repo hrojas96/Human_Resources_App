@@ -2,22 +2,20 @@ const express = require('express');
 
 const accesos = require('../Modelo/PermisosModel');
 
-class Permisos_JefController {
+class Permisos_AdmController {
     constructor () {
         this.router = express.Router();
         this.inicializarRutas();
     }
 
     inicializarRutas() {
-        this.router.get('/:id_jefatura', this.consultarPermisoJef);
-        this.router.put('/:id_permiso', this.editarPermJefatura);
+        this.router.get('/', this.consultarPermisoAdm);
+        this.router.put('/:id_permiso', this.editarPermisoAdm);
     };
 
-
     //Consultar los permisos pendientes de jefatura
-    consultarPermisoJef(req, res) {
-        let id_jefatura = req.params.id_jefatura;
-        accesos.consultarPermisoJef(id_jefatura, (error, filas) => {
+    consultarPermisoAdm(req, res) {
+        accesos.consultarPermisoAdm( (error, filas) => {
             if (error) {
                 console.log('Hubo un error');
                 //throw error;
@@ -28,13 +26,14 @@ class Permisos_JefController {
     };
 
     //Editar desición de la jefatura
-    editarPermJefatura(req, res) {
+    editarPermisoAdm(req, res) {
         let id_permiso = req.params.id_permiso;
-        let decision_jefatura = req.body.decision_jefatura;
-        let msj_jefatura = req.body.msj_jefatura;
+        let decision_RRHH = req.body.decision_RRHH;
+        let msj_RRHH = req.body.msj_RRHH;
+        let derecho_pago = req.body.derecho_pago;
 
         try {
-            accesos.editarPermJefatura(decision_jefatura, msj_jefatura, id_permiso, (err, fila) => {
+            accesos.editarPermisoAdm(decision_RRHH, msj_RRHH, derecho_pago, id_permiso, (err, fila) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {
@@ -57,4 +56,4 @@ class Permisos_JefController {
 
 }
 
-module.exports = new Permisos_JefController().router;
+module.exports = new Permisos_AdmController().router;

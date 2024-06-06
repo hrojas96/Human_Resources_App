@@ -15,6 +15,7 @@ const listaEmpleadosApp = require('./Prest_EmpleadosController');
 const abonosApp = require('./Prest_AbonoController');
 const permisosUsrApp = require('./Permisos_UsrController');
 const permisosJefApp = require('./Permisos_JefController');
+const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
 
 
@@ -55,9 +56,10 @@ app.use('/api/empleadosRegistrados', listaEmpleadosApp);
 // Ruta para abonos de prestamos
 app.use('/api/abonoPrestamos', abonosApp);
 
-// Ruta para abonos de permisos
+// Ruta para permisos
 app.use('/api/permisosEmpl', permisosUsrApp);
 app.use('/api/permisosJefatura', permisosJefApp);
+app.use('/api/permisosAdm', permisosAdmApp);
 
 // Ruta para cacular planilla
 app.use('/api/planilla', planillaAdmApp);

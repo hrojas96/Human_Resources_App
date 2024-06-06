@@ -16,7 +16,7 @@ function verificarIngreso() {
   } ;
 };
 
-
+//<a id="iconos" href="#"><i id="campana" class="fa-solid fa-bell"></i> <span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span></a>
 menuGeneral.innerHTML =`
 
                 <!--Menu Vertical-->
@@ -28,10 +28,15 @@ menuGeneral.innerHTML =`
                         <div class="logo">
                             <h1>Faustica S.A.</h1>
                         </div>
-                        <nav class="menu">
-                            <a id="iconos" href="#"><i id="campana" class="fa-solid fa-bell"></i></a>
+                        <nav class="menu btn-group dropdown">
+                            <a id="iconos" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i id="campana" class="fa-solid fa-bell"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <div id = "notificacion"> </div>
+                            </ul>
                         </nav>
-                        <nav class="menu btn-group dropstart">
+                        <nav class="menu btn-group dropdown">
                                 <a id="iconos" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-circle-user"></i>
                                 </a>
@@ -53,7 +58,7 @@ menuGeneral.innerHTML =`
                         <a href="marcasEmpl.html">Marcas</a>
                     </div>
                     <div>
-                        <a href="permisosEmp.html">Permisos</a>
+                        <a href="permisosUsuario.html">Permisos</a>
                     </div>
                     <br>
                     <spam>___________________ </spam>
@@ -62,6 +67,7 @@ menuGeneral.innerHTML =`
                     <div id = "menuHorasExtras"> </div>
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuMantenimientos"> </div>
+                    <div id = "menuPermisosAdm"> </div>
                     <div id = "menuPermisosJF"> </div>           
                 </div>
                 `;
@@ -103,13 +109,16 @@ function tipoUsuario () {
                         </ul>
                     </div>`
             };
+            if (data[0].acc_permisos_RRHH == 1) {
+                menuPermisosAdm.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="permisosAdm.html">Permisos RRHH</a> 
+                    </div>`
+            };
             if (data[0].acc_permisos_jefatura == 1) {
                 menuPermisosJF.innerHTML = 
                     `<div>
-                        <a href="permisosJefatura.html">
-                            Permisos Jefatura 
-                            <span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>
-                        </a> 
+                        <a id= "ntfPermiso" href="permisosJefatura.html">Permisos Jefatura</a> 
                     </div>`
             };
             
@@ -119,34 +128,20 @@ function tipoUsuario () {
 
 cerrarSesion.addEventListener("click", function (event) {
     // event.preventDefault(); 
-        localStorage.removeItem('userID');
-        localStorage.removeItem('prestamoid');
-        window.location = "index.html";
-    });
+    localStorage.removeItem('userID');
+    localStorage.removeItem('prestamoid');
+    window.location = "index.html";
+ });
+    
+    
+ notificacion.innerHTML = `
+                            <li><a id="nuevaNotificacion" class="dropdown-item" href="#"></a></li>
+                            `
 
-
-/*notificaciones.innerHTML = 
-                `
-            <div aria-live="polite" aria-atomic="true" class="position-relative">
-                <div class="toast-container top-0 end-0 p-3">
-                  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <i class="fa-solid fa-circle-exclamation"></i>
-                      <strong class="me-auto">.. Tomar Acción</strong>
-                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div id="nuevaNotificacion" class="toast-body">
-                    </div>
-                  </div>
-                </div>
-            </div>
-                `;
 
 document.addEventListener('DOMContentLoaded', () => {
     const nuevaNotificacion = document.getElementById('nuevaNotificacion');
-    nuevaNotificacion.textContent = "Tiene solicitudes pendientes";
-    const toastElList = document.querySelectorAll('.toast');
-    const toastList = Array.from(toastElList).map(toastEl => new bootstrap.Toast(toastEl, { autohide: false }));
+
     fetch('http://localhost:8000/api/notificaciones/')
         .then(response => response.json())
         .then(data => {
@@ -154,11 +149,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.error) {
                 console.log('algo pasó', data.error);
             } else {
-                //const campana = document.getElementById('campana');
-                campana.textContent = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
-                toastList.forEach(toast => toast.show());
+                if (data.length > 0){
+                    campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                    nuevaNotificacion.textContent = ("Tiene " + data.length +  " solicitud(es) pendiente(s)");
+                }else{
+                    nuevaNotificacion.textContent = "No tiene notificaciones recientes";
+                }
+                if (data[0].id_permiso) {
+                    ntfPermiso.innerHTML = `Permisos Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                }
             }
         })
         .catch(error => console.log(error));
     
-});*/
+});                          
+

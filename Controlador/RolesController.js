@@ -46,6 +46,7 @@ class RolesController {
             acc_permisos_jefatura:req.body.acc_permisos_jefatura,
             acc_marcas:req.body.acc_marcas
         }];
+        console.log ('Planilla',data.acc_planilla)
     try {
         accesos.insertarRol(data, (err, fila) => {
             

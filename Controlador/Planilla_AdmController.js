@@ -128,15 +128,6 @@ class PlanillaController {
                                             };
                                                 
                                             };
-
-                                            
-
-
-
-
-
-
-                                        //}
                                     });
                                 });
                             } catch (error) {

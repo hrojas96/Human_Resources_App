@@ -11,6 +11,7 @@ const fechaFinal = document.getElementById('fechaFinal');
 const msjEmp = document.getElementById('msjEmp');
 
 
+
 let opcion = '';
 let resultados = '';
 
@@ -27,13 +28,17 @@ const forFechaFinal = flatpickr(fechaFinal, formatoFechas);
 // Muestra resultados en cuanto la página carga
 function cargarTabla(permisos) {
     permisos.forEach(p =>{
+        if (p.msj_jefatura == null || p.msj_RRHH == null ){
+            p.msj_jefatura = " ";
+            p.msj_RRHH = " "
+        }
         resultados += ` <tr data-fechaInicio="${p.inicio_permiso.slice(0, 10)}" data-fechaFinal="${p.final_permiso.slice(0, 10)}">
                             <td class="text-center">${(p.id_permiso)}</td> 
                             <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${p.msj_empleado}</td>
-                            <td class="text-center">${p.decision_jefatura}</td> 
-                            <td class="text-center">${p.decision_RRHH}</td> 
+                            <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td> 
+                            <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
                             <td class="text-center">${p.derecho_pago}</td>
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
@@ -44,6 +49,7 @@ function cargarTabla(permisos) {
                                 </a>
                             </td> 
                         </tr>`
+        
     });
     contenedorPermEmp.innerHTML = resultados;
 };
@@ -120,6 +126,7 @@ formPermEmp.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
     const pendiente = 'Pendiente';
+
     const cantidad = 1;
     //Insert
     if (opcion == 'crear'){
