@@ -3,7 +3,7 @@ const express = require('express');
 const accesos = require('../Modelo/PermisosModel');
 const diasHabiles = require('./DiasHabilesController');
 
-class Perm_EmpleadoController {
+class Permisos_UsrController {
     constructor () {
         this.router = express.Router();
         this.inicializarRutas();
@@ -11,194 +11,126 @@ class Perm_EmpleadoController {
     }
 
     inicializarRutas() {
-        this.router.get('/:empleado', this.consultarPermEmp);
-        this.router.post('/', this.insertarPermEmp);
-        this.router.put('/:id_permiso', this.editarPermEmp);
-        this.router.delete('/:id_permiso', this.eliminarPermEmp);
+        this.router.get('/:empleado', this.consultarPermisosUsr);
+        this.router.post('/', this.insertarPermisosUsr);
+        this.router.put('/:id_permiso', this.editarPermisosUsr);
+        this.router.delete('/:id_permiso', this.eliminarPermisosUsr);
     };
 
     //Consultar los permisos de un único empleado
-    consultarPermEmp(req, res) {
+    consultarPermisosUsr(req, res) {
         let id_empleado = req.params.empleado;
-        accesos.consultarPermEmp(id_empleado,(error, filas) => {
-            if (error) {
+        accesos.consultarPermisosUsr(id_empleado,(err, resultado) => {
+            if (err) {
                 console.log('Hubo un error');
                 //throw err;
             } else {
-                res.send(filas);
+                res.send(resultado);
             };
         });
     };
 
-    insertarPermEmp(req, res) {
+    async insertarPermisosUsr(req, res) {
         let fechaInicial = new Date (req.body.inicio_permiso);
         let fechaFinal = new Date (req.body.final_permiso);
-
+        
         try{
-            diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal, (err, filas) => {
-            
-            });
-
-
-
+            const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal)
+                
+            if (filas.length <= 0){
+                return res.status(400).json({ error: 'Seleccione días viables para la solicitud de su permiso.' });
+            } else{
+                console.log ('Hola dias: ', filas.length);
+                
+                const cant_dias_solicitados = filas.length;
+                let data = [{
+                    id_empleado:req.body.id_empleado,
+                    inicio_permiso:req.body.inicio_permiso,
+                    final_permiso:req.body.final_permiso,
+                    cant_dias_solicitados,
+                    msj_empleado:req.body.msj_empleado,
+                    decision_jefatura:req.body.decision_jefatura,
+                    decision_RRHH:req.body.decision_RRHH,
+                    derecho_pago:req.body.derecho_pago
+                }];
+                
+                accesos.insertarPermisosUsr(data, (err, resultado) => {
+                    
+                    if (err) {
+                            console.log('Hubo un error', err);
+                            //throw err;
+                            return res.status(500).json({ error: 'Error al insertar los permisos en la base de datos' });
+                    } else {
+                        console.log(resultado);
+                        return res.json({message:'La solicitud de su permiso se ha realizado correctamente'});
+                    }
+                });
+            }
         } catch (error) {
-            console.error("Error during database insertion:", error);
-            res.status(500).json({ error: "Error de servidor" });
+            console.error('Error durante el proceso:', error);
+            return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
         }
-            
 
-        console.log ('Hola dias: ', dias);
     };
     
 
     //Editar registro de permisos de un único empleado
-    editarPermEmp(req, res) {
-        let id_permiso = req.params.id_permiso;
-        let inicio_permiso = req.body.inicio_permiso;
-        let final_permiso = req.body.final_permiso;
-        let msj_empleado = req.body.msj_empleado;
-
-        try {
-            accesos.editarPermEmp(inicio_permiso, final_permiso, msj_empleado, id_permiso, (err, fila) => {
+    async editarPermisosUsr(req, res) {
+        let fechaInicial = new Date (req.body.inicio_permiso);
+        let fechaFinal = new Date (req.body.final_permiso);
+        
+        try{
+            const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal)
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        res.status(400).json({ error: "Datos duplicados" });
+            if (filas.length <= 0){
+                return res.status(400).json({ error: 'Seleccione días viables para la solicitud de su permiso.' });
+            } else{
+                console.log ('Hola dias: ', filas.length);
+                
+                const cant_dias_solicitados = filas.length;
+
+                let id_permiso = req.params.id_permiso;
+                let inicio_permiso = req.body.inicio_permiso;
+                let final_permiso = req.body.final_permiso;
+                let msj_empleado = req.body.msj_empleado;
+                let decision_jefatura = req.body.decision_jefatura;
+                let decision_RRHH = req.body.decision_RRHH;
+                let derecho_pago = req.body.derecho_pago;
+                
+                accesos.editarPermisosUsr(inicio_permiso, final_permiso, cant_dias_solicitados, msj_empleado, decision_jefatura, decision_RRHH, derecho_pago,  id_permiso, (err, resultado) => {
+                    
+                    if (err) {
+                            console.log('Hubo un error', err);
+                            //throw err;
+                            return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                     } else {
-                        console.log('Hubo un error')
-                        //throw err;
-                    };
-                } else {
-                    //console.log('Datos insertados')
-                    // Enviamos respuesta de BD
-                    res.send(fila);
-                };
-            });
-            } catch (error) {
-                console.error("Error during database insertion:", error);
-                res.status(500).json({ error: "Error de servidor" });
-        };
+                        console.log(resultado);
+                        return res.json({message: 'La edición del permiso #' + id_permiso + ', se ha realizado correctamente'});
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error durante el proceso:', error);
+            return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
+        }
     };
 
 
-    eliminarPermEmp(req,res) {
+    eliminarPermisosUsr(req,res) {
         let id_permiso = req.params.id_permiso;
-        accesos.eliminarPermEmp(id_permiso, (error, filas) => {
-            if (error) {
-                console.log('Hubo un error');
+        accesos.eliminarPermEmp(id_permiso, (err, resultado) => {
+            if (err) {
+                console.log('Hubo un error', err);
                 //throw err;
+                return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
-                res.send(filas);
-            };
+                console.log(resultado);
+                return res.json({message: 'La eliminación del permiso #' + id_permiso + ', se ha realizado correctamente'});
+            }
         });
         
     };
 
 }
 
-module.exports = new Perm_EmpleadoController().router;
-
-
-
-
-//Insertar permisos
-    /*insertarPermEmp(req, res) {
-        let fechaInicial = new Date (req.body.inicio_permiso);
-        let fechaFinal = new Date (req.body.final_permiso);
-
-        const diaHabiles = [];
-        const dias_solicitados = [];
-
-        //Toma todos los dias de una fecha a la otra
-        while (fechaInicial <= fechaFinal){
-
-            //Toma el numero de día (Lunes=0)
-            const diaSemana = fechaInicial.getDay();
-
-            //Revisa si la fecha incluye sabado o domingo
-            if (diaSemana !== 5 && diaSemana !== 6) {
-
-                //Alcena las fechas entre semana
-                diaHabiles.push(new Date(fechaInicial));
-            };
-          
-            fechaInicial.setDate(fechaInicial.getDate() + 1);
-        };
-        console.log('esto es diaHabiles: ', diaHabiles)
-
-
-        try {
-            //Consulta a la BD los feriados registrados
-            feriados.consultarFeriados( (err, filas) => {
-
-                if (err) {
-                    console.log('Hubo un error');
-                    return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son feriados' });
-                
-                } else {
-                    //Recorre el array de los dias entre semana
-                    diaHabiles.forEach((i) => {
-
-                        let dia = i.toISOString().slice(0, 10)
-                        const diasFeriados = filas.map(row => new Date(row.fecha_feriado).toISOString().slice(0, 10));
-                        
-                        //Verifica que los dias entre semana no sean un feriado
-                        if (!diasFeriados.includes(dia))  {
-                            
-                            dias_solicitados.push(new Date(dia));
-                        };
-                    });
-                    console.log('esto es dias_solicitados', dias_solicitados)
-                }
-            })
-        
-        } catch (error) {
-            console.error("Error during database insertion:", error);
-            res.status(500).json({ error: "Error de servidor" });
-        } 
-    }*/
-
-        /*
-        let data = [{
-        id_empleado:req.body.id_empleado,
-        inicio_permiso:req.body.inicio_permiso,
-        final_permiso:req.body.final_permiso,
-        msj_empleado:req.body.msj_empleado,
-        decision_jefatura:req.body.decision_jefatura,
-        decision_RRHH:req.body.decision_RRHH,
-        derecho_pago:req.body.derecho_pago,
-        cant_perm_solicitadas:req.body.cant_perm_solicitadas 
-            
-        }];
-        
-        
-        
-        
-
-
-
-
-
-
-
-    try {
-        accesos.insertarPermEmp(data, (err, fila) => {
-            
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    res.status(400).json({ error: "Datos duplicados" });
-                } else {
-                    console.log('Hubo un error');
-                    //throw err;
-                };
-            } else {
-                //console.log('Datos insertados')
-                // Enviamos respuesta de BD
-                res.send(fila);
-            }
-        });
-        } catch (error) {
-            console.error("Error during database insertion:", error);
-            res.status(500).json({ error: "Error de servidor" });
-        };*/
-   
+module.exports = new Permisos_UsrController().router;

@@ -33,25 +33,21 @@ class Permisos_AdmController {
         let derecho_pago = req.body.derecho_pago;
 
         try {
-            accesos.editarPermisoAdm(decision_RRHH, msj_RRHH, derecho_pago, id_permiso, (err, fila) => {
+            accesos.editarPermisoAdm(decision_RRHH, msj_RRHH, derecho_pago, id_permiso, (err, resultado) => {
                 
                 if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        res.status(400).json({ error: "Datos duplicados" });
-                    } else {
-                        console.log('Hubo un error')
-                        throw err;
-                    };
+                    console.log('Hubo un error', err);
+                    //throw err;
+                    return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                 } else {
-                    console.log('Datos insertados')
-                    // Enviamos respuesta de BD
-                    res.send(fila);
-                };
+                    console.log(resultado);
+                    return res.json({message: 'La edición del permiso #' + id_permiso + ', se ha realizado correctamente'});
+                }
             });
-            } catch (error) {
-                console.error("Error during database insertion:", error);
-                res.status(500).json({ error: "Error de servidor" });
-        };
+        } catch (error) {
+            console.error('Error durante el proceso:', error);
+        return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
+        }
     };
 
 }

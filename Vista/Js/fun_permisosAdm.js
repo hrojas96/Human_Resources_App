@@ -2,7 +2,8 @@
 
 //VARIABLES 
 const url = 'http://localhost:8000/api/permisosAdm/';
-const contenedorPermisosAdm = document.querySelector('tbody');
+const contenedorPermisosAdm = document.getElementById('contenedorPermisosAdm');
+const contenedorDeligenciasos = document.getElementById('contenedorDeligenciasos');
 const modalPermisosAdm = new bootstrap.Modal(document.getElementById('modalPermisosAdm'))
 const formPermisosAdm = document.getElementById('formPermisosAdm');
 const desicionRRHH = document.getElementById('desicionRRHH');
@@ -10,11 +11,10 @@ const msjRRHH = document.getElementById('msjRRHH');
 const derechoPago = document.getElementById('derechoPago');
 
 let resultados = '';
-
+let resultadosx = '';
 
 verificarUsuario ();
 consultarDatos();
-
 
 //Verifica si el usuario tiene acceso a esta página
 function verificarUsuario () {
@@ -41,27 +41,40 @@ function cargarTabla(permisos) {
         } if (p.msj_RRHH == null){
             p.msj_RRHH = " ";
         };
-        resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
-                            <td class="text-center">${(p.id_permiso)}</td> 
-                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                            <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-center">${p.msj_empleado}</td>
-                            <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                            <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
-                            <td class="text-center">${p.derecho_pago}</td>
-                            <td class="centrar"> 
-                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
-                                <a class="btnBorrar btn btn-danger btn-sm"> 
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </a>
-                            </td> 
-                        </tr>`
-        
+        if (p.decision_RRHH == 'Pendiente'){
+            resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
+                                <td class="text-center">${(p.id_permiso)}</td> 
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
+                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${p.msj_empleado}</td>
+                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
+                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
+                                <td class="text-center">${p.derecho_pago}</td>
+                                <td class="centrar"> 
+                                    <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                </td> 
+                            </tr>`
+            contenedorPermisosAdm.innerHTML = resultados;
+        }else {
+            resultadosx += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
+                                <td class="text-center">${(p.id_permiso)}</td> 
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
+                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${p.msj_empleado}</td>
+                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
+                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
+                                <td class="text-center">${p.derecho_pago}</td>
+                                 
+                            </tr>`
+            contenedorDeligenciasos.innerHTML = resultadosx;
+
+        }
     });
-    contenedorPermisosAdm.innerHTML = resultados;
+    
 };
 //Función para Mostrar resultados
 function consultarDatos () {
@@ -75,8 +88,6 @@ function consultarDatos () {
 
 //Configuración de botones
 const on = (element, event, selector, handler) => { 
-    // on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
-    //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
     element.addEventListener(event, e => { 
 
         if(e.target.closest(selector)){
@@ -103,30 +114,11 @@ on(document, 'click', '.btnEditar', e => {
     modalPermisosAdm.show();
 });
 
-//Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
-on(document, 'click', '.btnBorrar', e => {
-    const fila = e.target.closest('tr');
-    const id_permiso = fila.firstElementChild.innerHTML;
-    //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
-
-    alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
-    function(){
-
-        fetch(url+id_permiso, {
-            method: 'DELETE'
-        })
-        .then( res => res.json() )
-        .then( ()=> location.reload())
-        
-    },
-    function(){
-        alertify.error('Cancelado');
-    });
-});
 
 //Guardar cambios editados o creados
 formPermisosAdm.addEventListener('submit', (e)=> {
- 
+    e.preventDefault();
+
     fetch(url+idForm, {
         method: 'PUT',
         headers: {
@@ -140,20 +132,23 @@ formPermisosAdm.addEventListener('submit', (e)=> {
     })
     .then( response => response.json())
     .then( data =>{
+        //console.log(data);
         if (data.error) {
             
             alertify
-                .alert(data.error, function(){
+                .alert('Aviso', data.error, function(){
                     alertify.message('OK');
                 });
-            //alert(data.error)
+            
         } else {
-            //console.log('algo pasó')
-            location.reload();
+            alertify
+                .alert('Aviso', data.message, function(){
+                    alertify.message('OK');
+                    location.reload();
+                });
         }
     })
     .catch((error) => console.error("Error en la solicitud:", error));
-
     
     modalPermisosAdm.hide();
 

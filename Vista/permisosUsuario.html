@@ -32,11 +32,7 @@
                     <h4 id="titulo">Solicitud de Permisos</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalPermEmp" ></button>
-                          <form class="d-flex" role="search">
-                            <input class="form-control me-2" id="buscador" type="search" placeholder="..." aria-label="Search">
-                            <button class="btn btn-outline-success" id="buscador" type="submit">Buscar</button>
-                          </form>
+                            <button id="btnCrear" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPermisosUsr" >Nueva Solicitud .<i class=" fa-regular fa-calendar-plus"></i></button>
                         </div>
                     </div>
                     <div class="" id="contTabla">
@@ -46,6 +42,7 @@
                                     <th style="width: 2%;">N. Permiso</th>
                                     <th style="width: 5%;">Desde</th>
                                     <th style="width: 5%;">Hasta</th>
+                                    <th style="width: 2%;"># Días</th>
                                     <th style="width: 10%;">Razón:</th>
                                     <th style="width: 10%;">Jefatura</th>
                                     <th style="width: 10%;">RRHH</th>
@@ -62,14 +59,14 @@
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPermEmp" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalPermisosUsr" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Permiso</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPermEmp" class="row g-2">
+                        <form id="formPermisosUsr" class="row g-2">
                             <div class="col-md-6">
                                 <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
                                 <input type="date" class="form-control" id="fechaInicio" placeholder="AAAA/MM/DD" required>

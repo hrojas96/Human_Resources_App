@@ -30,7 +30,7 @@
         <section>
             <div id="" class="">
                 <div class="container mt-4 shadow-lg p-4 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Solicitudes Pendientes</h4>
+                    <h4 id="titulo">Solicitudes por Permisos Pendientes</h4>
                     <div class="navbar ">
                         
                     </div>
@@ -45,26 +45,52 @@
                                     <th style="width: 10%;">Razón:</th>
                                     <th style="width: 10%;">Jefatura:</th>
                                     <th style="width: 10%;">RRHH:</th>
-                                    <th style="width: 5%;">Acciones</th>
+                                    <th style="width: 2%;">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider"> 
+                            <tbody id="contenedorPermisosJef" class="table-group-divider"> 
                             </tbody>
                         </table> 
                     </div>  
                 </div>
+
+                <div class="container mt-4 shadow-lg p-4 mb-5 bg-body rounded">   
+                    <h4 id="titulo">Permisos Diligenciados</h4>
+                    <div class="navbar ">
+                        
+                    </div>
+                    <div class="" id="contTabla">
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 2%;">N. Permiso</th>
+                                    <th style="width: 5%;">Empleado</th>
+                                    <th style="width: 5%;">Desde</th>
+                                    <th style="width: 5%;">Hasta</th>
+                                    <th style="width: 10%;">Razón:</th>
+                                    <th style="width: 10%;">Jefatura:</th>
+                                    <th style="width: 10%;">RRHH:</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contenedorDeligenciasos" class="table-group-divider"> 
+                            </tbody>
+                        </table> 
+                    </div>  
+                </div>
+
+
             </div>
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPermJefatura" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalPermisosJef" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Repuesta a Permiso</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPermEmp" class="row g-2">
+                        <form id="formPermisosJef" class="row g-2">
                             <div class="col-md-4">
                                 <label for="desicionJefatura" class="form-label">Desición:</label>
                                 <select class="form-select" id="desicionJefatura" required>

@@ -2,13 +2,15 @@
 
 //VARIABLES 
 const url = 'http://localhost:8000/api/permisosJefatura/';
-const contenedorPermJefatura = document.querySelector('tbody');
-const modalPermJefatura = new bootstrap.Modal(document.getElementById('modalPermJefatura'))
-const formPermEmp = document.getElementById('formPermEmp');
+const contenedorPermisosJef = document.getElementById('contenedorPermisosJef');
+const contenedorDeligenciasos = document.getElementById('contenedorDeligenciasos');
+const modalPermisosJef = new bootstrap.Modal(document.getElementById('modalPermisosJef'))
+const formPermisosJef = document.getElementById('formPermisosJef');
 const desicionJefatura = document.getElementById('desicionJefatura');
 const msjJefatura = document.getElementById('msjJefatura');
 
 let resultados = '';
+let resultadosx = '';
 
 
 verificarUsuario ();
@@ -41,27 +43,41 @@ function cargarTabla(permisos) {
             
             p.msj_RRHH = " ";
         };
-        resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_jefatura="${p.decision_jefatura}" data-msj_jefatura"${p.msj_jefatura}">
-                            <td class="text-center">${(p.id_permiso)}</td> 
-                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                            <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-center">${p.msj_empleado}</td>
-                            <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                            <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
-                            <td class="centrar"> 
-                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
-                                <a class="btnBorrar btn btn-danger btn-sm"> 
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </a>
-                            </td> 
-                        </tr>`
-        
+        if (p.decision_jefatura == 'Pendiente'){
+            resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_jefatura="${p.decision_jefatura}" data-msj_jefatura"${p.msj_jefatura}">
+                                <td class="text-center">${(p.id_permiso)}</td> 
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
+                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${p.msj_empleado}</td>
+                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
+                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
+                                <td class="centrar"> 
+                                    <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                </td> 
+                            </tr>`
+            contenedorPermisosJef.innerHTML = resultados;
+        } else{
+            resultadosx += ` <tr data-idCliente="${p.id_empleado}" data-decision_jefatura="${p.decision_jefatura}" data-msj_jefatura"${p.msj_jefatura}">
+                                <td class="text-center">${(p.id_permiso)}</td> 
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
+                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${p.msj_empleado}</td>
+                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
+                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
+                            </tr>`
+            contenedorDeligenciasos.innerHTML = resultadosx;
+
+        }
+
     });
-    contenedorPermJefatura.innerHTML = resultados;
+    
+   
 };
+
 //Función para Mostrar resultados
 function consultarDatos () {
     const id_jefatura = JSON.parse(localStorage.getItem("userID")) || false;
@@ -75,8 +91,6 @@ function consultarDatos () {
 
 //Configuración de botones
 const on = (element, event, selector, handler) => { 
-    // on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
-    //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
     element.addEventListener(event, e => { 
 
         if(e.target.closest(selector)){
@@ -97,34 +111,14 @@ on(document, 'click', '.btnEditar', e => {
     desicionJefatura.value = desicionJefaturaForm;
     msjJefatura.value = msjJefaturaForm;
 
-
-    modalPermJefatura.show();
+    modalPermisosJef.show();
 });
 
-//Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
-on(document, 'click', '.btnBorrar', e => {
-    const fila = e.target.closest('tr');
-    const id_permiso = fila.firstElementChild.innerHTML;
-    //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
-
-    alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
-    function(){
-
-        fetch(url+id_permiso, {
-            method: 'DELETE'
-        })
-        .then( res => res.json() )
-        .then( ()=> location.reload())
-        
-    },
-    function(){
-        alertify.error('Cancelado');
-    });
-});
 
 //Guardar cambios editados o creados
-formPermEmp.addEventListener('submit', (e)=> {
- 
+formPermisosJef.addEventListener('submit', (e)=> {
+    e.preventDefault();
+
     fetch(url+idForm, {
         method: 'PUT',
         headers: {
@@ -137,21 +131,24 @@ formPermEmp.addEventListener('submit', (e)=> {
     })
     .then( response => response.json())
     .then( data =>{
+        //console.log(data);
         if (data.error) {
             
             alertify
-                .alert(data.error, function(){
+                .alert('Aviso', data.error, function(){
                     alertify.message('OK');
                 });
-            //alert(data.error)
+            
         } else {
-            //console.log('algo pasó')
-            location.reload();
+            alertify
+                .alert('Aviso', data.message, function(){
+                    alertify.message('OK');
+                    location.reload();
+                });
         }
     })
     .catch((error) => console.error("Error en la solicitud:", error));
-
     
-    modalPermJefatura.hide();
+    modalPermisosJef.hide();
 
 });

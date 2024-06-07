@@ -17,12 +17,12 @@ class Permisos_JefController {
     //Consultar los permisos pendientes de jefatura
     consultarPermisoJef(req, res) {
         let id_jefatura = req.params.id_jefatura;
-        accesos.consultarPermisoJef(id_jefatura, (error, filas) => {
+        accesos.consultarPermisoJef(id_jefatura, (error, resultado) => {
             if (error) {
                 console.log('Hubo un error');
                 //throw error;
             } else {
-                res.send(filas);
+                res.send(resultado);
             };
         });
     };
@@ -34,25 +34,21 @@ class Permisos_JefController {
         let msj_jefatura = req.body.msj_jefatura;
 
         try {
-            accesos.editarPermJefatura(decision_jefatura, msj_jefatura, id_permiso, (err, fila) => {
+            accesos.editarPermJefatura(decision_jefatura, msj_jefatura, id_permiso, (err, resultado) => {
                 
                 if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        res.status(400).json({ error: "Datos duplicados" });
-                    } else {
-                        console.log('Hubo un error')
-                        throw err;
-                    };
+                    console.log('Hubo un error', err);
+                    //throw err;
+                    return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                 } else {
-                    console.log('Datos insertados')
-                    // Enviamos respuesta de BD
-                    res.send(fila);
-                };
+                    console.log(resultado);
+                    return res.json({message: 'La edición del permiso #' + id_permiso + ', se ha realizado correctamente'});
+                }
             });
-            } catch (error) {
-                console.error("Error during database insertion:", error);
-                res.status(500).json({ error: "Error de servidor" });
-        };
+        } catch (error) {
+            console.error('Error durante el proceso:', error);
+        return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
+        }
     };
 
 }
