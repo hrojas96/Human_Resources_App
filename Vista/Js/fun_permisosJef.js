@@ -2,7 +2,7 @@
 
 //VARIABLES 
 const url = 'http://localhost:8000/api/permisosJefatura/';
-const contenedorPermisosJef = document.getElementById('contenedorPermisosJef');
+const contenedorhExtrasJef = document.getElementById('contenedorhExtrasJef');
 const contenedorDeligenciasos = document.getElementById('contenedorDeligenciasos');
 const modalPermisosJef = new bootstrap.Modal(document.getElementById('modalPermisosJef'))
 const formPermisosJef = document.getElementById('formPermisosJef');

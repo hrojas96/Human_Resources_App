@@ -58,17 +58,21 @@ menuGeneral.innerHTML =`
                         <a href="marcasEmpl.html">Marcas</a>
                     </div>
                     <div>
+                        <a href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
+                    </div>
+                    <div>
                         <a href="permisosUsuario.html">Permisos</a>
                     </div>
                     <br>
                     <spam>___________________ </spam>
                     <br><br>
                     <div id = "planilla"> </div>
-                    <div id = "menuHorasExtras"> </div>
+                    <div id = "menuHorasExtrasAdm"> </div>
                     <div id = "menuPrestamos"> </div>
-                    <div id = "menuMantenimientos"> </div>
                     <div id = "menuPermisosAdm"> </div>
-                    <div id = "menuPermisosJF"> </div>           
+                    <div id = "menuMantenimientos"> </div>
+                    <div id = "menuPermisosJF"> </div>  
+                    <div id = "menuHorasExtrasJef"> </div>          
                 </div>
                 `;
 
@@ -84,15 +88,21 @@ function tipoUsuario () {
                     </div>`
             };
             if (data[0].acc_horasExtras_RRHH == 1) {
-                menuHorasExtras.innerHTML = 
+                menuHorasExtrasAdm.innerHTML = 
                     `<div>
-                        <a href="horasExtras_RRHH.html">Horas Extras</a>
+                        <a href="horasExtrasAdm.html">Horas Extras Adm</a>
                     </div>`
             };
             if (data[0].acc_prestamos == 1) {
                 menuPrestamos.innerHTML = 
                     `<div>
                         <a href="prestamos.html">Préstamos</a> 
+                    </div>`
+            };
+            if (data[0].acc_permisos_RRHH == 1) {
+                menuPermisosAdm.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="permisosAdm.html">Permisos RRHH</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {
@@ -109,16 +119,16 @@ function tipoUsuario () {
                         </ul>
                     </div>`
             };
-            if (data[0].acc_permisos_RRHH == 1) {
-                menuPermisosAdm.innerHTML = 
-                    `<div>
-                        <a id= "ntfPermiso" href="permisosAdm.html">Permisos RRHH</a> 
-                    </div>`
-            };
             if (data[0].acc_permisos_jefatura == 1) {
                 menuPermisosJF.innerHTML = 
                     `<div>
                         <a id= "ntfPermiso" href="permisosJefatura.html">Permisos Jefatura</a> 
+                    </div>`
+            };
+            if (data[0].acc_horasExtras_jefatura == 1) {
+                menuHorasExtrasJef.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
                     </div>`
             };
             

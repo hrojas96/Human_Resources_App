@@ -47,7 +47,7 @@ class Permisos_JefController {
             });
         } catch (error) {
             console.error('Error durante el proceso:', error);
-        return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
+        return res.status(500).json({ error: 'Error durante el proceso' });
         }
     };
 
