@@ -1,21 +1,19 @@
 'use strict'
 
 //VARIABLES 
-const url = 'http://localhost:8000/api/permisosJefatura/';
-const contenedorPermisosJef = document.getElementById('contenedorPermisosJef');
+const url = 'http://localhost:8000/api/vacacionesJef/';
+const contenedorVacacionesJef = document.getElementById('contenedorVacacionesJef');
 const contenedorDeligenciasos = document.getElementById('contenedorDeligenciasos');
-const modalPermisosJef = new bootstrap.Modal(document.getElementById('modalPermisosJef'))
-const formPermisosJef = document.getElementById('formPermisosJef');
+const modalVacacionesJef = new bootstrap.Modal(document.getElementById('modalVacacionesJef'))
+const formVacacionesJef = document.getElementById('formVacacionesJef');
 const desicionJefatura = document.getElementById('desicionJefatura');
 const msjJefatura = document.getElementById('msjJefatura');
 
 let resultados = '';
 let resultadosx = '';
 
-
 verificarUsuario ();
 consultarDatos();
-
 
 //Verifica si el usuario tiene acceso a esta página
 function verificarUsuario () {
@@ -26,48 +24,44 @@ function verificarUsuario () {
         .then(data => {
             console.log(data[0])
             
-            if (data[0].acc_permisos_jefatura!== 1) {
+            if (data[0].acc_vacaciones_jefatura!== 1) {
                 window.location = "404.html";
             }
         })
         .catch(error => alert(error))
 };
 
-
 // Muestra resultados en cuanto la página carga
-function cargarTabla(permisos) {
-    permisos.forEach(p =>{
-        if (p.msj_jefatura == null){
-            p.msj_jefatura = " ";
-        } if (p.msj_RRHH == null){
-            
-            p.msj_RRHH = " ";
-        };
-        if (p.decision_jefatura == 'Pendiente'){
-            resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_jefatura="${p.decision_jefatura}" data-msj_jefatura"${p.msj_jefatura}">
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
+function cargarTabla(vacaciones) {
+    
+    vacaciones.forEach(v =>{
+        
+        if (v.msj_jefatura == null || v.msj_RRHH == null ){
+            v.msj_jefatura = " ";
+            v.msj_RRHH = " "
+        }
+        if (v.decision_jefatura == 'Pendiente'){
+            resultados += ` <tr data-decision_jefatura="${v.decision_jefatura}" data-msj_jefatura"${v.msj_jefatura}">
+                                <td class="text-center">${(v.id_vacaciones)}</td> 
+                                <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
+                                <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td>  
                                 <td class="centrar"> 
                                     <a class="btnDecision btn btn-primary btn-sm" style="background-color:green; border-color: #255387;">
                                     Decisión
                                     </a>
                                 </td> 
                             </tr>`
-            contenedorPermisosJef.innerHTML = resultados;
+            contenedorVacacionesJef.innerHTML = resultados;
         } else{
             resultadosx += ` <tr>
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
+                            <td class="text-center">${(v.id_vacaciones)}</td> 
+                            <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
+                            <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                            <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                            <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
                             </tr>`
             contenedorDeligenciasos.innerHTML = resultadosx;
 
@@ -111,12 +105,12 @@ on(document, 'click', '.btnDecision', e => {
     desicionJefatura.value = desicionJefaturaForm;
     msjJefatura.value = msjJefaturaForm;
 
-    modalPermisosJef.show();
+    modalVacacionesJef.show();
 });
 
 
 //Guardar cambios editados o creados
-formPermisosJef.addEventListener('submit', (e)=> {
+formVacacionesJef.addEventListener('submit', (e)=> {
     e.preventDefault();
 
     fetch(url+idForm, {
@@ -149,6 +143,6 @@ formPermisosJef.addEventListener('submit', (e)=> {
     })
     .catch((error) => console.error("Error en la solicitud:", error));
     
-    modalPermisosJef.hide();
+    modalVacacionesJef.hide();
 
 });

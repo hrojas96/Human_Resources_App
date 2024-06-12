@@ -36,7 +36,7 @@ function cargarTabla(extras) {
     console.log('hola', extras);
     extras.forEach(e =>{
         
-        if (e.decision_RRHH == 'Pendiente'){
+        if (e.decision_jefatura == 'Aprobado' && e.decision_RRHH == 'Pendiente'){
             resultados += ` <tr>
                                 <td class="text-center">${(e.id_marca)}</td> 
                                 <td class="text-center">${new Date(e.fecha).toLocaleDateString('es-ES')}</td> 

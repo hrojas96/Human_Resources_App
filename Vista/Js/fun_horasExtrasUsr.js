@@ -2,7 +2,8 @@
 
 //VARIABLES
 const url = 'http://localhost:8000/api/horasExtrasUsr/';
-const contenedorHorasExtrasUsr = document.querySelector('tbody');
+const contenedorHorasExtrasUsr = document.getElementById('contenedorHorasExtrasUsr');
+const contenedorDeligenciados = document.getElementById('contenedorDeligenciados');
 const formPermisosUsr = document.getElementById('formPermisosUsr');
 const empleado = JSON.parse(localStorage.getItem("userID")) || false;
 const estado = 'Solicitado';
@@ -10,6 +11,7 @@ const estado = 'Solicitado';
 
 let opcion = '';
 let resultados = '';
+let resultadosx = '';
 
 consultarDatos();
 
@@ -17,6 +19,8 @@ consultarDatos();
 // Muestra resultados en cuanto la página carga
 function cargarTabla(extras) {
     extras.forEach(e =>{
+
+        if (e.estado == 'Pendiente') {
         resultados += ` <tr>
                             <td class="text-center">${(e.id_marca)}</td> 
                             <td class="text-center">${new Date(e.fecha).toLocaleDateString('es-ES')}</td> 
@@ -28,9 +32,20 @@ function cargarTabla(extras) {
                                 </a>
                             </td> 
                         </tr>`
+        contenedorHorasExtrasUsr.innerHTML = resultados;
+        } else {
+            resultadosx += ` <tr>
+                            <td class="text-center">${(e.id_marca)}</td> 
+                            <td class="text-center">${new Date(e.fecha).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${e.horas_extras}</td>
+                            <td class="text-center">${e.estado}</td>
+                        </tr>`
+            contenedorDeligenciados.innerHTML = resultadosx;
+
+        }
         
     });
-    contenedorHorasExtrasUsr.innerHTML = resultados;
+    
 };
 //Función para Mostrar resultados
 function consultarDatos () {

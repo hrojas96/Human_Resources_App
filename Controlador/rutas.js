@@ -20,6 +20,9 @@ const permisosUsrApp = require('./Permisos_UsrController');
 const permisosJefApp = require('./Permisos_JefController');
 const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
+const vacacionesUsrApp = require('./Vacaciones_UsrController');
+const vacacionesJefApp = require('./Vacaciones_JefController');
+const vacacionesAdmApp = require('./Vacaciones_AdmController');
 
 
 const app = express();
@@ -71,6 +74,11 @@ app.use('/api/permisosAdm', permisosAdmApp);
 
 // Ruta para cacular planilla
 app.use('/api/planilla', planillaAdmApp);
+
+// Ruta para vacaciones
+app.use('/api/vacacionesUsr', vacacionesUsrApp);
+app.use('/api/vacacionesJef', vacacionesJefApp);
+app.use('/api/vacacionesAdm', vacacionesAdmApp);
 
 
 //Errutamiento. Escucha del archhivo

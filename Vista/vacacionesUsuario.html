@@ -25,37 +25,41 @@
     </header>
    
     <main>
-
         <!--Tabla-->
         <section>
             <div id="" class="">
                 <div class="container mt-4 shadow-lg p-4 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Solicitudes por Permisos Pendientes</h4>
+                    <h4 id="titulo">Solicitud de Vacaciones</h4>
                     <div class="navbar ">
-                        
+                        <div class="container-fluid">
+                            <button id="btnCrear" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVacacionesUsr" >Nueva Solicitud .<i class=" fa-regular fa-calendar-plus"></i></button>
+                            <form class="d-flex" role="search">
+                                <label id="labelPrestamos" for="">Cantidad de días disponibles:  </label>
+                                <input type="number" class="form-control w-25 p-0" id="diasDisponibles"  required>
+                            </form>
+                        </div> <br>
                     </div>
                     <div class="" id="contTabla">
                         <table class="table table-sm table-bordered table-striped">
                             <thead>
                                 <tr class="text-center">
-                                    <th style="width: 2%;">N. Permiso</th>
-                                    <th style="width: 5%;">Empleado</th>
+                                    <th style="width: 2%;">N. </th>
                                     <th style="width: 5%;">Desde</th>
                                     <th style="width: 5%;">Hasta</th>
-                                    <th style="width: 10%;">Razón:</th>
-                                    <th style="width: 10%;">Jefatura:</th>
-                                    <th style="width: 10%;">RRHH:</th>
-                                    <th style="width: 2%;">Acciones</th>
+                                    <th style="width: 2%;"># Días</th>
+                                    <th style="width: 10%;">Jefatura</th>
+                                    <th style="width: 10%;">RRHH</th>
+                                    <th style="width: 5%;">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="contenedorPermisosJef" class="table-group-divider"> 
+                            <tbody id="contenedorVacacionesUsr" class="table-group-divider"> 
                             </tbody>
                         </table> 
                     </div>  
                 </div>
 
                 <div class="container mt-4 shadow-lg p-4 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Permisos Tramitados</h4>
+                    <h4 id="titulo">Vacaciones Tramitadas</h4>
                     <div class="navbar ">
                         
                     </div>
@@ -63,45 +67,38 @@
                         <table class="table table-sm table-bordered table-striped">
                             <thead>
                                 <tr class="text-center">
-                                    <th style="width: 2%;">N. Permiso</th>
-                                    <th style="width: 5%;">Empleado</th>
+                                    <th style="width: 2%;">N. </th>
                                     <th style="width: 5%;">Desde</th>
                                     <th style="width: 5%;">Hasta</th>
-                                    <th style="width: 10%;">Razón:</th>
-                                    <th style="width: 10%;">Jefatura:</th>
-                                    <th style="width: 10%;">RRHH:</th>
+                                    <th style="width: 2%;"># Días</th>
+                                    <th style="width: 10%;">Jefatura</th>
+                                    <th style="width: 10%;">RRHH</th>
                                 </tr>
                             </thead>
-                            <tbody id="contenedorDeligenciasos" class="table-group-divider"> 
+                            <tbody id="contenedorDeligenciados" class="table-group-divider"> 
                             </tbody>
                         </table> 
                     </div>  
                 </div>
-
-
             </div>
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPermisosJef" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalVacacionesUsr" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Repuesta a Permiso</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Registro de Vacacioness</h1>  
                     </div>
                     <div class="modal-body">
-                        <form id="formPermisosJef" class="row g-2">
-                            <div class="col-md-4">
-                                <label for="desicionJefatura" class="form-label">Desición:</label>
-                                <select class="form-select" id="desicionJefatura" required>
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="Aprobado">Aprobado</option>
-                                    <option value="Denegado">Denegado</option>
-                                </select>
+                        <form id="formVacacionesUsr" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
+                                <input type="date" class="form-control" id="fechaInicio" placeholder="AAAA/MM/DD" required>
                             </div>
-                            <div class="col-md-12">
-                                <label for="msjJefatura" class="form-label">Mesaje Adicional:</label>
-                                <input type="text" step="any" class="form-control" id="msjJefatura" required>
+                            <div class="col-md-6">
+                                <label for="fechaFinal" class="form-label">Fecha Final:</label>
+                                <input type="date" class="form-control" id="fechaFinal" placeholder="AAAA/MM/DD" required>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -124,6 +121,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="./Js/header.js"></script>
     
-    <script src="./Js/fun_permisosJef.js"></script>
+    <script src="./Js/fun_vacacionesUsr.js"></script>
 </body>
 </html>

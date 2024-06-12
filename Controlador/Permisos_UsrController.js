@@ -118,7 +118,7 @@ class Permisos_UsrController {
 
     eliminarPermisosUsr(req,res) {
         let id_permiso = req.params.id_permiso;
-        accesos.eliminarPermEmp(id_permiso, (err, resultado) => {
+        accesos.eliminarPermisosUsr(id_permiso, (err, resultado) => {
             if (err) {
                 console.log('Hubo un error', err);
                 //throw err;

@@ -40,7 +40,7 @@ class HorasExtrasModel {
     //ADMINISTRADOR
 
     consultarHorasExtrasAdm(callback) {
-        const query = `SELECT Horas_Extras.id_marca, Marcas.fecha, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Horas_Extras.horas_extras, Horas_Extras.decision_RRHH    
+        const query = `SELECT Horas_Extras.id_marca, Marcas.fecha, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Horas_Extras.horas_extras, Horas_Extras.decision_jefatura, Horas_Extras.decision_RRHH    
                         FROM Horas_Extras 
                         LEFT JOIN Marcas ON Horas_Extras.id_marca = Marcas.id_marca
                         LEFT JOIN Empleado ON Marcas.id_empleado = Empleado.id_empleado

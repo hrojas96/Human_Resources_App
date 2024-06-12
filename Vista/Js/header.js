@@ -61,6 +61,9 @@ menuGeneral.innerHTML =`
                         <a href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
                     </div>
                     <div>
+                        <a href="vacacionesUsuario.html">Vacaciones</a>
+                    </div>
+                    <div>
                         <a href="permisosUsuario.html">Permisos</a>
                     </div>
                     <br>
@@ -69,8 +72,10 @@ menuGeneral.innerHTML =`
                     <div id = "planilla"> </div>
                     <div id = "menuHorasExtrasAdm"> </div>
                     <div id = "menuPrestamos"> </div>
+                    <div id = "menuVacacionesAdm"> </div>
                     <div id = "menuPermisosAdm"> </div>
                     <div id = "menuMantenimientos"> </div>
+                    <div id = "menuVacacionesJF"> </div> 
                     <div id = "menuPermisosJF"> </div>  
                     <div id = "menuHorasExtrasJef"> </div>          
                 </div>
@@ -99,6 +104,12 @@ function tipoUsuario () {
                         <a href="prestamos.html">Préstamos</a> 
                     </div>`
             };
+            if (data[0].acc_vacaciones_RRHH == 1) {
+                menuVacacionesAdm.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="vacacionesAdm.html">Vacaciones RRHH</a> 
+                    </div>`
+            };
             if (data[0].acc_permisos_RRHH == 1) {
                 menuPermisosAdm.innerHTML = 
                     `<div>
@@ -117,6 +128,12 @@ function tipoUsuario () {
                             <li><a class="" href="roles.html">Roles</a></li>
                             <li><a class="" href="tipoIncapacidad.html">Tipo de Incapacidad</a></li>
                         </ul>
+                    </div>`
+            };
+            if (data[0].acc_vacaciones_jefatura == 1) {
+                menuVacacionesJF.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_permisos_jefatura == 1) {

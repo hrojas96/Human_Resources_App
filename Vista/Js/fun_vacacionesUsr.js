@@ -1,15 +1,15 @@
 'use strict'
 
 //VARIABLES
-const url = 'http://localhost:8000/api/permisosEmpl/';
-const contenedorPermisosUsr = document.getElementById('contenedorPermisosUsr');
+const url = 'http://localhost:8000/api/vacacionesUsr/';
+const contenedorVacacionesUsr = document.getElementById('contenedorVacacionesUsr');
 const contenedorDeligenciados = document.getElementById('contenedorDeligenciados');
-const modalPermisosUsr = new bootstrap.Modal(document.getElementById('modalPermisosUsr'))
-const formPermisosUsr = document.getElementById('formPermisosUsr');
+const modalVacacionesUsr = new bootstrap.Modal(document.getElementById('modalVacacionesUsr'))
+const formVacacionesUsr = document.getElementById('formVacacionesUsr');
 const empleado = JSON.parse(localStorage.getItem("userID")) || false;
 const fechaInicio = document.getElementById('fechaInicio');
 const fechaFinal = document.getElementById('fechaFinal');
-const msjEmp = document.getElementById('msjEmp');
+const diasDisponibles = document.getElementById('diasDisponibles');
 
 let opcion = '';
 let resultados = '';
@@ -19,22 +19,22 @@ consultarDatos();
 
 
 // Muestra resultados en cuanto la página carga
-function cargarTabla(permisos) {
-    permisos.forEach(p =>{
-        if (p.msj_jefatura == null || p.msj_RRHH == null ){
-            p.msj_jefatura = " ";
-            p.msj_RRHH = " "
+function cargarTabla(vacaciones) {
+    
+    vacaciones.forEach(v =>{
+        
+        if (v.msj_jefatura == null || v.msj_RRHH == null ){
+            v.msj_jefatura = " ";
+            v.msj_RRHH = " "
         }
-        if (p.decision_jefatura == 'Pendiente' || p.decision_RRHH == 'Pendiente'){
-            resultados += ` <tr data-fechaInicio="${p.inicio_permiso.slice(0, 10)}" data-fechaFinal="${p.final_permiso.slice(0, 10)}">
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td>
-                                <td class="text-center">${p.cant_dias_solicitados}</td>
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td> 
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
-                                <td class="text-center">${p.derecho_pago}</td>
+        if (v.decision_jefatura == 'Pendiente' || v.decision_RRHH == 'Pendiente'){
+            resultados += ` <tr data-fechaInicio="${v.inicio_vacacion.slice(0, 10)}" data-fechaFinal="${v.final_vacacion.slice(0, 10)}">
+                                <td class="text-center">${(v.id_vacaciones)}</td> 
+                                <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                                <td class="text-center">${v.cant_dias_solicitados}</td>
+                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
                                 <td class="centrar"> 
                                     <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                         <i class="fa-regular fa-pen-to-square"></i>
@@ -44,25 +44,27 @@ function cargarTabla(permisos) {
                                     </a>
                                 </td> 
                             </tr>`
-            contenedorPermisosUsr.innerHTML = resultados;
-        }else{
+             
+            contenedorVacacionesUsr.innerHTML = resultados; 
+        } else {
             resultadosx += ` <tr>
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td>
-                                <td class="text-center">${p.cant_dias_solicitados}</td>
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td> 
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
-                                <td class="text-center">${p.derecho_pago}</td>
+                                <td class="text-center">${(v.id_vacaciones)}</td> 
+                                <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                                <td class="text-center">${v.cant_dias_solicitados}</td>
+                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
                                 
                             </tr>`
-                            contenedorDeligenciados.innerHTML = resultadosx;
-
-        }
+            
+            contenedorDeligenciados.innerHTML = resultadosx;
+            diasDisponibles.value = v.dias_acumulados.toFixed(1);
+        } 
     });
     
 };
+
+
 //Función para Mostrar resultados
 function consultarDatos () {
     fetch(url + empleado)
@@ -74,10 +76,10 @@ function consultarDatos () {
 
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
+    
     fechaInicio.value = ""; 
     fechaFinal.value = ""; 
-    msjEmp.value = ""; 
-    modalPermisosUsr.show();
+    modalVacacionesUsr.show();
     opcion = 'crear';
 });
 
@@ -99,25 +101,23 @@ on(document, 'click', '.btnEditar', e => {
     idForm = fila.children[0].innerHTML;
     const fechaInicioForm = fila.getAttribute('data-fechaInicio');
     const fechaFinalForm = fila.getAttribute('data-fechaFinal');
-    const msjEmpForm = fila.children[4].innerHTML;
 
     fechaInicio.value = fechaInicioForm;
     fechaFinal.value = fechaFinalForm;
-    msjEmp.value = msjEmpForm;
     opcion = 'editar';
-    modalPermisosUsr.show();
+    modalVacacionesUsr.show();
 });
 
 //Borrar. 1 parent node toma solo los botones, el 2 toma toda la fila. Se toma el Id para pasarselo al API con target    
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
-    const id_permiso = fila.firstElementChild.innerHTML;
+    const id_vacaciones = fila.firstElementChild.innerHTML;
     //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
 
     alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
     function(){
 
-        fetch(url+id_permiso, {
+        fetch(url+id_vacaciones, {
             method: 'DELETE'
         })
         .then( res => res.json() )
@@ -147,7 +147,7 @@ on(document, 'click', '.btnBorrar', e => {
 });
 
 //Guardar cambios editados o creados
-formPermisosUsr.addEventListener('submit', (e)=> {
+formVacacionesUsr.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
     const pendiente = 'Pendiente';
@@ -161,12 +161,11 @@ formPermisosUsr.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 id_empleado:empleado,
-                inicio_permiso:fechaInicio.value,
-                final_permiso:fechaFinal.value,
-                msj_empleado:msjEmp.value,
+                inicio_vacacion:fechaInicio.value,
+                final_vacacion:fechaFinal.value,
                 decision_jefatura:pendiente,
                 decision_RRHH:pendiente,
-                derecho_pago:pendiente
+                diasDisponibles:diasDisponibles.value
                 
             })
         })
@@ -199,12 +198,11 @@ formPermisosUsr.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 id_empleado:empleado,
-                inicio_permiso:fechaInicio.value,
-                final_permiso:fechaFinal.value,
-                msj_empleado:msjEmp.value,
+                inicio_vacacion:fechaInicio.value,
+                final_vacacion:fechaFinal.value,
                 decision_jefatura:pendiente,
                 decision_RRHH:pendiente,
-                derecho_pago:pendiente
+                diasDisponibles:diasDisponibles.value
             })
         })
         .then( response => response.json())
@@ -228,6 +226,6 @@ formPermisosUsr.addEventListener('submit', (e)=> {
         .catch((error) => console.error("Error en la solicitud:", error));
     };
     
-    modalPermisosUsr.hide();
+    modalVacacionesUsr.hide();
 
 });

@@ -1,14 +1,13 @@
 'use strict'
 
 //VARIABLES 
-const url = 'http://localhost:8000/api/permisosAdm/';
-const contenedorPermisosAdm = document.getElementById('contenedorPermisosAdm');
+const url = 'http://localhost:8000/api/vacacionesAdm/';
+const contenedorVacacionesAdm = document.getElementById('contenedorVacacionesAdm');
 const contenedorDeligenciasos = document.getElementById('contenedorDeligenciasos');
-const modalPermisosAdm = new bootstrap.Modal(document.getElementById('modalPermisosAdm'))
-const formPermisosAdm = document.getElementById('formPermisosAdm');
+const modalVacacionesAdm = new bootstrap.Modal(document.getElementById('modalVacacionesAdm'))
+const formVacacionesAdm = document.getElementById('formVacacionesAdm');
 const desicionRRHH = document.getElementById('desicionRRHH');
 const msjRRHH = document.getElementById('msjRRHH');
-const derechoPago = document.getElementById('derechoPago');
 
 let resultados = '';
 let resultadosx = '';
@@ -25,60 +24,58 @@ function verificarUsuario () {
         .then(data => {
             console.log(data[0])
             
-            if (data[0].acc_permisos_RRHH!== 1) {
+            if (data[0].acc_vacaciones_RRHH!== 1) {
                 window.location = "404.html";
             }
         })
         .catch(error => alert(error))
 };
 
-
 // Muestra resultados en cuanto la página carga
-function cargarTabla(permisos) {
-    permisos.forEach(p =>{
-        if (p.msj_jefatura == null){
-            p.msj_jefatura = " ";
-        } if (p.msj_RRHH == null){
-            p.msj_RRHH = " ";
-        };
-        if (p.decision_jefatura == 'Aprobado' && p.decision_RRHH == 'Pendiente'){
-            resultados += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
-                                <td class="text-center">${p.derecho_pago}</td>
+function cargarTabla(vacaciones) {
+    
+    vacaciones.forEach(v =>{
+        
+        if (v.msj_jefatura == null || v.msj_RRHH == null ){
+            v.msj_jefatura = " ";
+            v.msj_RRHH = " "
+        }
+        if (v.decision_jefatura == 'Aprobado' && v.decision_RRHH == 'Pendiente'){
+            resultados += ` <tr data-decision_RRHH="${v.decision_RRHH}" data-msj_RRHH"${v.msj_RRHH}">
+                                <td class="text-center">${(v.id_vacaciones)}</td> 
+                                <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
+                                <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td>   
                                 <td class="centrar"> 
                                     <a class="btnDecision btn btn-primary btn-sm" style="background-color:green; border-color: #255387;">
                                     Decisión
                                     </a>
                                 </td> 
                             </tr>`
-            contenedorPermisosAdm.innerHTML = resultados;
-        }else {
-            resultadosx += ` <tr data-idCliente="${p.id_empleado}" data-decision_RRHH="${p.decision_RRHH}" data-msj_RRHH"${p.msj_RRHH}">
-                                <td class="text-center">${(p.id_permiso)}</td> 
-                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>
-                                <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td> 
-                                <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td>
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td>
-                                <td class="text-center">${p.derecho_pago}</td>
-                                 
+            contenedorVacacionesAdm.innerHTML = resultados;
+        } else{
+            resultadosx += ` <tr>
+                            <td class="text-center">${(v.id_vacaciones)}</td> 
+                            <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
+                            <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
+                            <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                            <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
                             </tr>`
             contenedorDeligenciasos.innerHTML = resultadosx;
 
         }
+
     });
     
+   
 };
+
 //Función para Mostrar resultados
 function consultarDatos () {
-
+    console.log('funciones');
     fetch(url)
         .then(response => response.json())
         .then(data => cargarTabla(data))
@@ -104,19 +101,16 @@ on(document, 'click', '.btnDecision', e => {
     idForm = fila.children[0].innerHTML;
     const desicionRRHHForm = fila.getAttribute('data-decision_RRHH');
     const msjRRHHForm = fila.getAttribute('data-msj_RRHH');
-    const derechoPagoForm = fila.children[7].innerHTML;
 
     desicionRRHH.value = desicionRRHHForm;
     msjRRHH.value = msjRRHHForm;
-    derechoPago.value = derechoPagoForm;
 
-
-    modalPermisosAdm.show();
+    modalVacacionesAdm.show();
 });
 
 
 //Guardar cambios editados o creados
-formPermisosAdm.addEventListener('submit', (e)=> {
+formVacacionesAdm.addEventListener('submit', (e)=> {
     e.preventDefault();
 
     fetch(url+idForm, {
@@ -126,8 +120,7 @@ formPermisosAdm.addEventListener('submit', (e)=> {
         },
         body: JSON.stringify({
             decision_RRHH:desicionRRHH.value,
-            msj_RRHH:msjRRHH.value,
-            derecho_pago:derechoPago.value,
+            msj_RRHH:msjRRHH.value
         })
     })
     .then( response => response.json())
@@ -150,6 +143,6 @@ formPermisosAdm.addEventListener('submit', (e)=> {
     })
     .catch((error) => console.error("Error en la solicitud:", error));
     
-    modalPermisosAdm.hide();
+    modalVacacionesAdm.hide();
 
 });
