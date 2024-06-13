@@ -71,7 +71,6 @@ function cargarTabla(permisos) {
                                  
                             </tr>`
             contenedorDeligenciasos.innerHTML = resultadosx;
-
         }
     });
     

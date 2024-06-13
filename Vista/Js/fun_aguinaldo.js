@@ -1,10 +1,10 @@
 'use strict'
 
 //VARIABLES
-const url = 'http://localhost:8000/api/planilla/';
-const contenedorPlanilla = document.querySelector('tbody');
-const modalPlanilla = new bootstrap.Modal(document.getElementById('modalPlanilla'))
-const formPlanillas = document.getElementById('formPlanillas');
+const url = 'http://localhost:8000/api/aguinaldos/';
+const contenedorAguinaldo = document.querySelector('tbody');
+const modalAguinaldo = new bootstrap.Modal(document.getElementById('modalAguinaldo'))
+const formAguinaldo = document.getElementById('formAguinaldo');
 const fechaDesde = document.getElementById('fechaDesde');
 const fechaHasta = document.getElementById('fechaHasta');
 let opcion = '';
@@ -23,7 +23,7 @@ function verificarUsuario () {
         .then(data => {
             console.log(data[0])
             
-            if (data[0].acc_planilla !== 1) {
+            if (data[0].acc_aguinaldo !== 1) {
                 window.location = "404.html";
             }
         })
@@ -31,14 +31,14 @@ function verificarUsuario () {
 };
 
 // Muestra resultados en cuanto la página carga
-function mostrar(planillas) {
-    planillas.forEach(p =>{
-        resultados += ` <tr data-idCliente="${p.id_empleado}">
-                            <td class="text-center">${p.id_salario}</td>
-                            <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
-                            <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td>  
-                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>  
-                            <td class="text-center">${p.monto_cancelado}</td>  
+function mostrar(aguinaldos) {
+    aguinaldos.forEach(a =>{
+        resultados += ` <tr data-idCliente="${a.id_empleado}">
+                            <td class="text-center">${a.id_aguinaldo}</td>
+                            <td class="text-center">${new Date(a.fecha_desde).toLocaleDateString('es-ES')}</td>  
+                            <td class="text-center">${new Date(a.fecha_hasta).toLocaleDateString('es-ES')}</td>  
+                            <td class="text-center">${a.nombre} ${a.apellido1} ${a.apellido2}</td>  
+                            <td class="text-center">${a.monto_pagado}</td>  
                             <td class="centrar"> 
                                 <a class="btnAbonos btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                 <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -46,7 +46,7 @@ function mostrar(planillas) {
                             </td> 
                         </tr>`
     });
-    contenedorPlanilla.innerHTML = resultados;
+    contenedorAguinaldo.innerHTML = resultados;
 };
 
 //Función para Mostrar resultados
@@ -59,18 +59,18 @@ function cargarTabla () {
 };
 
 //Boton de crear abre modal y limpio
-nuevaPlanilla.addEventListener('click', ()=>{
+nuevoAguinaldo.addEventListener('click', ()=>{
     fechaDesde.value = "23/12/2003"; 
     fechaHasta.value = "";  
-    modalPlanilla.show();
+    modalAguinaldo.show();
     opcion = 'crear';
 });
 
-//Borra la planilla de una fecha específica
+//Borra los aguinaldos de una fecha específica
 btnBorrar.addEventListener('click', e => {
     fechaDesde.value = ""; 
     fechaHasta.value = "";  
-    modalPlanilla.show();
+    modalAguinaldo.show();
     opcion = 'borrar';
 });
 
@@ -87,7 +87,7 @@ const on = (element, event, selector, handler) => {
 };
 
 //Guardar cambios editados o creados
-formPlanillas.addEventListener('submit', (e)=> {
+formAguinaldo.addEventListener('submit', (e)=> {
     e.preventDefault();  
     //Insert
     if (opcion == 'crear'){
@@ -106,7 +106,7 @@ formPlanillas.addEventListener('submit', (e)=> {
         .then( data =>{
             console.log(data);
             if (data.error) {
-                
+            
                 alertify
                     .alert('Aviso', data.error, function(){
                         alertify.message('OK');
@@ -166,7 +166,7 @@ formPlanillas.addEventListener('submit', (e)=> {
         });
     };
     
-    modalPlanilla.hide();
+    modalAguinaldo.hide();
 
 });
 

@@ -23,6 +23,7 @@ const planillaAdmApp = require('./Planilla_AdmController');
 const vacacionesUsrApp = require('./Vacaciones_UsrController');
 const vacacionesJefApp = require('./Vacaciones_JefController');
 const vacacionesAdmApp = require('./Vacaciones_AdmController');
+const aguinaldosAdmApp = require('./Aguinaldos_AdmControler');
 
 
 const app = express();
@@ -79,6 +80,9 @@ app.use('/api/planilla', planillaAdmApp);
 app.use('/api/vacacionesUsr', vacacionesUsrApp);
 app.use('/api/vacacionesJef', vacacionesJefApp);
 app.use('/api/vacacionesAdm', vacacionesAdmApp);
+
+// Ruta para cacular aguinaldos
+app.use('/api/aguinaldos', aguinaldosAdmApp);
 
 
 //Errutamiento. Escucha del archhivo

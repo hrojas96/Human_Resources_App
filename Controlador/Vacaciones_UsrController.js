@@ -51,7 +51,7 @@ class Vacaciones_UsrController {
         let diasDisponibles = req.body.diasDisponibles;
 
         try{
-            const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal)
+            const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal);
                 
             if (filas.length <= 0){
                 return res.status(400).json({ error: 'Seleccione días viables para la solicitud de sus vacaciones.' });

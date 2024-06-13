@@ -54,9 +54,9 @@ class PlanillaController {
                             let monto_horas_ordinarias = i.pago_horas_ordinarias;
                             let monto_horas_extras = i.pago_horas_extras;
                             let vacaciones = i.total_dias_solicitados * 8 * i.monto_por_hora;
-                            let salarioBruto = monto_horas_ordinarias + monto_horas_extras + vacaciones;
-                            let deduccion_ccss = salarioBruto * CCSS;
-                            let deduccion_bancopopular = salarioBruto * BP;
+                            let salario_bruto = monto_horas_ordinarias + monto_horas_extras + vacaciones;
+                            let deduccion_ccss = salario_bruto * CCSS;
+                            let deduccion_bancopopular = salario_bruto * BP;
                             let deduccion_renta = 0;
                             let monto = 0;
                             let id_prestamo = i.id_prestamo;
@@ -74,13 +74,14 @@ class PlanillaController {
                                 
                             };
 
-                            let monto_cancelado = salarioBruto - deduccion_ccss - deduccion_bancopopular - deduccion_renta - monto;
+                            let monto_cancelado = salario_bruto - deduccion_ccss - deduccion_bancopopular - deduccion_renta - monto;
                             let data = [{
                                 id_empleado,
                                 fecha_desde,
                                 fecha_hasta,
                                 monto_horas_ordinarias,
                                 monto_horas_extras,
+                                salario_bruto,
                                 deduccion_ccss,
                                 deduccion_bancopopular,
                                 deduccion_renta,

@@ -1,5 +1,4 @@
 const conectDB = require('./conexion');
-const email = require('../Controlador/Servicios/servidorEmail');
 
 class PlanillaModel {
 

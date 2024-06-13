@@ -69,11 +69,12 @@ menuGeneral.innerHTML =`
                     <br>
                     <spam>___________________ </spam>
                     <br><br>
-                    <div id = "planilla"> </div>
+                    <div id = "menuplanilla"> </div>
                     <div id = "menuHorasExtrasAdm"> </div>
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuVacacionesAdm"> </div>
                     <div id = "menuPermisosAdm"> </div>
+                    <div id = "menuAginaldoAdm"> </div>
                     <div id = "menuMantenimientos"> </div>
                     <div id = "menuVacacionesJF"> </div> 
                     <div id = "menuPermisosJF"> </div>  
@@ -87,7 +88,7 @@ function tipoUsuario () {
         .then(data => {
             console.log(data[0])
             if (data[0].acc_planilla == 1) {
-                planilla.innerHTML = 
+                menuplanilla.innerHTML = 
                     `<div>
                         <a href="planilla.html">Planilla</a>
                     </div>`
@@ -114,6 +115,12 @@ function tipoUsuario () {
                 menuPermisosAdm.innerHTML = 
                     `<div>
                         <a id= "ntfPermiso" href="permisosAdm.html">Permisos RRHH</a> 
+                    </div>`
+            };
+            if (data[0].acc_aguinaldo == 1) {
+                menuAginaldoAdm.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="aguinaldoAdm.html">Aguinaldos</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {
