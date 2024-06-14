@@ -74,7 +74,8 @@ menuGeneral.innerHTML =`
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuVacacionesAdm"> </div>
                     <div id = "menuPermisosAdm"> </div>
-                    <div id = "menuAginaldoAdm"> </div>
+                    <div id = "menuAguinaldoAdm"> </div>
+                    <div id = "menuLiquidacionesAdm"> </div>
                     <div id = "menuMantenimientos"> </div>
                     <div id = "menuVacacionesJF"> </div> 
                     <div id = "menuPermisosJF"> </div>  
@@ -118,9 +119,15 @@ function tipoUsuario () {
                     </div>`
             };
             if (data[0].acc_aguinaldo == 1) {
-                menuAginaldoAdm.innerHTML = 
+                menuAguinaldoAdm.innerHTML = 
                     `<div>
                         <a id= "ntfPermiso" href="aguinaldoAdm.html">Aguinaldos</a> 
+                    </div>`
+            };
+            if (data[0].acc_liquidacion == 1) {
+                menuLiquidacionesAdm.innerHTML = 
+                    `<div>
+                        <a id= "ntfPermiso" href="liquidacionAdm.html">Liquidaciones</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {

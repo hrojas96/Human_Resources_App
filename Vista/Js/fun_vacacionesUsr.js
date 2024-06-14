@@ -27,7 +27,7 @@ function cargarTabla(vacaciones) {
             v.msj_jefatura = " ";
             v.msj_RRHH = " "
         }
-        if (v.decision_jefatura == 'Pendiente' || v.decision_RRHH == 'Pendiente'){
+        if (v.decision_jefatura == 'Pendiente' && v.decision_RRHH == 'Pendiente'){
             resultados += ` <tr data-fechaInicio="${v.inicio_vacacion.slice(0, 10)}" data-fechaFinal="${v.final_vacacion.slice(0, 10)}">
                                 <td class="text-center">${(v.id_vacaciones)}</td> 
                                 <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
