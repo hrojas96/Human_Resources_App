@@ -143,7 +143,7 @@ class Vacaciones_UsrController {
 
     eliminarVacacionesUsr(req,res) {
         let id_vacaciones = req.params.id_vacaciones;
-        accesos.eliminarPermEmp(id_vacaciones, (err, resultado) => {
+        accesos.eliminarVacacionesUsr(id_vacaciones, (err, resultado) => {
             if (err) {
                 console.log('Hubo un error', err);
                 //throw err;

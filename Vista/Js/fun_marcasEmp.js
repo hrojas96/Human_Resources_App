@@ -6,6 +6,7 @@ const cedula = JSON.parse(localStorage.getItem("userID")) || false;
 const codigoEntrada = document.getElementById('codigoEntrada');
 const tiempoCodigo = document.getElementById('tiempoCodigo');
 
+
 let opcion = '';
 let resultados = '';
 
@@ -13,6 +14,7 @@ let resultados = '';
 cargarTabla();
 
 function mostrarTabla(marcas) {
+    resultados = '';
     marcas.forEach(m =>{
         resultados += ` <tr>
                             <td class="text-center">${m.id_marca}</td>                     
@@ -125,3 +127,29 @@ btnSalida.addEventListener('click', ()=>{
     })
     .catch((error) => console.error("Error en la solicitud:", error));
     });
+
+btnImprimir.addEventListener('click', ()=>{
+    console.log('Contenedor', contenedorMarcas)
+    console.log('resultados', resultados)
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    //Título del pdf
+    doc.text(20,20, "Reporte de Marcas");
+
+    const filas = [];
+    const encabezado = ["Marca", "Fecha", "Entrada",  "Salida",  "Horas Ordinarias", "Horas Extras" ];
+    document.querySelectorAll("tbody tr").forEach(fila => {
+        const datos = [];
+        fila.querySelectorAll("td").forEach(celda => {
+            datos.push(celda.innerText);
+        });
+        filas.push(datos);
+    });
+    doc.autoTable({
+        startY: 30,
+        head: [encabezado],
+        body:filas,
+    })
+    doc.save('reporte.pdf')
+});

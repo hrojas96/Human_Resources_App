@@ -41,6 +41,7 @@ function cargarTabla(liquidaciones) {
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
                             <td class="text-center">${new Date(p.fecha).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${p.pago_vacaciones}</td> 
+                            <td class="text-center">${p.pago_aguinaldo}</td> 
                             <td class="text-center">${p.pago_preaviso}</td>
                             <td class="text-center">${p.cesantia}</td>
                             <td class="text-center">${p.monto_liquidado}</td>
