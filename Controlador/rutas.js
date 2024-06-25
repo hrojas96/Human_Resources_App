@@ -10,6 +10,8 @@ const horasExtrasAdmApp = require('./HorasExtras_AdmController');
 const puestosApp = require('./PuestosController');
 const rolesApp = require('./RolesController');
 const tipoIncapacidadApp = require('./TipoIncapacidadController');
+const consultarTiposIncapacidadesApp = require('./Incapacidades_TiposController');
+const incapacidadesApp = require('./Incapacidades_AdmController');
 const empleadosApp = require('./EmpleadoController');
 const puestosEmpleadosApp = require('./Emp_PuestosController');
 const rolesEmpleadosApp = require('./Emp_RolesController');
@@ -56,6 +58,8 @@ app.use('/api/roles', rolesApp);
 
 // Ruta para tipo de incapacidad
 app.use('/api/tipoIncapacidad', tipoIncapacidadApp);
+app.use('/api/tiposIncapacidadesRegistradas', consultarTiposIncapacidadesApp);
+app.use('/api/incapacidades', incapacidadesApp);
 
 // Ruta para empleados
 app.use('/api/empleados', empleadosApp);

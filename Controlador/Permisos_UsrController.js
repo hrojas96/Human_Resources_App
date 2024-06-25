@@ -115,11 +115,6 @@ class Permisos_UsrController {
         }
     };
 
-
-    
-
-
-
     eliminarPermisosUsr(req,res) {
         let id_permiso = req.params.id_permiso;
         accesos.eliminarPermisosUsr(id_permiso, (err, resultado) => {

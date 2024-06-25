@@ -32,7 +32,8 @@ class TipoIncapacidadController {
         
         let data = [{
             concepto:req.body.concepto,
-            porcentaje_salarial:req.body.porcentaje_salarial      
+            porcentaje_salarial:req.body.porcentaje_salarial, 
+            dias_subcidio:req.body.dias_subcidio   
         }];
     try {
         accesos.insertarTipoIncapacidad(data, (err, fila) => {
@@ -42,7 +43,7 @@ class TipoIncapacidadController {
                     res.status(400).json({ error: "Datos duplicados" });
                 } else {
                     console.log('Hubo un error');
-                    //throw err;
+                    throw err;
                 };
             } else {
                 //console.log('Datos insertados')
@@ -61,9 +62,10 @@ class TipoIncapacidadController {
         let id_tipo_incapacidad = req.params.id_tipo_incapacidad;
         let concepto = req.body.concepto;
         let porcentaje_salarial = req.body.porcentaje_salarial;
+        let dias_subcidio = req.body.dias_subcidio;
 
         try {
-            accesos.editarTipoIncapacidad(concepto, porcentaje_salarial, id_tipo_incapacidad, (err, fila) => {
+            accesos.editarTipoIncapacidad(concepto, porcentaje_salarial, dias_subcidio, id_tipo_incapacidad, (err, fila) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {

@@ -11,7 +11,7 @@ class PrestamosModel {
 
     // Carga los empleados ya registrados para lista desplegable
     cargarEmpleados(callback) {
-        const query = 'SELECT id_empleado, nombre, apellido1, apellido2  FROM Empleado';
+        const query = 'SELECT id_empleado, nombre, apellido1, apellido2  FROM Empleado WHERE estado != "Liquidado"';
         conectDB.conexion.query(query, callback);
     }
 

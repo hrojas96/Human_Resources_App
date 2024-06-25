@@ -31,7 +31,7 @@
                     <h4 id="titulo">Registro de Tipos de Incapacidades</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalIncapacidad" ></button>
+                            <button id="btnCrear" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalIncapacidad" >Nuevo Registro <i class="fa-solid fa-plus"></i> </button>
                         </div>
                     </div>
                     <div class="" id="contTabla">
@@ -41,6 +41,7 @@
                                     <th style="width: 5%;">N.</th>
                                     <th style="width: 35%;">Incapacidad</th>
                                     <th style="width: 15%;">Porcentaje Salarial</th>
+                                    <th style="width: 15%;">Días de Subcidio</th>
                                     <th style="width: 7%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -61,13 +62,18 @@
                     </div>
                     <div class="modal-body">
                         <form id="formIncapacidad" class="row g-2">
-                            <div class="col-md-6">
+                            <label style="font-size: small;" for="">Tome en cuenta: Si un aspecto tiene diferentes tramos, registre un aspecto por cada tramo.</label>
+                            <div class="col-md-12">
                                 <label for="incapacidad" class="form-label">Tipo de Incapacidad:</label>
                                 <input type="text" class="form-control" id="incapacidad" required>
                             </div>
                             <div class="col-md-4">
                                 <label for="porcentajeSalarial" class="form-label">Porcentaje Salarial:</label>
                                 <input type="number" step="any" class="form-control" id="porcentajeSalarial" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="diasSubcidio" class="form-label">Cantidad Máxima de Días de Subcidio:</label>
+                                <input type="number" step="any" class="form-control" id="diasSubcidio" required>
                             </div>
                     </div>
                     <div class="modal-footer">

@@ -15,10 +15,10 @@ class PuestosModel {
         conectDB.conexion.query(query, data, callback);
     };
 
-    editarPuesto(nombre_puesto, monto_por_hora, id_puesto, callback) {
+    editarPuesto(nombre_puesto, monto_por_hora, salario_base, id_puesto, callback) {
 
-        const query = 'UPDATE Puesto SET nombre_puesto = ?, monto_por_hora = ? WHERE id_puesto = ?';
-        conectDB.conexion.query(query, [nombre_puesto, monto_por_hora, id_puesto], callback);
+        const query = 'UPDATE Puesto SET nombre_puesto = ?, monto_por_hora = ?, salario_base = ? WHERE id_puesto = ?';
+        conectDB.conexion.query(query, [nombre_puesto, monto_por_hora, salario_base, id_puesto], callback);
     };
 
     eliminarPuesto(id_puesto, callback) {

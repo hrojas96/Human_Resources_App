@@ -32,7 +32,8 @@ class PuestosController {
         
         let data = [{
             nombre_puesto:req.body.nombre_puesto,
-            monto_por_hora:req.body.monto_por_hora      
+            monto_por_hora:req.body.monto_por_hora,   
+            salario_base:req.body.salario_base   
         }];
         try {
             accesos.insertarPuesto(data, (err, fila) => {
@@ -61,9 +62,10 @@ class PuestosController {
         let id_puesto = req.params.id_puesto;
         let nombre_puesto = req.body.nombre_puesto;
         let monto_por_hora = req.body.monto_por_hora;
+        let salario_base = req.body.salario_base;
 
         try {
-            accesos.editarPuesto(nombre_puesto, monto_por_hora, id_puesto, (err, fila) => {
+            accesos.editarPuesto(nombre_puesto, monto_por_hora, salario_base, id_puesto, (err, fila) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {

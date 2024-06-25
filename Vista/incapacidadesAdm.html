@@ -28,10 +28,10 @@
         <section>
             <div id="" class="container">
                 <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Registro de Puestos</h4>
+                    <h4 id="titulo">Registro de Incapacidades</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPuestos" > Nuevo Puesto <i class="fa-solid fa-plus"></i></button>
+                            <button id="btnCrear" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalIncapacidad" >Nuevo Registro <i class="fa-solid fa-plus"></i> </button>
                         </div>
                     </div>
                     <div class="" id="contTabla">
@@ -39,9 +39,11 @@
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 5%;">N.</th>
-                                    <th style="width: 35%;">Puesto</th>
-                                    <th style="width: 15%;">Pago por Hora</th>
-                                    <th style="width: 15%;">Salario Base (Ley 73337)</th>
+                                    <th style="width: 15%;">Empleado</th>
+                                    <th style="width: 35%;">Incapacidad</th>
+                                    <th style="width: 15%;">Ficha Inicio:</th>
+                                    <th style="width: 15%;">Ficha Fin:</th>
+                                    <th style="width: 15%;">Monto Subcidio Diario</th>
                                     <th style="width: 7%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -54,25 +56,34 @@
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPuestos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalIncapacidad" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Puesto</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Registro</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formPuestos" class="row g-2">
-                            <div class="col-md-4">
-                                <label for="puesto" class="form-label">Puesto:</label>
-                                <input type="text" class="form-control" id="puesto" required>
+                        <form id="formIncapacidad" class="row g-2">
+                            <div class="col-md-12">
+                                <label for="empleado" class="form-label">Empleado:</label>
+                                <select class="form-select" id="empleado" required>
+                                    <option selected>Seleccione</option>
+                                </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="pagoHora" class="form-label">Pago por Hora:</label>
-                                <input type="number" step="any" class="form-control" id="pagoHora" required>
+                            <div class="col-md-12">
+                                <label for="tipoIncapacidad" class="form-label">Tipo de Incapacidad:</label>
+                                <select class="form-select" id="tipoIncapacidad" required>
+                                    <option selected>Seleccione</option>
+                                </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="salarioBase" class="form-label">Salario Base:</label>
-                                <input type="number" step="any" class="form-control" id="salarioBase" required>
+                            <label style="font-size:medium" for="">Cantidad máxima por ley: <label for="">??</label> </label>
+                            <div class="col-md-6">
+                                <label for="fechaDesde" class="form-label">Desde:</label><br>
+                                <input type="date" class="form-control" id="fechaDesde" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaHasta" class="form-label">Hasta:</label><br>
+                                <input type="date" class="form-control" id="fechaHasta" required>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -93,6 +104,6 @@
     <script src="https://alertifyjs.com/build/alertify.js"></script>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
     <script src="./Js/header.js"></script>
-    <script src="./Js/fun_puestos.js"></script>
+    <script src="./Js/fun_incapacidadAdm.js"></script>
 </body>
 </html>

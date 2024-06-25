@@ -7,6 +7,7 @@ const modalIncapacidad = new bootstrap.Modal(document.getElementById('modalIncap
 const formIncapacidad = document.getElementById('formIncapacidad');
 const incapacidad = document.getElementById('incapacidad');
 const porcentajeSalarial = document.getElementById('porcentajeSalarial');
+const diasSubcidio = document.getElementById('diasSubcidio');
 let opcion = '';
 let resultados = '';
 
@@ -28,12 +29,12 @@ function verificarUsuario () {
 };
 
 
-
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
     console.log('llegué a crear 2');
     incapacidad.value = ""; 
     porcentajeSalarial.value = ""; 
+    diasSubcidio.value = ""; 
     modalIncapacidad.show();
     opcion = 'crear';
     console.log(opcion);
@@ -47,6 +48,7 @@ function mostrar(incapacidades) {
                             <td class="text-center">${i.id_tipo_incapacidad}</td>
                             <td class="text-center">${i.concepto}</td>
                             <td class="text-center">${i.porcentaje_salarial}</td>
+                            <td class="text-center">${i.dias_subcidio}</td>
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
@@ -70,7 +72,6 @@ function cargar () {
 };
 
 //Configuración de botones
-// on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
 const on = (element, event, selector, handler) => { 
     //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
     element.addEventListener(event, e => { 
@@ -89,8 +90,10 @@ on(document, 'click', '.btnEditar', e => {
     idForm = fila.children[0].innerHTML;
     const incapacidadForm = fila.children[1].innerHTML;
     const porcentajeSalarialForm = fila.children[2].innerHTML;
+    const diasSubcidioForm = fila.children[3].innerHTML;
     incapacidad.value = incapacidadForm;
     porcentajeSalarial.value = porcentajeSalarialForm;
+    diasSubcidio.value = diasSubcidioForm;
     opcion = 'editar';
     modalIncapacidad.show();
 });
@@ -132,7 +135,8 @@ formIncapacidad.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 concepto:incapacidad.value,
-                porcentaje_salarial:porcentajeSalarial.value
+                porcentaje_salarial:porcentajeSalarial.value,
+                dias_subcidio:diasSubcidio.value
             })
         })
         .then( response => response.json())
@@ -160,7 +164,8 @@ formIncapacidad.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 concepto:incapacidad.value,
-                porcentaje_salarial:porcentajeSalarial.value
+                porcentaje_salarial:porcentajeSalarial.value,
+                dias_subcidio:diasSubcidio.value
             })
         })
         .then( response => response.json())

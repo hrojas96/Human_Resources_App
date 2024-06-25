@@ -15,10 +15,10 @@ class TipoIncapacidadModel {
         conectDB.conexion.query(query, data, callback);
     };
 
-    editarTipoIncapacidad(concepto, porcentaje_salarial, id_tipo_incapacidad, callback) {
+    editarTipoIncapacidad(concepto, porcentaje_salarial, dias_subcidio, id_tipo_incapacidad, callback) {
 
-        const query = 'UPDATE Tipo_Incapacidad SET concepto = ?, porcentaje_salarial = ? WHERE id_tipo_incapacidad = ?';
-        conectDB.conexion.query(query, [concepto, porcentaje_salarial, id_tipo_incapacidad], callback);
+        const query = 'UPDATE Tipo_Incapacidad SET concepto = ?, porcentaje_salarial = ?, dias_subcidio = ? WHERE id_tipo_incapacidad = ?';
+        conectDB.conexion.query(query, [concepto, porcentaje_salarial, dias_subcidio, id_tipo_incapacidad], callback);
     };
 
     eliminarTipoIncapacidad(id_tipo_incapacidad, callback) {

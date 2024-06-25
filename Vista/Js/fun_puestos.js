@@ -6,6 +6,7 @@ const contenedorPuestos = document.querySelector('tbody');
 const modalPuestos = new bootstrap.Modal(document.getElementById('modalPuestos'))
 const formPuestos = document.getElementById('formPuestos');
 const puesto = document.getElementById('puesto');
+const pagoHora = document.getElementById('pagoHora');
 const salarioBase = document.getElementById('salarioBase');
 let opcion = '';
 let resultados = '';
@@ -33,6 +34,7 @@ function verificarUsuario () {
 btnCrear.addEventListener('click', ()=>{
     console.log('llegué a crear 2');
     puesto.value = ""; 
+    pagoHora.value = ""; 
     salarioBase.value = ""; 
     modalPuestos.show();
     opcion = 'crear';
@@ -43,10 +45,11 @@ btnCrear.addEventListener('click', ()=>{
 //Función para Mostrar resultados
 function mostrar(puestos) {
     puestos.forEach(p =>{
-        resultados += ` <tr>
+        resultados += ` <tr data-montoHora="${p.monto_por_hora}" data-salarioBase="${p.salario_base}">
                             <td class="text-center">${p.id_puesto}</td>
                             <td class="text-center">${p.nombre_puesto}</td> 
-                            <td class="text-end">${colon.format(p.monto_por_hora)}</td>   
+                            <td class="text-end">${colon.format(p.monto_por_hora)}</td> 
+                            <td class="text-end">${colon.format(p.salario_base)}</td>  
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
@@ -88,9 +91,11 @@ on(document, 'click', '.btnEditar', e => {
     const fila = e.target.closest('tr');
     idForm = fila.children[0].innerHTML;
     const puestoForm = fila.children[1].innerHTML;
-    const salarioBaseForm = fila.children[2].innerHTML;
+    const pagoHoraForm = fila.getAttribute('data-montoHora');
+    const salarioBaseForm = fila.getAttribute('data-salarioBase');
     
     puesto.value = puestoForm;
+    pagoHora.value = pagoHoraForm;
     salarioBase.value = salarioBaseForm;
     
     opcion = 'editar';
@@ -134,7 +139,8 @@ formPuestos.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 nombre_puesto:puesto.value,
-                monto_por_hora:salarioBase.value
+                monto_por_hora:pagoHora.value,
+                salario_base:salarioBase.value
             })
         })
         .then( response => response.json())
@@ -162,7 +168,8 @@ formPuestos.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 nombre_puesto:puesto.value,
-                monto_por_hora:salarioBase.value
+                monto_por_hora:pagoHora.value,
+                salario_base:salarioBase.value
             })
         })
         .then( response => response.json())
