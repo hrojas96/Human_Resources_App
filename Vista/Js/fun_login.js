@@ -6,7 +6,7 @@ const loginForm = document.getElementById("loginForm");
 const numEmpleado = document.getElementById('numEmpleado');
 const contrasena = document.getElementById('contrasena');
 
-localStorage.setItem("userID", JSON.stringify('207510918'));
+
 // Agrega un evento submit al formulario de inicio de sesión
 loginForm.addEventListener("submit", function (e) {
     console.log('llego 1');

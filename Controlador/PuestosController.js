@@ -35,6 +35,8 @@ class PuestosController {
             monto_por_hora:req.body.monto_por_hora,   
             salario_base:req.body.salario_base   
         }];
+        
+
         try {
             accesos.insertarPuesto(data, (err, fila) => {
                 

@@ -12,24 +12,53 @@ class PlanillaModel {
 
 
 
-    // Función para obtener todos los puestos
+    /*/ Función para obtener todos los puestos
     consultarDatosPlanilla(fecha1, fecha2, callback) {
         const query = 'CALL SP_CalcularPlanilla(?,?)';
         conectDB.conexion.query(query,[fecha1, fecha2], callback);
+    };*/
+
+    consultarDatosPlanilla(fecha1, fecha2) {
+        const query = 'CALL SP_CalcularPlanilla(?,?)';
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query, [fecha1, fecha2], (err, results) => {
+                if (err){
+                    reject(err);
+                }
+                else { 
+                    const [filas] = results;
+                    resolve(filas);
+                }
+            });
+        });
     };
 
-    insertarPlanilla(data, callback) {
+    insertarPlanilla(data) {
+        const query = 'INSERT INTO Planilla SET ?';
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query, data, (err, results) => {
+                if (err){
+                    reject(err);
+                }
+                else { resolve(results);
+                }
+            });
+        });
+    };
+
+    /*insertarPlanilla(data, callback) {
 
         const query = 'INSERT INTO Planilla SET ?';
         conectDB.conexion.query(query, data, callback);
 
-    };
+    };*/
 
     eliminarPlanilla(fecha_desde, fecha_hasta, callback) {
         
         const query = 'DELETE FROM Planilla WHERE fecha_desde AND fecha_hasta BETWEEN ? AND ?';
         conectDB.conexion.query(query, [fecha_desde, fecha_hasta], callback);
     };
+
 
 };
 

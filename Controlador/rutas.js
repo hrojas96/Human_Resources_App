@@ -16,12 +16,13 @@ const empleadosApp = require('./EmpleadoController');
 const puestosEmpleadosApp = require('./Emp_PuestosController');
 const rolesEmpleadosApp = require('./Emp_RolesController');
 const prestamosAdmApp = require('./Prestamos_AdmController');
-const listaEmpleadosApp = require('./Prest_EmpleadosController');
-const abonosApp = require('./Prest_AbonoController');
+const listaEmpleadosApp = require('./Cargar_EmpleadosController');
+const abonosApp = require('./Prestamo_AbonoController');
 const permisosUsrApp = require('./Permisos_UsrController');
 const permisosJefApp = require('./Permisos_JefController');
 const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
+const rentaAdmApp = require('./Renta_AdmController');
 const vacacionesUsrApp = require('./Vacaciones_UsrController');
 const vacacionesJefApp = require('./Vacaciones_JefController');
 const vacacionesAdmApp = require('./Vacaciones_AdmController');
@@ -80,6 +81,7 @@ app.use('/api/permisosAdm', permisosAdmApp);
 
 // Ruta para cacular planilla
 app.use('/api/planilla', planillaAdmApp);
+app.use('/api/renta', rentaAdmApp);
 
 // Ruta para vacaciones
 app.use('/api/vacacionesUsr', vacacionesUsrApp);

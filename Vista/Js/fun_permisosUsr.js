@@ -114,7 +114,7 @@ on(document, 'click', '.btnBorrar', e => {
     const id_permiso = fila.firstElementChild.innerHTML;
     //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
 
-    alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
+    alertify.confirm('Alerta', '¿Seguro que desea borrar este registro?',
     function(){
 
         fetch(url+id_permiso, {

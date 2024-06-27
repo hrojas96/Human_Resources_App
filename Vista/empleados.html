@@ -54,6 +54,8 @@
                                     <th>Estado</th>
                                     <th>Correo</th>
                                     <th>Teléfono</th>
+                                    <th>Estado Civil</th>
+                                    <th>Hijos Dependientes</th>
                                     <th>Provincia</th>
                                     <th>Cantón</th>
                                     <th>Distrito</th>
@@ -141,6 +143,32 @@
                             <div class="col-md-6">
                                 <label for="telefono" class="form-label">Teléfono:</label>
                                 <input type="number" class="form-control" id="telefono" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estadoCivil" class="form-label">Estado Civil:</label>
+                                <select class="form-select" id="estadoCivil" required>
+                                    <option selected>Seleccione</option>
+                                    <option>Soltero/a</option>
+                                    <option>Casado/a</option>
+                                    <option>Viudo/a</option>
+                                    <option>Unión Libre </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cantHijjos" class="form-label">Hijos Menores Dependientes:</label>
+                                <select class="form-select" id="cantHijjos" required>
+                                    <option selected>Seleccione</option>
+                                    <option>0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="provincia" class="form-label">Provincia:</label>

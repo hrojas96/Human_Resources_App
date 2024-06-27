@@ -30,17 +30,18 @@ class EmpleadoModel {
                 callback(err, null);
             } else {
                 callback(null, result);
-                var idColaborador = result.insertId;
-                //console.log ('id a enviar ', idColaborador);
+                console.log("Resultado: ",data)
+                var idColaborador = data[0].id_empleado;
+                console.log ('id a enviar ', idColaborador);
                 this.generarEmailCol(idColaborador, pass);
             };
         });
     };
 
-    editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado, callback) {
+    editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono,estado_civil, hijos_dependientes, provincia, canton, distrito, direccion, id_empleado, callback) {
 
-        const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_rol = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
-        conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, provincia, canton, distrito, direccion, id_empleado], callback);
+        const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_rol = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, estado_civil = ?, hijos_dependientes = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
+        conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, provincia, canton, distrito, direccion, id_empleado], callback);
     };
 
     eliminarEmpleado(id_empleado, callback) {
@@ -50,7 +51,7 @@ class EmpleadoModel {
     };
 
     generarEmailCol(idColaborador, pass){
-        //console.log('llega a la funcion de email con el paquete:' + idColaborador);
+        console.log('llega a la funcion de email con el paquete:' + idColaborador);
         const query = 'SELECT nombre, correo FROM Empleado WHERE id_empleado = ?';
         conectDB.conexion.query(query,[idColaborador], (error,filas)=>{
             if(error){

@@ -2,6 +2,7 @@
 
 //VARIABLES
 const url = 'http://localhost:8000/api/planilla/';
+const urlrenta = 'http://localhost:8000/api/renta/';
 const contenedorPlanilla = document.querySelector('tbody');
 const modalPlanilla = new bootstrap.Modal(document.getElementById('modalPlanilla'))
 const formPlanillas = document.getElementById('formPlanillas');
@@ -60,10 +61,18 @@ function cargarTabla () {
 
 //Boton de crear abre modal y limpio
 nuevaPlanilla.addEventListener('click', ()=>{
-    fechaDesde.value = "23/12/2003"; 
+    fechaDesde.value = ""; 
     fechaHasta.value = "";  
     modalPlanilla.show();
     opcion = 'crear';
+});
+
+//Boton de calcular renta abre modal y limpio
+btnRenta.addEventListener('click', ()=>{
+    fechaDesde.value = ""; 
+    fechaHasta.value = "";  
+    modalPlanilla.show();
+    opcion = 'renta';
 });
 
 //Borra la planilla de una fecha específica
@@ -122,6 +131,41 @@ formPlanillas.addEventListener('submit', (e)=> {
         })
         .catch((error) => console.error("Error en la solicitud:", error));
     };
+
+    if (opcion == 'renta'){
+        fetch(urlrenta, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                fecha_desde:fechaDesde.value,
+                fecha_hasta:fechaHasta.value
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
+    };
+
+
 
     //Borrar
     if(opcion == 'borrar'){

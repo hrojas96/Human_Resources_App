@@ -154,6 +154,7 @@ formPuestos.addEventListener('submit', (e)=> {
                     });
                 //alert(data.error)
             } else {
+                
                 location.reload();
             }
         })
@@ -192,6 +193,3 @@ formPuestos.addEventListener('submit', (e)=> {
     modalPuestos.hide();
 
 });
-
-
-

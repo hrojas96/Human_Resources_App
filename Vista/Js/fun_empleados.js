@@ -17,6 +17,8 @@ const fechaI = document.getElementById('fechaI');
 const estado = document.getElementById('estado');
 const correo = document.getElementById('correo');
 const telefono = document.getElementById('telefono');
+const estadoCivil = document.getElementById('estadoCivil');
+const cantHijjos = document.getElementById('cantHijjos');
 const provincia = document.getElementById('provincia');
 const canton = document.getElementById('canton');
 const distrito = document.getElementById('distrito');
@@ -68,6 +70,8 @@ function mostrar(empleados) {
                             <td class="text-center">${e.estado}</td> 
                             <td class="text-center">${e.correo}</td> 
                             <td class="text-center">${e.telefono}</td> 
+                            <td class="text-center">${e.estado_civil}</td>
+                            <td class="text-center">${e.hijos_dependientes}</td> 
                             <td class="text-center">${e.provincia}</td> 
                             <td class="text-center">${e.canton}</td> 
                             <td class="text-center">${e.distrito}</td> 
@@ -107,6 +111,8 @@ btnCrear.addEventListener('click', ()=>{
     estado.value = ""; 
     correo.value = ""; 
     telefono.value = ""; 
+    estadoCivil.value = ""; 
+    cantHijjos.value = ""; 
     provincia.value = ""; 
     canton.value = ""; 
     distrito.value = ""; 
@@ -271,10 +277,12 @@ on(document, 'click', '.btnEditar', e => {
     const estadoForm = fila.children[9].innerHTML;
     const correoForm = fila.children[10].innerHTML;
     const telefonoForm = fila.children[11].innerHTML;
-    const provinciaForm = fila.children[12].innerHTML;
-    const cantonForm = fila.children[13].innerHTML;
-    const distritoForm = fila.children[14].innerHTML;
-    const direccionForm = fila.children[15].innerHTML;
+    const estadoCivilForm = fila.children[12].innerHTML;
+    const cantHijjosForm = fila.children[13].innerHTML;
+    const provinciaForm = fila.children[14].innerHTML;
+    const cantonForm = fila.children[15].innerHTML;
+    const distritoForm = fila.children[16].innerHTML;
+    const direccionForm = fila.children[17].innerHTML;
 
     cedula.value = cedulaForm;
     nombre.value = nombreForm;
@@ -288,6 +296,8 @@ on(document, 'click', '.btnEditar', e => {
     estado.value = estadoForm;
     correo.value = correoForm;
     telefono.value = telefonoForm;
+    estadoCivil.value = estadoCivilForm; 
+    cantHijjos.value = cantHijjosForm;
     provincia.value = provinciaForm;
     canton.value = cantonForm;
     distrito.value = distritoForm;
@@ -302,14 +312,31 @@ on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
     const id_empleado = fila.firstElementChild.innerHTML;
     
-    alertify.confirm('Alerta', '&#191;¿Seguro que desea borrar este registro?',
+    alertify.confirm('Alerta', '¿Seguro que desea borrar este registro?',
     function(){
 
         fetch(url+id_empleado, {
             method: 'DELETE'
         })
         .then( res => res.json() )
-        .then( ()=> location.reload())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                //alert(data.error)
+            } else {
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
         
     },
     function(){
@@ -319,8 +346,7 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formEmpleados.addEventListener('submit', (e)=> {
-    //let fechaFormateada = new Date(fechaI.value).toLocaleDateString('en-US');
-    //console.log(fechaFormateada);
+    
     //Previene que se recargue la página
     e.preventDefault();  
 
@@ -344,6 +370,8 @@ formEmpleados.addEventListener('submit', (e)=> {
                 estado:estado.value,
                 correo:correo.value,
                 telefono:telefono.value,
+                estado_civil:estadoCivil.value, 
+                hijos_dependientes:cantHijjos.value,
                 provincia:provincia.value,
                 canton:canton.value,
                 distrito:distrito.value,
@@ -356,12 +384,17 @@ formEmpleados.addEventListener('submit', (e)=> {
             console.log(data);
             if (data.error) {
                 
-                alertify.alert(data.error, function(){
+                alertify
+                    .alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
-                
+                //alert(data.error)
             } else {
-                location.reload();
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
@@ -385,6 +418,8 @@ formEmpleados.addEventListener('submit', (e)=> {
                 estado:estado.value,
                 correo:correo.value,
                 telefono:telefono.value,
+                estado_civil:estadoCivil.value, 
+                hijos_dependientes:cantHijjos.value,
                 provincia:provincia.value,
                 canton:canton.value,
                 distrito:distrito.value,
@@ -395,13 +430,17 @@ formEmpleados.addEventListener('submit', (e)=> {
         .then( data =>{
             if (data.error) {
                 
-                alertify.alert(data.error, function(){
+                alertify
+                    .alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
-                
+                //alert(data.error)
             } else {
-                //console.log('algo pasó')
-                location.reload();
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
