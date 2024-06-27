@@ -54,17 +54,19 @@ class RentaModel {
     };*/
 
     registrarFactRenta(id_rentaxc, fecha_fact, monto_fact, saldo_renta) {
-        const query = 'INSERT INTO FacturacionRenta (id_rentaxc, fecha_fact, monto_fact) VALUES ( ?, ?, ?)'; 
-        conectDB.conexion.query(query, [id_rentaxc, fecha_fact, monto_fact], (err, result) => {
-            if (err) {
-                console.error('Error en la base de datos:', err);
-                return reject(err);
-            } else {
-                callback(null, result);
-                this.editaRentaxCobrar(id_rentaxc, saldo_renta)
-                    .then(resolve)
-                    .catch(reject);
-            };
+        return new Promise((resolve, reject) => {
+            const query = 'INSERT INTO FacturacionRenta (id_rentaxc, fecha_fact, monto_fact) VALUES ( ?, ?, ?)'; 
+            conectDB.conexion.query(query, [id_rentaxc, fecha_fact, monto_fact], (err, result) => {
+                if (err) {
+                    console.error('Error en la base de datos:', err);
+                    return reject(err);
+                } else {
+                
+                    this.editaRentaxCobrar(id_rentaxc, saldo_renta)
+                        .then(resolve)
+                        .catch(reject);
+                };
+            });
         });
     };
 

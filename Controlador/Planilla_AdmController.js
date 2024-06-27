@@ -45,18 +45,22 @@ class PlanillaController {
             }
 
             console.log(filas);
-
-            let CCSS = 0.0967;
-            let BP = 0.01;
+            //let CCSS = 0.0967;
+            //let BP = 0.01;
             
-            for (const i of filas[0]) {
+
+            //console.log(CCSS, BP)
+            
+            for (const i of filas) {
+            //filas[0].forEach((i) => {
                 let id_empleado = i.id_empleado;
                 let monto_horas_ordinarias = i.pago_horas_ordinarias;
                 let monto_horas_extras = i.pago_horas_extras;
                 let vacaciones = i.total_dias_solicitados * 8 * i.monto_por_hora;
                 let salario_bruto = monto_horas_ordinarias + monto_horas_extras + vacaciones;
-                let deduccion_ccss = salario_bruto * CCSS;
-                let deduccion_bancopopular = salario_bruto * BP;
+                
+                let deduccion_ccss = salario_bruto * i.rebajo_ccss;
+                let deduccion_bancopopular = salario_bruto * i.rebajo_bancoPopular;
                 let monto = 0;
                 let id_prestamo = i.id_prestamo;
                 let saldo = i.saldo;
