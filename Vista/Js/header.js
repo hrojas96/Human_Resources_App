@@ -145,6 +145,7 @@ function tipoUsuario () {
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end content" id="drop">
                             <li><a href="empleados.html">Empleados</a></li>
+                            <li><a href="deduccionesLegales.html">Deducciones Legales</a></li>
                             <li><a class="" href="puestos.html">Puestos</a></li>
                             <li><a class="" href="roles.html">Roles</a></li>
                             <li><a class="" href="tipoIncapacidad.html">Tipo de Incapacidad</a></li>

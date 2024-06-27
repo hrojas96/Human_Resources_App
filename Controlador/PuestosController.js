@@ -14,7 +14,7 @@ class PuestosController {
         this.router.put('/:id_puesto', this.editarPuesto);
         this.router.delete('/:id_puesto', this.eliminarPuesto);
     };
-    //Consultar empleados
+    //Consultar puestos
     consultarPuestos(req, res) {
         
         accesos.consultarPuestos((error, filas) => {

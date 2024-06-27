@@ -2,14 +2,11 @@ const conectDB = require('./conexion');
 
 class RentaModel {
 
-    /*consultarPlanilla(callback) {
-        const query = `SELECT Planilla.id_salario, Planilla.fecha_desde, Planilla.fecha_hasta, Planilla.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Planilla.monto_cancelado 
-                        FROM Planilla 
-                        LEFT JOIN Empleado ON Planilla.id_empleado = Empleado.id_empleado
-                        ORDER BY Planilla.fecha_desde DESC;`;
-        conectDB.conexion.query(query,callback);
-    };*/
+    consultarImpuestoRenta(callback) {
 
+        const query = 'SELECT * FROM Impuesto_Renta';
+        conectDB.conexion.query(query, callback);
+    };
 
     // Función para obtener todos los datos para el cálculo de la renta
     consultarDatosRenta(fecha1, fecha2, callback) {
@@ -33,25 +30,6 @@ class RentaModel {
         conectDB.conexion.query(query, data, callback);
 
     };
-
-   /* registrarFactRenta(id_rentaxc, fecha_fact, monto_fact, saldo_renta, callback) {
-        const query = 'INSERT INTO FacturacionRenta (id_rentaxc, fecha_fact, monto_fact) VALUES ( ?, ?, ?)'; 
-        conectDB.conexion.query(query, [id_rentaxc, fecha_fact, monto_fact], (err, result) => {
-            if (err) {
-                console.error('Error en la base de datos:', err);
-                callback(err, null);
-            } else {
-                callback(null, result);
-                this.editaRentaxCobrar(id_rentaxc, saldo_renta);
-                
-            };
-        });
-    };
-
-    editaRentaxCobrar(id_rentaxc, saldo_renta, callback) {
-        const query = 'UPDATE RentaxCobrar SET  saldo_renta = ? WHERE id_rentaxc = ?';
-        conectDB.conexion.query(query, [saldo_renta, id_rentaxc], callback);
-    };*/
 
     registrarFactRenta(id_rentaxc, fecha_fact, monto_fact, saldo_renta) {
         return new Promise((resolve, reject) => {
@@ -82,24 +60,37 @@ class RentaModel {
                 }
             });
         });
-    }
+    } 
 
-    
+    editarImpuestoRenta(tramo1,tramo2, porcentaje_salarial, id_impuesto, callback) {
 
-
-
-
-
-    /*eliminarPlanilla(fecha_desde, fecha_hasta, callback) {
-        
-        const query = 'DELETE FROM Planilla WHERE fecha_desde AND fecha_hasta BETWEEN ? AND ?';
-        conectDB.conexion.query(query, [fecha_desde, fecha_hasta], callback);
-    };*/
-
-
-     
+        const query = 'UPDATE Impuesto_Renta SET tramo1 = ?, tramo2 = ?, porcentaje_salarial = ? WHERE id_impuesto = ?';
+        conectDB.conexion.query(query, [tramo1,tramo2, porcentaje_salarial, id_impuesto], callback);
+    };
 
 };
 
 
 module.exports = new RentaModel();
+
+
+
+
+/* registrarFactRenta(id_rentaxc, fecha_fact, monto_fact, saldo_renta, callback) {
+        const query = 'INSERT INTO FacturacionRenta (id_rentaxc, fecha_fact, monto_fact) VALUES ( ?, ?, ?)'; 
+        conectDB.conexion.query(query, [id_rentaxc, fecha_fact, monto_fact], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                callback(null, result);
+                this.editaRentaxCobrar(id_rentaxc, saldo_renta);
+                
+            };
+        });
+    };
+
+    editaRentaxCobrar(id_rentaxc, saldo_renta, callback) {
+        const query = 'UPDATE RentaxCobrar SET  saldo_renta = ? WHERE id_rentaxc = ?';
+        conectDB.conexion.query(query, [saldo_renta, id_rentaxc], callback);
+    };*/
