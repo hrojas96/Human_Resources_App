@@ -71,6 +71,7 @@ menuGeneral.innerHTML =`
                     <br><br>
                     <div id = "menuplanilla"> </div>
                     <div id = "menuHorasExtrasAdm"> </div>
+                    <div id = "menuBonos"> </div>
                     <div id = "menuPrestamos"> </div>
                     <div id = "menuVacacionesAdm"> </div>
                     <div id = "menuPermisosAdm"> </div>
@@ -93,6 +94,9 @@ function tipoUsuario () {
                 menuplanilla.innerHTML = 
                     `<div>
                         <a href="planilla.html">Planilla</a>
+                    </div>
+                    <div>
+                        <a href="bonos.html">Bonos</a>
                     </div>`
             };
             if (data[0].acc_horasExtras_RRHH == 1) {

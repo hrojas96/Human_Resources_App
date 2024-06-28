@@ -64,7 +64,7 @@ function cargar () {
     fetch(url)
         .then(response => response.json())
         .then(data => mostrar(data) )
-        .catch(error => alert(error))
+        .catch(error => console.log(error))
 };
 
 //Configuración de botones

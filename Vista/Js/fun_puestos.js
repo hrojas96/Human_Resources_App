@@ -73,9 +73,7 @@ function cargar () {
 };
 
 //Configuración de botones
-// on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
 const on = (element, event, selector, handler) => { 
-    //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
     element.addEventListener(event, e => { 
 
         if(e.target.closest(selector)){

@@ -23,6 +23,7 @@ const permisosUsrApp = require('./Permisos_UsrController');
 const permisosJefApp = require('./Permisos_JefController');
 const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
+const bonosApp = require('./BonosController');
 const cargasSocialesApp = require('./CargasSocialesController');
 const rentaAdmApp = require('./Renta_AdmController');
 const creditosFiscalesApp = require('./CreditosFisclesController');
@@ -84,6 +85,7 @@ app.use('/api/permisosAdm', permisosAdmApp);
 
 // Ruta para cacular planilla
 app.use('/api/planilla', planillaAdmApp);
+app.use('/api/bonos', bonosApp);
 app.use('/api/cargasSociales', cargasSocialesApp);
 app.use('/api/renta', rentaAdmApp);
 app.use('/api/creditoFiscal', creditosFiscalesApp);

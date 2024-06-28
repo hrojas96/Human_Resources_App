@@ -10,14 +10,6 @@ class PlanillaModel {
         conectDB.conexion.query(query,callback);
     };
 
-
-
-    /*/ Función para obtener todos los puestos
-    consultarDatosPlanilla(fecha1, fecha2, callback) {
-        const query = 'CALL SP_CalcularPlanilla(?,?)';
-        conectDB.conexion.query(query,[fecha1, fecha2], callback);
-    };*/
-
     consultarDatosPlanilla(fecha1, fecha2) {
         const query = 'CALL SP_CalcularPlanilla(?,?)';
         return new Promise((resolve, reject) => {
@@ -45,13 +37,6 @@ class PlanillaModel {
             });
         });
     };
-
-    /*insertarPlanilla(data, callback) {
-
-        const query = 'INSERT INTO Planilla SET ?';
-        conectDB.conexion.query(query, data, callback);
-
-    };*/
 
     eliminarPlanilla(fecha_desde, fecha_hasta, callback) {
         
