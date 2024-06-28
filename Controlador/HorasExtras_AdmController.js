@@ -42,8 +42,10 @@ class HorasExtras_AdmController {
                     let estado = "";
                     if (decision_RRHH == "Aprobado"){
                         estado = "Aprobado"
-                    }else{
+                    } else if (decision_RRHH == "Denegado"){
                         estado = "Denegado"
+                    } else{
+                        estado = "Pendiente"
                     }
                     
                     accesos.editarHorasExtrasUsr(estado, id_marca, (err, resultado) => {

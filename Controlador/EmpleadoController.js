@@ -77,7 +77,7 @@ class EmpleadoController {
                 } else {
                     console.log(respuesta)
                     // Enviamos respuesta de BD
-                    res.json({message:'el registro del empleado se ha realizado correctamente'});
+                    res.json({message:'El registro del empleado se ha realizado correctamente'});
                 }
             });
         } catch (error) {

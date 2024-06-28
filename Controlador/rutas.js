@@ -15,6 +15,7 @@ const incapacidadesApp = require('./Incapacidades_AdmController');
 const empleadosApp = require('./EmpleadoController');
 const puestosEmpleadosApp = require('./Emp_PuestosController');
 const rolesEmpleadosApp = require('./Emp_RolesController');
+const feriadosApp = require('./FeriadosController');
 const prestamosAdmApp = require('./Prestamos_AdmController');
 const listaEmpleadosApp = require('./Cargar_EmpleadosController');
 const abonosApp = require('./Prestamo_AbonoController');
@@ -97,6 +98,9 @@ app.use('/api/aguinaldos', aguinaldosAdmApp);
 
 // Ruta para cacular liquidaciones
 app.use('/api/liquidaciones', liquidacionesAdmApp);
+
+// Ruta para feriados
+app.use('/api/feriados', feriadosApp);
 
 
 //Errutamiento. Escucha del archhivo

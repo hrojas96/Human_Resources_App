@@ -1,16 +1,15 @@
 'use strict'
 
 //VARIABLES
-const url = 'http://localhost:8000/api/puestos/';
-const contenedorPuestos = document.querySelector('tbody');
-const modalPuestos = new bootstrap.Modal(document.getElementById('modalPuestos'))
-const formPuestos = document.getElementById('formPuestos');
-const puesto = document.getElementById('puesto');
-const pagoHora = document.getElementById('pagoHora');
-const salarioBase = document.getElementById('salarioBase');
+const url = 'http://localhost:8000/api/feriados/';
+const contenedorFeriados = document.querySelector('tbody');
+const modalFeriados = new bootstrap.Modal(document.getElementById('modalFeriados'))
+const formFeriados = document.getElementById('formFeriados');
+const feriado = document.getElementById('feriado');
+const fecha = document.getElementById('fecha');
+const derechoPago = document.getElementById('derechoPago');
 let opcion = '';
 let resultados = '';
-let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
 verificarUsuario ();
 //Verifica si el usuario tiene acceso a esta página
@@ -29,27 +28,23 @@ function verificarUsuario () {
         .catch(error => alert(error))
 };
 
-
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
-    console.log('llegué a crear 2');
-    puesto.value = ""; 
-    pagoHora.value = ""; 
-    salarioBase.value = ""; 
-    modalPuestos.show();
+    feriado.value = ""; 
+    fecha.value = ""; 
+    derechoPago.value = ""; 
+    modalFeriados.show();
     opcion = 'crear';
-    console.log(opcion);
 });
 
-
 //Función para Mostrar resultados
-function mostrar(puestos) {
-    puestos.forEach(p =>{
-        resultados += ` <tr data-montoHora="${p.monto_por_hora}" data-salarioBase="${p.salario_base}">
-                            <td class="text-center">${p.id_puesto}</td>
-                            <td class="text-center">${p.nombre_puesto}</td> 
-                            <td class="text-end">${colon.format(p.monto_por_hora)}</td> 
-                            <td class="text-end">${colon.format(p.salario_base)}</td>  
+function mostrar(feriados) {
+    feriados.forEach(p =>{
+        resultados += ` <tr data-fecha="${p.fecha_feriado.slice(0, 10)}">
+                            <td class="text-center">${p.id_feriado}</td>
+                            <td class="text-center">${p.nombre_feriado}</td> 
+                            <td class="text-end">${new Date(p.fecha_feriado).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-end">${p.pago_obligatorio}</td>  
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
@@ -60,7 +55,7 @@ function mostrar(puestos) {
                             </td> 
                         </tr>`
     });
-    contenedorPuestos.innerHTML = resultados;
+    contenedorFeriados.innerHTML = resultados;
 };
 
 cargar();
@@ -73,9 +68,8 @@ function cargar () {
 };
 
 //Configuración de botones
-// on en un metodo de jquery que sirve para asignar eventos a los elementos del DOM
 const on = (element, event, selector, handler) => { 
-    //element pasa todo el doc //event el click //selector el bnt borrar //handler lo que se libera
+
     element.addEventListener(event, e => { 
 
         if(e.target.closest(selector)){
@@ -90,31 +84,49 @@ on(document, 'click', '.btnEditar', e => {
     //Se asigna una posición a cada valor en la tabla para identificar el id
     const fila = e.target.closest('tr');
     idForm = fila.children[0].innerHTML;
-    const puestoForm = fila.children[1].innerHTML;
-    const pagoHoraForm = fila.getAttribute('data-montoHora');
-    const salarioBaseForm = fila.getAttribute('data-salarioBase');
+    const feriadoForm = fila.children[1].innerHTML;
+    const fechaForm = fila.getAttribute('data-fecha');
+    const derechoPagoForm = fila.children[3].innerHTML;
     
-    puesto.value = puestoForm;
-    pagoHora.value = pagoHoraForm;
-    salarioBase.value = salarioBaseForm;
+    feriado.value = feriadoForm;
+    fecha.value = fechaForm;
+    derechoPago.value = derechoPagoForm;
     
     opcion = 'editar';
-    modalPuestos.show();
+    modalFeriados.show();
 });
 
 //Borrar.
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
-    const id_puesto = fila.firstElementChild.innerHTML;
-    
+    const id_feriado = fila.firstElementChild.innerHTML;
+    //alertify.confirm("¿Seguro que desea borrar este registro?").set('labels', {ok:'Eliminar', cancel:'Cancelar!'}), 
+
     alertify.confirm('Alerta', '¿Seguro que desea borrar este registro?',
     function(){
 
-        fetch(url+id_puesto, {
+        fetch(url+id_feriado, {
             method: 'DELETE'
         })
         .then( res => res.json() )
-        .then( ()=> location.reload())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                //alert(data.error)
+            } else {
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
         
     },
     function(){
@@ -123,11 +135,10 @@ on(document, 'click', '.btnBorrar', e => {
 });
 
 //Guardar cambios editados o creados
-formPuestos.addEventListener('submit', (e)=> {
+formFeriados.addEventListener('submit', (e)=> {
  
     //Previene que se recargue la página
     e.preventDefault();  
-
     //Insert
     if (opcion == 'crear'){
         
@@ -137,24 +148,26 @@ formPuestos.addEventListener('submit', (e)=> {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                nombre_puesto:puesto.value,
-                monto_por_hora:pagoHora.value,
-                salario_base:salarioBase.value
+                nombre_feriado:feriado.value,
+                fecha_feriado:fecha.value,
+                pago_obligatorio:derechoPago.value
             })
         })
         .then( response => response.json())
         .then( data =>{
-            console.log(data);
             if (data.error) {
                 
                 alertify
-                    .alert(data.error, function(){
+                    .alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
                 //alert(data.error)
             } else {
-                
-                location.reload();
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
@@ -167,9 +180,9 @@ formPuestos.addEventListener('submit', (e)=> {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                nombre_puesto:puesto.value,
-                monto_por_hora:pagoHora.value,
-                salario_base:salarioBase.value
+                nombre_feriado:feriado.value,
+                fecha_feriado:fecha.value,
+                pago_obligatorio:derechoPago.value
             })
         })
         .then( response => response.json())
@@ -177,18 +190,21 @@ formPuestos.addEventListener('submit', (e)=> {
             if (data.error) {
                 
                 alertify
-                    .alert(data.error, function(){
+                    .alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
                 //alert(data.error)
             } else {
-                
-                location.reload();
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
     };
     
-    modalPuestos.hide();
+    modalFeriados.hide();
 
 });
