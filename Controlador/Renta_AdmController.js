@@ -21,7 +21,7 @@ class Planilla_RentaController {
                 console.log('Hubo un error');
                 //throw err;
             } else {
-                console.log(filas);
+                //console.log(filas);
                 res.send(filas);
             };
         });

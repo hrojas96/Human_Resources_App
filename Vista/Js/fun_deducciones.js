@@ -19,7 +19,14 @@ const tramo2 = document.getElementById('tramo2');
 const cobroRenta = document.getElementById('cobroRenta');
 let resultadosx = '';
 
-let opcion = '';
+//Vareiables créditos fiscales
+const urlCreditosFiscal = 'http://localhost:8000/api/creditoFiscal/';
+const tablaCredFiscales = document.getElementById('tablaCredFiscales');
+const modalCredFiscal = new bootstrap.Modal(document.getElementById('modalCredFiscal'));
+const formCredFiscal = document.getElementById('formCredFiscal');
+const credFiscal = document.getElementById('credFiscal');
+const cobroCredFiscal = document.getElementById('cobroCredFiscal');
+let resultadosy = '';
 
 let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
@@ -78,10 +85,28 @@ function mostrarRenta(impuestos) {
     tablaRenta.innerHTML = resultadosx;
 };
 
+//Función para Mostrar resultados de Cargas Sociales
+function mostrarCredFiscales(creditoFiscal) {
+    creditoFiscal.forEach(p =>{
+        resultadosy += ` <tr data-cobroCredFiscal="${p.monto_rebajo}">
+                            <td class="text-center">${p.id_credFiscal}</td>
+                            <td class="text-center">${p.concepto}</td> 
+                            <td class="text-center">${colon.format(p.monto_rebajo)}</td>  
+                            <td class="centrar"> 
+                                <a class="btnEditar  btn btn-primary btn-sm" id="editarCredFiscal" style="background-color:#255387; border-color: #255387;">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                            </td> 
+                        </tr>`
+    });
+    tablaCredFiscales.innerHTML = resultadosy;
+};
+
 cargarCargasSociales();
 cargarRenta();
+cargarCredFiscales();
 
-// Muestra resultados cargas sociales
+// Consulta  cargas sociales
 function cargarCargasSociales () {
     fetch(urlCargasSociales)
         .then(response => response.json())
@@ -89,11 +114,19 @@ function cargarCargasSociales () {
         .catch(error => console.log(error))
 };
 
-// Muestra resultados renta
+// Consulta  renta
 function cargarRenta () {
     fetch(urlRenta)
         .then(response => response.json())
         .then(data => mostrarRenta(data) )
+        .catch(error => console.log(error))
+};
+
+// Consulta creditos fiscales
+function cargarCredFiscales () {
+    fetch(urlCreditosFiscal)
+        .then(response => response.json())
+        .then(data => mostrarCredFiscales(data) )
         .catch(error => console.log(error))
 };
 
@@ -140,6 +173,20 @@ on(document, 'click', '#editarRenta', e => {
     modalRenta.show();
 });
 
+//Editar Creditos Fiscales
+let idFormCF = 0;
+on(document, 'click', '#editarCredFiscal', e => {
+    //Se asigna una posición a cada valor en la tabla para identificar el id
+    const fila = e.target.closest('tr');
+    idFormCF = fila.children[0].innerHTML;
+    const credFiscalForm = fila.children[1].innerHTML;
+    const cobroCredFiscalForm = fila.getAttribute('data-cobroCredFiscal');
+    
+    credFiscal.value = credFiscalForm;
+    cobroCredFiscal.value = cobroCredFiscalForm;
+   
+    modalCredFiscal.show();
+});
 
 //Guardar ediciones cargas sociales
 formCargasSociales.addEventListener('submit', (e)=> {
@@ -217,5 +264,43 @@ formRenta.addEventListener('submit', (e)=> {
     .catch((error) => console.error("Error en la solicitud:", error));
 
     modalRenta.hide();
+
+});
+
+//Guardar ediciones creditos fiscales
+formCredFiscal.addEventListener('submit', (e)=> {
+ 
+    //Previene que se recargue la página
+    e.preventDefault();  
+    
+    fetch(urlCreditosFiscal+idFormCF, {
+        method: 'PUT',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            monto_rebajo:cobroCredFiscal.value
+        })
+    })
+    .then( response => response.json())
+    .then( data =>{
+        if (data.error) {
+                
+            alertify
+                .alert('Aviso', data.error, function(){
+                    alertify.message('OK');
+                });
+            //alert(data.error)
+        } else {
+            alertify
+                .alert('Aviso', data.message, function(){
+                    alertify.message('OK');
+                    location.reload();
+                });
+        }
+    })
+    .catch((error) => console.error("Error en la solicitud:", error));
+
+    modalCredFiscal.hide();
 
 });

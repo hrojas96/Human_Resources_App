@@ -24,6 +24,7 @@ const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
 const cargasSocialesApp = require('./CargasSocialesController');
 const rentaAdmApp = require('./Renta_AdmController');
+const creditosFiscalesApp = require('./CreditosFisclesController');
 const vacacionesUsrApp = require('./Vacaciones_UsrController');
 const vacacionesJefApp = require('./Vacaciones_JefController');
 const vacacionesAdmApp = require('./Vacaciones_AdmController');
@@ -84,6 +85,7 @@ app.use('/api/permisosAdm', permisosAdmApp);
 app.use('/api/planilla', planillaAdmApp);
 app.use('/api/cargasSociales', cargasSocialesApp);
 app.use('/api/renta', rentaAdmApp);
+app.use('/api/creditoFiscal', creditosFiscalesApp);
 
 // Ruta para vacaciones
 app.use('/api/vacacionesUsr', vacacionesUsrApp);

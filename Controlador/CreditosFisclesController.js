@@ -1,21 +1,21 @@
 const express = require('express');
 
-const accesos = require('../Modelo/CargasSocialesModel');
-class CargasSocialesController {
+const accesos = require('../Modelo/CreditosFiscalesModel');
+class CreditosFiscalesController {
     constructor () {
         this.router = express.Router();
         this.inicializarRutas();
     }
 
     inicializarRutas() {
-        this.router.get('/', this.consultarCargasSociales);
-        this.router.put('/:id_deduccion', this.editarCargasSociales);
+        this.router.get('/', this.consultarCreditosFiscales);
+        this.router.put('/:id_credFiscal', this.editarCreditosFiscales);
     };
 
     //Consultar cargas sociales
-    consultarCargasSociales(req, res) {
+    consultarCreditosFiscales(req, res) {
         
-        accesos.consultarCargasSociales((error, filas) => {
+        accesos.consultarCreditosFiscales((error, filas) => {
             if (error) {
                 console.log('Hubo un error');
                 //throw err;
@@ -26,23 +26,23 @@ class CargasSocialesController {
         });
     };
 
-    editarCargasSociales(req, res){
-        let id_deduccion = req.params.id_deduccion;
-        let porcentaje_salarial = req.body.porcentaje_salarial;
+    editarCreditosFiscales(req, res){
+        let id_credFiscal = req.params.id_credFiscal;
+        let monto_rebajo = req.body.monto_rebajo;
 
         try {
-            accesos.editarCargasSociales(porcentaje_salarial, id_deduccion, (err, fila) => {
+            accesos.editarCreditosFiscales(monto_rebajo, id_credFiscal, (err, fila) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error')
+                        console.log('Hubo un error', err)
                         //throw err;
                     };
                 } else {
                     
-                    res.status(200).json({ message: 'La edición del registro #' + id_deduccion + ', se ha realizado correctamente' });
+                    res.status(200).json({ message: 'La edición del registro #' + id_credFiscal + ', se ha realizado correctamente' });
                 };
             });
         } catch (error) {
@@ -54,4 +54,4 @@ class CargasSocialesController {
 
 };
 
-module.exports = new CargasSocialesController().router;
+module.exports = new CreditosFiscalesController().router;

@@ -148,7 +148,6 @@ function tipoUsuario () {
                             <li><a href="deduccionesLegales.html">Deducciones Legales</a></li>
                             <li><a class="" href="puestos.html">Puestos</a></li>
                             <li><a class="" href="roles.html">Roles</a></li>
-                            <li><a class="" href="tipoIncapacidad.html">Tipo de Incapacidad</a></li>
                         </ul>
                     </div>`
             };
