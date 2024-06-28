@@ -56,8 +56,9 @@ class PlanillaController {
                 let id_empleado = i.id_empleado;
                 let monto_horas_ordinarias = i.pago_horas_ordinarias;
                 let monto_horas_extras = i.pago_horas_extras;
+                let monto_bono = i.total_bonos;
                 let vacaciones = i.total_dias_solicitados * 8 * i.monto_por_hora;
-                let salario_bruto = monto_horas_ordinarias + monto_horas_extras + vacaciones;
+                let salario_bruto = monto_horas_ordinarias + monto_horas_extras + vacaciones + monto_bono;
                 
                 let deduccion_ccss = salario_bruto * i.rebajo_ccss;
                 let deduccion_bancopopular = salario_bruto * i.rebajo_bancoPopular;
@@ -98,6 +99,7 @@ class PlanillaController {
                     fecha_hasta,
                     monto_horas_ordinarias,
                     monto_horas_extras,
+                    monto_bono,
                     salario_bruto,
                     deduccion_ccss,
                     deduccion_bancopopular,
