@@ -44,6 +44,27 @@ class PlanillaModel {
         conectDB.conexion.query(query, [fecha_desde, fecha_hasta], callback);
     };
 
+    //Usr
+     // Función para obtener los salarios de un empleado
+     consultarPlanillaUsr(id_empleado, callback) {
+        const query = `SELECT id_salario, fecha_desde, fecha_hasta, monto_cancelado
+                        FROM Planilla 
+                        WHERE id_empleado = ?
+                        ORDER BY Planilla.fecha_desde DESC;`;
+        conectDB.conexion.query(query, [id_empleado], callback);
+    };
+
+    // Función para obtener el delsglose de un salario
+    consultarDesgloseSalario(id_salario, callback) {
+        const query = `SELECT Planilla.fecha_desde,  Planilla.fecha_hasta, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, 
+                                Planilla.id_salario, Planilla.monto_horas_ordinarias, Planilla.monto_horas_extras, Planilla.monto_bono, 
+                                Planilla.deduccion_ccss, Planilla.deduccion_bancopopular, Planilla.deduccion_renta, Planilla.deduccion_prestamo,
+                                Planilla.salario_bruto, SUM(Planilla.deduccion_ccss + Planilla.deduccion_bancopopular + Planilla.deduccion_renta + Planilla.deduccion_prestamo) AS total_deducciones,   Planilla.monto_cancelado
+                        FROM Planilla
+                        LEFT JOIN Empleado ON Planilla.id_empleado = Empleado.id_empleado
+                        WHERE Planilla.id_salario = ?;`;
+        conectDB.conexion.query(query, [id_salario], callback);
+    };
 
 };
 

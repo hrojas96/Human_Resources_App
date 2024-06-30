@@ -45,9 +45,9 @@ function mostrar(prestamos) {
                             <td class="text-center">${p.id_prestamo}</td>
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
                             <td class="text-center">${new Date(p.fecha_solicitud).toLocaleDateString('es-ES')}</td>
-                            <td class="text-center">${colon.format(p.monto_solicitado)}</td> 
-                            <td class="text-center">${colon.format(p.rebajo_salarial)}</td>
-                            <td class="text-center">${colon.format(p.saldo)}</td>
+                            <td class="text-end">${colon.format(p.monto_solicitado)}</td> 
+                            <td class="text-end">${colon.format(p.rebajo_salarial)}</td>
+                            <td class="text-end">${colon.format(p.saldo)}</td>
                             <td class="centrar"> 
                                 <a class="btnAbonos btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                     <i class="fa-solid fa-magnifying-glass-plus"></i>

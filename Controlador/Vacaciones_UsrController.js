@@ -83,7 +83,8 @@ class Vacaciones_UsrController {
                         }
                     });
                 } else {
-                    return res.status(500).json({ error: 'La cantidad de días solicitados es mayor a la cantidad de días disponibles. Por favor haga una nueva solicitud con una cantidad menos de días' });
+                    return res.status(500).json({ error: `La cantidad de días solicitados es mayor a la cantidad de días disponibles.
+                                                             Por favor haga una nueva solicitud con una cantidad menos de días` });
                 }
                 
             }

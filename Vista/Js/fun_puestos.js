@@ -30,20 +30,20 @@ function verificarUsuario () {
 };
 
 
-//Boton de crear abre modal y limpio
+//Abre modal con cada uno de los inputs en blanco
 btnCrear.addEventListener('click', ()=>{
-    console.log('llegué a crear 2');
+    
     puesto.value = ""; 
     pagoHora.value = ""; 
     salarioBase.value = ""; 
     modalPuestos.show();
-    opcion = 'crear';
-    console.log(opcion);
+    opcion = 'crear';  
 });
 
 
-//Función para Mostrar resultados
+//Función para mostrar resultados
 function mostrar(puestos) {
+    //Se recorre la respuesta enviada por la base de datos y se asigna por filas según corresponda.
     puestos.forEach(p =>{
         resultados += ` <tr data-montoHora="${p.monto_por_hora}" data-salarioBase="${p.salario_base}">
                             <td class="text-center">${p.id_puesto}</td>
@@ -69,7 +69,7 @@ function cargar () {
     fetch(url)
         .then(response => response.json())
         .then(data => mostrar(data) )
-        .catch(error => alert(error))
+        .catch(error => console.log(error))
 };
 
 //Configuración de botones
@@ -120,15 +120,13 @@ on(document, 'click', '.btnBorrar', e => {
     });
 });
 
-//Guardar cambios editados o creados
+//Guarda cambios editados o creados
 formPuestos.addEventListener('submit', (e)=> {
- 
-    //Previene que se recargue la página
     e.preventDefault();  
 
-    //Insert
+    //Identifica que la opción que desea hacer el usuario es la inserción de datos
     if (opcion == 'crear'){
-        
+        //Realiza una petición post para enviar los datos a la lógica
         fetch(url, {
             method: 'POST',
             headers: {
@@ -140,19 +138,23 @@ formPuestos.addEventListener('submit', (e)=> {
                 salario_base:salarioBase.value
             })
         })
+        //Recibe una respuesta
         .then( response => response.json())
         .then( data =>{
-            console.log(data);
+            //Si la respuesta es un error
             if (data.error) {
-                
+                //Muestra el error que ha sido identificado y transformada por la lógica.
                 alertify
                     .alert(data.error, function(){
                         alertify.message('OK');
                     });
-                //alert(data.error)
             } else {
-                
-                location.reload();
+                //Si la inserción fue desarrollada, muestra un mensaje de éxito enviado por la lógica.
+                alertify
+                    .alert('Aviso', data.message, function(){
+                        alertify.message('OK');
+                        location.reload();
+                    });
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));

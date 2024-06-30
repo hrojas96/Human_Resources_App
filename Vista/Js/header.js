@@ -58,6 +58,9 @@ menuGeneral.innerHTML =`
                         <a href="marcasEmpl.html">Marcas</a>
                     </div>
                     <div>
+                        <a href="planillaUsr.html">Desglose de Salarios</a>
+                    </div>
+                    <div>
                         <a href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
                     </div>
                     <div>
@@ -93,7 +96,7 @@ function tipoUsuario () {
             if (data[0].acc_planilla == 1) {
                 menuplanilla.innerHTML = 
                     `<div>
-                        <a href="planilla.html">Planilla</a>
+                        <a href="planillaAdm.html">Planilla</a>
                     </div>
                     <div>
                         <a href="bonos.html">Bonos</a>

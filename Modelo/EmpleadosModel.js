@@ -51,7 +51,7 @@ class EmpleadoModel {
     };
 
     generarEmailCol(idColaborador, pass){
-        console.log('llega a la funcion de email con el paquete:' + idColaborador);
+        
         const query = 'SELECT nombre, correo FROM Empleado WHERE id_empleado = ?';
         conectDB.conexion.query(query,[idColaborador], (error,filas)=>{
             if(error){
@@ -60,8 +60,6 @@ class EmpleadoModel {
                 console.log(filas)
                 var usuario = filas[0].nombre;
                 var correo = filas[0].correo;
-                
-            //console.log('lo que se va a enviar: ' + usuario, correo);
             
                 email.correoEmpleados(usuario, correo, pass);
             };

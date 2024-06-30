@@ -10,7 +10,9 @@ class PlanillaController {
     }
 
     inicializarRutas() {
+        
         this.router.get('/', this.consultarPlanilla);
+        this.router.get('/:id_salario', this.consultarDesgloseSalario);
         this.router.post('/', this.calcularPlanilla);
         this.router.delete('/', this.eliminarPlanilla);
     };
@@ -25,6 +27,22 @@ class PlanillaController {
                 //console.log(filas[0]);
                 res.send(filas);
                 
+            };
+        });
+    };
+
+
+    //Consulta el desglose de un salario específico
+    consultarDesgloseSalario(req, res) {
+        console.log('llegooooos')
+        let id_salario = req.params.id_salario;
+        accesos.consultarDesgloseSalario(id_salario, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error');
+                //throw err;
+            } else {
+                console.log(filas)
+                res.send(filas);
             };
         });
     };

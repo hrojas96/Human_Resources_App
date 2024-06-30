@@ -1,7 +1,5 @@
 'use strict'
 
-
-
 //Variables
 
 const urlAbonos = 'http://localhost:8000/api/abonoPrestamos/';
