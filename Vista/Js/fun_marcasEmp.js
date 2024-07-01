@@ -1,7 +1,7 @@
 const url = 'http://localhost:8000/api/marcas/';
 const contenedorMarcas = document.querySelector('tbody');
 const modalMarcas = new bootstrap.Modal(document.getElementById('modalMarcas'))
-const formMarcas = document.getElementById('formEmpleados');
+const formMarcas = document.getElementById('formMarcas');
 const cedula = JSON.parse(localStorage.getItem("userID")) || false;
 const codigoEntrada = document.getElementById('codigoEntrada');
 const tiempoCodigo = document.getElementById('tiempoCodigo');
@@ -16,6 +16,13 @@ cargarTabla();
 function mostrarTabla(marcas) {
     resultados = '';
     marcas.forEach(m =>{
+        if (m.hora_salida == null ){
+            m.hora_salida = "Pendiente";
+            m.horas_ordinarias = "Pendiente";
+        }
+        if ( m.horas_extras == null ){
+            m.horas_extras = "0";
+        }
         resultados += ` <tr>
                             <td class="text-center">${m.id_marca}</td>                     
                             <td class="text-center">${new Date(m.fecha).toLocaleDateString('es-ES')}</td> 
@@ -36,56 +43,118 @@ function cargarTabla () {
         .catch(error => console.log(error))
 };
 
-/*btnEntrada.addEventListener('click', ()=>{
-    //empieza a correr cronómetro
-    codigoEntrada.value = "";
-    modalMarcas.show();
-    opcion = 'crear';
-});*/
+btnEntrada.addEventListener('click', ()=>{
+    //Se crea el código de doble verificación
+    let codigo = '';
+    let str = '0123456789';
+    for (let i = 1; i <= 5; i++) {
+        let char = Math.floor(Math.random()
+            * str.length + 1);
+        codigo += str.charAt(char)
+    };
+    console.log(codigo);
 
-//formEmpleados.addEventListener('submit', (e)=> {
-btnEntrada.addEventListener('click', (e)=>{   
-    console.log('se marcó la entrada');
-    //e.preventDefault();  
-    let DateTime = new Date();
-    console.log(DateTime);
-    let fechaFormato = DateTime.toLocaleDateString();
-    console.log(fechaFormato);
-    let fecha = fechaFormato.slice(0,10)
-    console.log('Fecha: '+ fecha);
-    let horaFormato = DateTime.toTimeString();
-    let horaEntrada = horaFormato.slice(0,8);
-    console.log('hora: '+ horaEntrada);
+    //Se encripta el código
+    //const codigo = crypto.createHash('md5').update(pass).digest('hex');
+    localStorage.setItem("codigoMarca", JSON.stringify(codigo));
 
-    //Insert
-    
-    fetch(url, {
-        method: 'POST',
+    //Se envía el código al usuario por email
+    fetch(url + cedula, {
+        method: "POST",
         headers: {
-            'Content-Type':'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            id_empleado:cedula,
-            fecha:fecha,
-            hora_entrada:horaEntrada
-            
-        })
+        body: JSON.stringify({ codigo: codigo }),
     })
-    .then( response => response.json())
+    .then((response) => response.json())
     .then( data =>{
         console.log(data);
         if (data.error) {
             
-            alertify.alert(data.error, function(){
+            alertify
+                .alert('Aviso', data.error, function(){
                     alertify.message('OK');
                 });
-            
+            //alert(data.error)
         } else {
-            location.reload();
+            alertify
+                .alert('Aviso', data.message, function(){
+                    alertify.message('OK');
+                });
         }
     })
     .catch((error) => console.error("Error en la solicitud:", error));
 
+    //Configuración de cronómetro
+    codigoEntrada.value = "";
+    let temporizador = 45;
+    let tiempo = setInterval(()=>{
+        tiempoCodigo.textContent = temporizador + ' segundos';
+        temporizador --;
+        if (temporizador == 0){
+            alertify
+                    .alert('Alerta', `Su tiempo para el ingreso del código ha caducado. Por favor solicite uno
+                                         nuevamente ingresando la marca de entrada`, function(){
+                        alertify.message('OK');
+                        clearInterval(tiempo);
+                        location.reload();
+                    });
+            
+        }
+    }, 1000);
+
+    modalMarcas.show();
+    
+});
+
+
+formMarcas.addEventListener('submit', (e)=> {  
+ 
+    e.preventDefault();  
+
+    const codigoMarca = JSON.parse(localStorage.getItem("codigoMarca")) || false;
+    if (codigoEntrada.value == codigoMarca){
+        alert('codigo correcto')
+
+        let DateTime = new Date();
+        console.log(DateTime);
+        let fechaFormato = DateTime.toLocaleDateString();
+        console.log(fechaFormato);
+        let fecha = fechaFormato.slice(0,10)
+        console.log('Fecha: '+ fecha);
+        let horaFormato = DateTime.toTimeString();
+        let horaEntrada = horaFormato.slice(0,8);
+        console.log('hora: '+ horaEntrada);
+
+       
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:cedula,
+                fecha:fecha,
+                hora_entrada:horaEntrada
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify.alert(data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                location.reload();
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
+    }
     modalMarcas.hide();
         
 });

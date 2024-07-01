@@ -117,31 +117,31 @@ function tipoUsuario () {
             if (data[0].acc_vacaciones_RRHH == 1) {
                 menuVacacionesAdm.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="vacacionesAdm.html">Vacaciones RRHH</a> 
+                        <a id= "" href="vacacionesAdm.html">Vacaciones RRHH</a> 
                     </div>`
             };
             if (data[0].acc_permisos_RRHH == 1) {
                 menuPermisosAdm.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="permisosAdm.html">Permisos RRHH</a> 
+                        <a id= "" href="permisosAdm.html">Permisos RRHH</a> 
                     </div>`
             };
             if (data[0].acc_incapacidades == 1) {
                 menuIncapacidadesAdm.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="incapacidadesAdm.html">Incapacidades RRHH</a> 
+                        <a id= "" href="incapacidadesAdm.html">Incapacidades RRHH</a> 
                     </div>`
             };
             if (data[0].acc_aguinaldo == 1) {
                 menuAguinaldoAdm.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="aguinaldoAdm.html">Aguinaldos</a> 
+                        <a id= "" href="aguinaldoAdm.html">Aguinaldos</a> 
                     </div>`
             };
             if (data[0].acc_liquidacion == 1) {
                 menuLiquidacionesAdm.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="liquidacionAdm.html">Liquidaciones</a> 
+                        <a id= "" href="liquidacionAdm.html">Liquidaciones</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {
@@ -162,7 +162,7 @@ function tipoUsuario () {
             if (data[0].acc_vacaciones_jefatura == 1) {
                 menuVacacionesJF.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
+                        <a id= "" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_permisos_jefatura == 1) {
@@ -174,7 +174,7 @@ function tipoUsuario () {
             if (data[0].acc_horasExtras_jefatura == 1) {
                 menuHorasExtrasJef.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
+                        <a id= "" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
                     </div>`
             };
             

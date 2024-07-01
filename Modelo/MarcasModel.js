@@ -1,4 +1,5 @@
 const conectDB = require('./conexion');
+const email = require('../Controlador/Servicios/servidorEmail');
 
 class MarcasModel {
 
@@ -16,6 +17,23 @@ class MarcasModel {
                         WHERE id_empleado = ?
                         ORDER BY Marcas.fecha DESC;`;
         conectDB.conexion.query(query, [id_empleado], callback);
+    };
+
+    enviarCodigo(codigo, id_empleado){
+        console.log('llego a enviar correo marca modelo')
+        const query = 'SELECT nombre, correo FROM Empleado WHERE id_empleado = ?';
+        conectDB.conexion.query(query,[id_empleado], (error,filas)=>{
+            if(error){
+                console.log('No se envío el email, ') 
+            }else{
+                console.log(filas)
+                var colaborador = filas[0].nombre;
+                var correo = filas[0].correo;
+            
+                email.correoMarcas(colaborador, correo, codigo);
+            };
+        });
+        
     };
 
     insertarMarca(data, callback) {

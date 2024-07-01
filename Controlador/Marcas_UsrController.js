@@ -9,14 +9,15 @@ class Per_MarcasController {
     }
 
     inicializarRutas() {
-        this.router.get('/', this.consultarMarcas);
+        //this.router.get('/', this.consultarMarcas);
         this.router.get('/:id_empleado', this.consultarMarcasEmp);
+        this.router.post('/:id_empleado', this.enviarCodigo);
         this.router.post('/', this.insertarMarca);
         this.router.put('/:id_empleado', this.editarMarca);
     };
 
     //Consulta todas las marcas de todos los empleados (Adm)
-    consultarMarcas(req, res) {
+    /*consultarMarcas(req, res) {
         
         accesos.consultarMarcas((error, filas) => {
             if (error) {
@@ -26,7 +27,7 @@ class Per_MarcasController {
                 res.send(filas);
             };
         });
-    };
+    };*/
 
     //Consulta todas las marcas de un empleado específico
     consultarMarcasEmp(req, res) {
@@ -39,6 +40,30 @@ class Per_MarcasController {
                 res.send(filas);
             };
         });
+    };
+
+    //Insertar marca de entrada
+    enviarCodigo(req, res) {
+        console.log('llego a enviar correo marca')
+        let id_empleado = req.params.id_empleado;
+        let codigo = req.body.codigo;
+        try {
+            
+            accesos.enviarCodigo(codigo, id_empleado, (err, fila) => {
+                
+                if (err) {
+                    
+                    res.status(400).json({ error: "Error al enviar el correo. Verifique que su correo sea correcto en el sistema." });
+                    
+                } else {
+                    // Enviamos respuesta de BD
+                    return res.json({message:'Revise su correo por el código de marca'});
+                }
+            });
+        } catch (error) {
+            console.error("Error during database insertion:", error);
+            res.status(500).json({ error: "Error de servidor" });
+        };
     };
 
     //Insertar marca de entrada

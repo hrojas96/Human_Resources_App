@@ -40,6 +40,19 @@ const opcionesEmpleados = (user, correo, pass ) => {
   };
 };
 
+const opcionesMarcas = (colaborador, correo, codigo ) => {
+  return{
+    from: '"Faustica S.A." <u.proyectos23@gmail.com>', 
+    template: "emailMarcas", 
+    to: correo,
+    subject: `Código para registro de marca`,
+    context: {
+      colaborador: colaborador,
+       codigo: codigo
+    },
+  };
+};
+
 
 function correoEmpleados(user, correo, pass){
   //console.log('Funcionó' + user, correo);
@@ -50,7 +63,17 @@ function correoEmpleados(user, correo, pass){
   };
 };
 
+function correoMarcas(colaborador, correo, codigo){
+  //console.log('Funcionó' + user, correo);
+  try {
+    transporter.sendMail(opcionesMarcas(colaborador, correo, codigo));
+  } catch (error) {
+    console.log(`Error al enviar el correo`, error);
+  };
+};
+
 module.exports = { 
-  correoEmpleados
+  correoEmpleados,
+  correoMarcas
 
  };
