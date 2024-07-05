@@ -57,6 +57,31 @@ class PermisosModel {
         conectDB.conexion.query(query, [decision_RRHH, msj_RRHH, derecho_pago, id_permiso], callback);
     };
 
+
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 2 && reporteDecision == 2){
+            query2 = ` AND Permisos.decision_RRHH = "${decision}"`;
+
+        }else if(tipoReporte == 1 && reporteDecision == 1){
+            query2 = ` AND Permisos.id_empleado = ${id_empleado} `;
+
+        }else if(tipoReporte == 1 && reporteDecision == 2){
+            query2 = ` AND Permisos.id_empleado = ${id_empleado} AND Permisos.decision_RRHH = "${decision}" `;
+
+        }else{
+            query2 = ``
+        }
+        const query =  `SELECT Permisos.id_permiso, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Permisos.inicio_permiso, Permisos.final_permiso, Permisos.decision_jefatura, Permisos.msj_jefatura, Permisos.decision_RRHH, Permisos.msj_RRHH, Permisos.derecho_pago   
+                        FROM Permisos 
+                        LEFT JOIN Empleado ON Permisos.id_empleado = Empleado.id_empleado 
+                        WHERE Permisos.inicio_permiso BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}'  ${query2}
+                        ORDER BY Permisos.inicio_permiso DESC `;
+        
+        conectDB.conexion.query(query, callback);
+    };
 }
 
 module.exports = new PermisosModel();

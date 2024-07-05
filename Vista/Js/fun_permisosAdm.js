@@ -10,8 +10,24 @@ const desicionRRHH = document.getElementById('desicionRRHH');
 const msjRRHH = document.getElementById('msjRRHH');
 const derechoPago = document.getElementById('derechoPago');
 
+const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
+const formReportes = document.getElementById('formReportes');
+const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
+const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
+const empleado = document.getElementById('empleado');
+const fechaInicioRpt = document.getElementById('fechaInicioRpt');
+const fechaFinalRpt = document.getElementById('fechaFinalRpt');
+const flexSwitchCheckChecked = document.getElementById('flexSwitchCheckChecked');
+const decision = document.getElementById('decision');
+const resultadoReporte = document.getElementById('resultadoReporte');
+const tablaReportes = document.getElementById('tablaReportes');
+conainerReportes.style.display = 'none';
+
 let resultados = '';
 let resultadosx = '';
+let tipoReporte;
+let reporteDecision;
+let tablaResultados = '';
 
 verificarUsuario ();
 consultarDatos();
@@ -151,4 +167,165 @@ formPermisosAdm.addEventListener('submit', (e)=> {
     
     modalPermisosAdm.hide();
 
+});
+
+//Abre modal reportes limpio
+btnReportes.addEventListener('click', ()=>{
+    flexRadioDefault2.checked = true;
+    empleado.value = ""; 
+    fechaInicioRpt.value = "";
+    fechaFinalRpt.value = ""; 
+    flexSwitchCheckChecked.checked = true;
+    decision.value = "";  
+    modalReportes.show();
+    tipoReporte = 2;
+    reporteDecision = 2;
+    console.log(tipoReporte);
+    console.log(reporteDecision);
+
+});
+
+//Activa el input empleado si se selecciona un reporte individual
+flexRadioDefault1.addEventListener('click', ()=>{
+    empleado.value = "";
+    empleado.disabled = false;
+    tipoReporte = 1;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexRadioDefault2.addEventListener('click', ()=>{
+    empleado.value = "";
+    empleado.disabled = true;
+     
+    tipoReporte = 2;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexSwitchCheckChecked.addEventListener('click', ()=>{
+    if (flexSwitchCheckChecked.checked == true){
+        decision.disabled = false;
+        reporteDecision = 2
+        console.log(reporteDecision);
+    }
+    if (flexSwitchCheckChecked.checked == false){
+        decision.disabled = true;
+        reporteDecision = 1;
+        console.log(reporteDecision);
+    }
+    
+});
+
+cargarEmpleados();
+
+//Carga lista de empleados registrados
+function cargarEmpleados() {
+    fetch("http://localhost:8000/api/empleadosRegistrados/")
+        .then(response => response.json())
+        .then(data => {
+            // Recorre los datos y crea las opciones
+            data.forEach((optionData) => {
+                // Crea un elemento option
+                const opcion = document.createElement("option");
+
+                // Establece el valor y texto de la opción
+                opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
+                opcion.value = optionData.id_empleado;
+                // Agrega la opción al elemento select
+                empleado.add(opcion);    
+            });
+        })
+        .catch(error => {
+            console.error("Error al obtener los datos:", error);
+        });
+};
+
+
+//Envía la consulta del reporte
+formReportes.addEventListener('submit', (e)=> {
+    e.preventDefault();
+
+        fetch(url + tipoReporte, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:empleado.value,
+                fechaInicioRpt:fechaInicioRpt.value,
+                fechaFinalRpt:fechaFinalRpt.value, 
+                decision:decision.value,
+                reporteDecision:reporteDecision
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                conainerReportes.style.display = 'block';
+                
+                data.forEach(v => {
+
+                    if (v.msj_jefatura == null || v.msj_RRHH == null ){
+                        v.msj_jefatura = " ";
+                        v.msj_RRHH = " "
+                    }
+                    
+                    tablaResultados += `
+                        <tr>
+                            <td class="text-center">${v.id_permiso}</td> 
+                            <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
+                            <td class="text-center">${new Date(v.inicio_permiso).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${new Date(v.final_permiso).toLocaleDateString('es-ES')}</td>
+                            <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
+                            <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
+                            <td class="text-center">${v.derecho_pago}</td> 
+                        </tr>
+                    `;
+
+                        
+                    resultadoReporte.innerHTML = tablaResultados;
+                });
+                //tablaReportes.style.display = 'block';  
+            }
+        })
+    modalReportes.hide();
+});
+
+btnImprimir.addEventListener('click', ()=>{
+    
+    
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    //Título del pdf
+    doc.text(20,20, "Reporte de Permisos");
+
+    const filas = [];
+    const encabezado = ["N. Permiso", "Empleado", "Desde",  "Hasta",  "Jefatura", "RRHH", "Derecho Pago" ];
+    
+    const tabla = document.querySelector("#resultadoReporte");
+    
+    tabla.querySelectorAll("tbody tr").forEach(fila => {
+        const datos = [];
+        fila.querySelectorAll("td").forEach(celda => {
+            datos.push(celda.innerText);
+        });
+        filas.push(datos);
+    });
+    doc.autoTable({
+        startY: 30,
+        head: [encabezado],
+        body:filas,
+    })
+    doc.save('reporte.pdf')
 });

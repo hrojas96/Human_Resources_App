@@ -31,7 +31,7 @@ function mostrarDesglose(abonos) {
                             <td class="text-end">${colon.format(p.deduccion_prestamo)}</td>
                         </tr>    
                      `
-            desglose.innerHTML = datosx;
+        reporteDesglose.innerHTML = datosx;
 
         datosy += `<tr>
                         <td class="text-end">${colon.format(p.salario_bruto)}</td>
