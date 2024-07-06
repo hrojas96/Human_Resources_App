@@ -10,11 +10,29 @@ const fecha = document.getElementById('fecha');
 const preaviso = document.getElementById('preaviso');
 const motivo = document.getElementById('motivo');
 
-//let opcion = '';
+const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
+const formReportes = document.getElementById('formReportes');
+const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
+const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
+const empleadoReporte = document.getElementById('empleadoReporte');
+const fechaInicioRpt = document.getElementById('fechaInicioRpt');
+const fechaFinalRpt = document.getElementById('fechaFinalRpt');
+const flexSwitchCheckChecked = document.getElementById('flexSwitchCheckChecked');
+//const minimo = document.getElementById('minimo');
+//const maximo = document.getElementById('maximo');
+const resultadoReporte = document.getElementById('resultadoReporte');
+const tablaReportes = document.getElementById('tablaReportes');
+conainerReportes.style.display = 'none';
+
+let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
+
 let resultados = '';
+let tipoReporte;
+let tablaResultados = '';
 
 verificarUsuario ();
 consultarDatos();
+cargarEmpleados();
 
 //Verifica si el usuario tiene acceso a esta página
 function verificarUsuario () {
@@ -40,11 +58,11 @@ function cargarTabla(liquidaciones) {
                             <td class="text-center">${p.id_liquidacion}</td>
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
                             <td class="text-center">${new Date(p.fecha).toLocaleDateString('es-ES')}</td>
-                            <td class="text-center">${p.pago_vacaciones}</td> 
-                            <td class="text-center">${p.pago_aguinaldo}</td> 
-                            <td class="text-center">${p.pago_preaviso}</td>
-                            <td class="text-center">${p.cesantia}</td>
-                            <td class="text-center">${p.monto_liquidado}</td>
+                            <td class="text-center">${colon.format(p.pago_vacaciones)}</td> 
+                            <td class="text-center">${colon.format(p.pago_aguinaldo)}</td> 
+                            <td class="text-center">${colon.format(p.pago_preaviso)}</td>
+                            <td class="text-center">${colon.format(p.cesantia)}</td>
+                            <td class="text-center">${colon.format(p.monto_liquidado)}</td>
                             <td class="centrar"> 
                                 <a class="btnBorrar btn btn-danger btn-sm"> 
                                     <i class="fa-regular fa-trash-can"></i>
@@ -79,7 +97,9 @@ function cargarEmpleados() {
                 opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
                 opcion.value = optionData.id_empleado;
                 // Agrega la opción al elemento select
-                empleado.add(opcion);    
+                empleado.add(opcion);
+                const opcionCopia = opcion.cloneNode(true);
+                empleadoReporte.add(opcionCopia);   
             });
         })
         .catch(error => {
@@ -89,7 +109,6 @@ function cargarEmpleados() {
 
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
-    cargarEmpleados();
     empleado.value = ""; 
     fecha.value = ""; 
     preaviso.value = ""; 
@@ -97,7 +116,6 @@ btnCrear.addEventListener('click', ()=>{
     modalLiquidaciones.show();
     //opcion = 'crear';
 });
-
 
 //Configuración de botones
 const on = (element, event, selector, handler) => { 
@@ -108,7 +126,6 @@ const on = (element, event, selector, handler) => {
         };
     });
 };
-
 
 //Borrar. 
 on(document, 'click', '.btnBorrar', e => {
@@ -189,4 +206,117 @@ formLiquidaciones.addEventListener('submit', (e)=> {
     
     modalLiquidaciones.hide();
 
+});
+
+//Abre modal reportes limpio
+btnReportes.addEventListener('click', ()=>{
+    flexRadioDefault2.checked = true;
+    empleadoReporte.value = ""; 
+    fechaInicioRpt.value = "";
+    fechaFinalRpt.value = ""; 
+    flexSwitchCheckChecked.checked = true;
+    //minimo.value = ""; 
+    //maximo.value = ""; 
+    modalReportes.show();
+    tipoReporte = 2;
+    console.log(tipoReporte);
+});
+
+//Activa el input empleado si se selecciona un reporte individual
+flexRadioDefault1.addEventListener('click', ()=>{
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = false;
+    fechaInicioRpt.disabled = true;
+    fechaFinalRpt.disabled = true;
+    tipoReporte = 1;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexRadioDefault2.addEventListener('click', ()=>{
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = true;
+    fechaInicioRpt.disabled = false;
+    fechaFinalRpt.disabled = false;
+    tipoReporte = 2;
+    console.log(tipoReporte);
+});
+
+//Envía la consulta del reporte
+formReportes.addEventListener('submit', (e)=> {
+    e.preventDefault();
+
+        fetch(url + tipoReporte, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:empleadoReporte.value,
+                fechaInicioRpt:fechaInicioRpt.value,
+                fechaFinalRpt:fechaFinalRpt.value
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                conainerReportes.style.display = 'block';
+              
+                data.forEach(p => {
+                    
+                    tablaResultados += `
+                        <tr>
+                            <td class="text-center">${p.id_liquidacion}</td>
+                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
+                            <td class="text-center">${new Date(p.fecha).toLocaleDateString('es-ES')}</td>
+                            <td class="text-center">${colon.format(p.pago_vacaciones)}</td> 
+                            <td class="text-center">${colon.format(p.pago_aguinaldo)}</td> 
+                            <td class="text-center">${colon.format(p.pago_preaviso)}</td>
+                            <td class="text-center">${colon.format(p.cesantia)}</td>
+                            <td class="text-center">${colon.format(p.monto_liquidado)}</td>
+                        </tr>
+                    `;
+
+                        
+                    resultadoReporte.innerHTML = tablaResultados;
+                });
+                //tablaReportes.style.display = 'block';  
+            }
+        })
+    modalReportes.hide();
+});
+
+btnImprimir.addEventListener('click', ()=>{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    //Título del pdf
+    doc.text(20,20, "Reporte de Aguinaldos");
+
+    const filas = [];
+    const encabezado = ["ID", "Empleado", "Fecha de Liquidación",  "Vacaciones", "Aguinaldo", "Preaviso", "Cesantía", "Monto Liquidado", ];
+    
+    const tabla = document.querySelector("#resultadoReporte");
+    
+    tabla.querySelectorAll("tbody tr").forEach(fila => {
+        const datos = [];
+        fila.querySelectorAll("td").forEach(celda => {
+            datos.push(celda.innerText);
+        });
+        filas.push(datos);
+    });
+    doc.autoTable({
+        startY: 30,
+        head: [encabezado],
+        body:filas,
+    })
+    doc.save('reporte.pdf')
 });

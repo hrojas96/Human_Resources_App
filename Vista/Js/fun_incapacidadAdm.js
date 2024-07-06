@@ -7,10 +7,26 @@ const tipoIncapacidad = document.getElementById('tipoIncapacidad');
 const fechaDesde = document.getElementById('fechaDesde');
 const fechaHasta = document.getElementById('fechaHasta');
 
+const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
+const formReportes = document.getElementById('formReportes');
+const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
+const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
+const empleadReporte = document.getElementById('empleadReporte');
+const fechaInicioRpt = document.getElementById('fechaInicioRpt');
+const fechaFinalRpt = document.getElementById('fechaFinalRpt');
+const flexSwitchCheckChecked = document.getElementById('flexSwitchCheckChecked');
+const reporteTipoInc = document.getElementById('reporteTipoInc');
+const resultadoReporte = document.getElementById('resultadoReporte');
+const tablaReportes = document.getElementById('tablaReportes');
+conainerReportes.style.display = 'none';
 
+let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 let opcion = '';
 let resultados = '';
-let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
+let tipoReporte;
+let reporteDecision;
+let tablaResultados = '';
+
 
 verificarUsuario ();
 consultarDatos();
@@ -32,7 +48,6 @@ function verificarUsuario () {
         })
         .catch(error => alert(error))
 };
-
 
 // Muestra resultados en cuanto la página carga
 function cargarTabla(incapacidades) {
@@ -58,7 +73,6 @@ function cargarTabla(incapacidades) {
     contenedorLiquidaciones.innerHTML = resultados;
 };
 
-
 //Función para Mostrar resultados
 function consultarDatos () {
     fetch(url)
@@ -82,7 +96,9 @@ function cargarEmpleados() {
                 opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
                 opcion.value = optionData.id_empleado;
                 // Agrega la opción al elemento select
-                empleado.add(opcion);    
+                empleado.add(opcion);
+                const opcionCopia = opcion.cloneNode(true);
+                empleadReporte.add(opcionCopia);     
             });
         })
         .catch(error => {
@@ -104,7 +120,9 @@ function cargarTiposIncapacidades() {
                 opcion.text = optionData.concepto;
                 opcion.value = optionData.id_tipo_incapacidad;
                 // Agrega la opción al elemento select
-                tipoIncapacidad.add(opcion);    
+                tipoIncapacidad.add(opcion);
+                const opcionCopia = opcion.cloneNode(true);
+                reporteTipoInc.add(opcionCopia);    
             });
         })
         .catch(error => {
@@ -122,7 +140,6 @@ btnCrear.addEventListener('click', ()=>{
     opcion = 'crear';
 });
 
-
 //Configuración de botones
 const on = (element, event, selector, handler) => { 
     element.addEventListener(event, e => { 
@@ -132,7 +149,6 @@ const on = (element, event, selector, handler) => {
         };
     });
 };
-
 
 //Editar 
 let idForm = 0;
@@ -269,4 +285,136 @@ formIncapacidad.addEventListener('submit', (e)=> {
     
     modalIncapacidad.hide();
 
+});
+
+//Abre modal reportes limpio
+btnReportes.addEventListener('click', ()=>{
+    flexRadioDefault2.checked = true;
+    empleadReporte.value = ""; 
+    fechaInicioRpt.value = "";
+    fechaFinalRpt.value = ""; 
+    flexSwitchCheckChecked.checked = true;
+    reporteTipoInc.value = "";  
+    modalReportes.show();
+    tipoReporte = 2;
+    reporteDecision = 2;
+    console.log(tipoReporte);
+    console.log(reporteDecision);
+
+});
+
+//Activa el input empleado si se selecciona un reporte individual
+flexRadioDefault1.addEventListener('click', ()=>{
+    empleadReporte.value = "";
+    empleadReporte.disabled = false;
+    tipoReporte = 1;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexRadioDefault2.addEventListener('click', ()=>{
+    empleadReporte.value = "";
+    empleadReporte.disabled = true;
+     
+    tipoReporte = 2;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexSwitchCheckChecked.addEventListener('click', ()=>{
+    if (flexSwitchCheckChecked.checked == true){
+        reporteTipoInc.value = "";
+        reporteTipoInc.disabled = false;
+        reporteDecision = 2
+        console.log(reporteDecision);
+    }
+    if (flexSwitchCheckChecked.checked == false){
+        reporteTipoInc.value = "";
+        reporteTipoInc.disabled = true;
+        reporteDecision = 1;
+        console.log(reporteDecision);
+    }
+    
+});
+
+//Envía la consulta del reporte
+formReportes.addEventListener('submit', (e)=> {
+    e.preventDefault();
+
+        fetch(url + tipoReporte, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:empleadReporte.value,
+                fechaInicioRpt:fechaInicioRpt.value,
+                fechaFinalRpt:fechaFinalRpt.value, 
+                reporteTipoInc:reporteTipoInc.value,
+                reporteDecision:reporteDecision
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                conainerReportes.style.display = 'block';
+                
+                data.forEach(p => {
+                    
+                    tablaResultados += `
+                        <tr>
+                            <td class="text-center">${p.id_incapacidad}</td>
+                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
+                            <td class="text-center">${p.concepto}</td> 
+                            <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
+                            <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${colon.format(p.monto_subcidio)}</td>  
+                        </tr>
+                    `;
+
+                        
+                    resultadoReporte.innerHTML = tablaResultados;
+                });
+                //tablaReportes.style.display = 'block';  
+            }
+        })
+    modalReportes.hide();
+});
+
+btnImprimir.addEventListener('click', ()=>{
+    
+    
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    //Título del pdf
+    doc.text(20,20, "Reporte de Permisos");
+
+    const filas = [];
+    const encabezado = ["N.", "Empleado", "Incapacidad", "Fecha Inicio", "Fecha Fin", "Monto Subcidio Diario" ];
+    
+    const tabla = document.querySelector("#resultadoReporte");
+    
+    tabla.querySelectorAll("tbody tr").forEach(fila => {
+        const datos = [];
+        fila.querySelectorAll("td").forEach(celda => {
+            datos.push(celda.innerText);
+        });
+        filas.push(datos);
+    });
+    doc.autoTable({
+        startY: 30,
+        head: [encabezado],
+        body:filas,
+    })
+    doc.save('reporte.pdf')
 });

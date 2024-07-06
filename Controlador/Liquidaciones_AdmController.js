@@ -10,6 +10,7 @@ class LiquidacionesController {
     inicializarRutas() {
         this.router.get('/', this.consultarLiquidaciones);
         this.router.post('/', this.calcularLiquidacion);
+        this.router.post('/:tipoReporte', this.generarReportes);
         this.router.delete('/:id_liquidacion', this.eliminarLiquidacion);
     };
 
@@ -220,6 +221,29 @@ class LiquidacionesController {
             };
         });
         
+    };
+
+    generarReportes(req, res) {      
+        console.log('llegooooos')
+        let tipoReporte = req.params.tipoReporte;
+        let id_empleado = req.body.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (err, filas) => {
+            if (err) {
+                return res.status(500).json({ error: "Error de servidor" });
+                //throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
     
 

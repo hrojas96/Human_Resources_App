@@ -63,7 +63,7 @@ function mostrar(planillas) {
                             <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
                             <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td>  
                             <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td>  
-                            <td class="text-center">${colon.format(p.monto_cancelado)}</td>  
+                            <td class="text-end">${colon.format(p.monto_cancelado)}</td>  
                             <td class="centrar"> 
                                 <a class="btnDesglose btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                 <i class="fa-solid fa-magnifying-glass-plus"></i>

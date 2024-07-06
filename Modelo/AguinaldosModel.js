@@ -34,6 +34,32 @@ class AguinaldosModel {
         conectDB.conexion.query(query, [fecha_desde, fecha_hasta], callback);
     };
 
+    // Función para obtener el delsglose de un salario
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 2 && repoteMonetario == 2){
+            query2 = ` AND Aguinaldo.monto_pagado BETWEEN ${minimo} AND ${maximo} `;
+
+        }else if(tipoReporte == 1 && repoteMonetario == 1){
+            query2 = ` AND Aguinaldo.id_empleado = ${id_empleado} `;
+
+        }else if(tipoReporte == 1 && repoteMonetario == 2){
+            query2 = ` AND Aguinaldo.id_empleado = ${id_empleado} AND Aguinaldo.monto_pagado BETWEEN ${minimo} AND ${maximo} `;
+
+        }else{
+            query2 = ``
+        }
+        const query = `SELECT Aguinaldo.id_aguinaldo, Aguinaldo.fecha_desde, Aguinaldo.fecha_hasta, Aguinaldo.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Aguinaldo.monto_pagado 
+                        FROM Aguinaldo 
+                        LEFT JOIN Empleado ON Aguinaldo.id_empleado = Empleado.id_empleado
+                        WHERE Aguinaldo.fecha_desde >= '${fechaInicioRpt}'  AND Aguinaldo.fecha_hasta <= '${fechaFinalRpt}' ${query2}
+                        ORDER BY Aguinaldo.fecha_desde DESC;`;
+        
+        conectDB.conexion.query(query, callback);
+    };
+
 };
 
 

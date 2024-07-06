@@ -66,7 +66,7 @@ class PlanillaModel {
         conectDB.conexion.query(query, [id_salario], callback);
     };
 
-    // Función para obtener el delsglose de un salario
+    // Función para obtener el reporte de salarios
     generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, callback) {
         
         let query2 = ``;

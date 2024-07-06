@@ -11,6 +11,7 @@ class Incapacidades_AdmController {
     inicializarRutas() {
         this.router.get('/', this.consultarIncapacidadesAdm);
         this.router.post('/', this.calcularIncapacidades);
+        this.router.post('/:tipoReporte', this.generarReportes);
         this.router.put('/:id_incapacidad', this.editarIncapacidadesAdm);
         this.router.delete('/:id_incapacidad', this.eliminarIncapacidadesAdm);
     };
@@ -197,7 +198,31 @@ class Incapacidades_AdmController {
                 return res.json({message: 'La eliminación del registro de incapacidad #' + id_incapacidad + ', se ha realizado correctamente'});
             }
         });
-        
+    };
+
+    generarReportes(req, res) {      
+        console.log('llegooooos')
+        let tipoReporte = req.params.tipoReporte;
+        let id_empleado = req.body.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+        let reporteTipoInc = req.body.reporteTipoInc;
+        let reporteDecision = req.body.reporteDecision;
+
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteTipoInc,reporteDecision, tipoReporte, (err, filas) => {
+            if (err) {
+                res.status(500).json({ error: "Error de servidor" });
+                throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
 
 }

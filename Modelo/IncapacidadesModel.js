@@ -51,6 +51,32 @@ class IncapacidadesModel {
         conectDB.conexion.query(query, [id_incapacidad], callback);
     };
 
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteTipoInc,reporteDecision, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 2 && reporteDecision == 2){
+            query2 = ` AND Incapacidad.id_tipo_incapacidad = "${reporteTipoInc}"`;
+
+        }else if(tipoReporte == 1 && reporteDecision == 1){
+            query2 = ` AND Incapacidad.id_empleado = ${id_empleado} `;
+
+        }else if(tipoReporte == 1 && reporteDecision == 2){
+            query2 = ` AND Incapacidad.id_empleado = ${id_empleado} AND Incapacidad.id_tipo_incapacidad = "${reporteTipoInc}" `;
+
+        }else{
+            query2 = ``
+        }
+        const query =   `SELECT Incapacidad.id_incapacidad, Incapacidad.id_empleado,  Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Incapacidad.id_tipo_incapacidad, Tipo_Incapacidad.concepto, Incapacidad.fecha_desde, Incapacidad.fecha_hasta, Incapacidad.monto_subcidio
+                        FROM Incapacidad 
+                        LEFT JOIN Empleado ON Incapacidad.id_empleado = Empleado.id_empleado
+                        LEFT JOIN Tipo_Incapacidad ON Incapacidad.id_tipo_incapacidad = Tipo_Incapacidad.id_tipo_incapacidad
+                        WHERE Incapacidad.fecha_desde BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}'  ${query2}
+                        ORDER BY Incapacidad.fecha_desde DESC;`;
+        
+        conectDB.conexion.query(query, callback);
+    };
+
 };
 
 

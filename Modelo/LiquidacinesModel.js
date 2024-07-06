@@ -47,6 +47,25 @@ class PlanillaModel {
         conectDB.conexion.query(query, [id_liquidacion], callback);
     };
 
+    // Función para obtener el delsglose de un salario
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 1){
+            query2 = ` WHERE Liquidacion.id_empleado = ${id_empleado} `;
+
+        }else{
+            query2 = `WHERE Liquidacion.fecha BETWEEN '${fechaInicioRpt}'  AND '${fechaFinalRpt}' `
+        }
+        const query =   `SELECT Liquidacion.id_liquidacion, Liquidacion.fecha,  Liquidacion.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Liquidacion.pago_vacaciones, Liquidacion.pago_aguinaldo, Liquidacion.pago_preaviso, Liquidacion.cesantia, Liquidacion.monto_liquidado
+                        FROM Liquidacion 
+                        LEFT JOIN Empleado ON Liquidacion.id_empleado = Empleado.id_empleado
+                        ${query2}
+                        ORDER BY Liquidacion.fecha DESC;`;
+        conectDB.conexion.query(query, callback);
+    };
+
 };
 
 

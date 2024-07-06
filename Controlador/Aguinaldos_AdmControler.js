@@ -11,6 +11,7 @@ class AguinaldosController {
     inicializarRutas() {
         this.router.get('/', this.consultarAguinaldo);
         this.router.post('/', this.calcularAguinaldo);
+        this.router.post('/:tipoReporte', this.generarReportes);
         this.router.delete('/', this.eliminarAguinaldo);
     };
 
@@ -105,6 +106,32 @@ class AguinaldosController {
             }
         });
         
+    };
+
+    generarReportes(req, res) {      
+        console.log('llegooooos')
+        let tipoReporte = req.params.tipoReporte;
+        let id_empleado = req.body.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+        let minimo = req.body.minimo;
+        let maximo = req.body.maximo;
+        let repoteMonetario = req.body.repoteMonetario;
+
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, (err, filas) => {
+            if (err) {
+                return res.status(500).json({ error: "Error de servidor" });
+                //throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
     
 
