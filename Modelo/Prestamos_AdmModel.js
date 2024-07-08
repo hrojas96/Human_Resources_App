@@ -4,8 +4,11 @@ class PrestamosModel {
 
     // Función para obtener todos los puestos
     consultarPrestamos(callback) {
-        const query = 'CALL SP_ConsultaPrestamos()';
-        //const query = 'SELECT * FROM Empleado';
+        const query = `SELECT Prestamos.id_prestamo, Prestamos.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Prestamos.fecha_solicitud,
+                        Prestamos.monto_solicitado, Prestamos.rebajo_salarial, Prestamos.saldo
+                        FROM Prestamos
+                        LEFT JOIN Empleado ON Prestamos.id_empleado = Empleado.id_empleado;`;
+        
         conectDB.conexion.query(query, callback);
     };
 
@@ -31,6 +34,42 @@ class PrestamosModel {
         
         const query = 'DELETE FROM Prestamos WHERE id_prestamo = ?';
         conectDB.conexion.query(query, id_prestamo, callback);
+    };
+
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteSaldo,reporteDecision, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 2 && reporteDecision == 2){
+            if (reporteSaldo == "Pendiente"){
+                query2 = ` Prestamos.fecha_solicitud BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}' AND Prestamos.saldo > 0`;
+            }
+            if (reporteSaldo == "Cancelado"){
+                query2 = ` Prestamos.fecha_solicitud BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}' AND Prestamos.saldo <= 0`;
+            }
+
+        }else if(tipoReporte == 1 && reporteDecision == 1){
+            query2 = `Prestamos.id_empleado = ${id_empleado} `;
+
+        }else if(tipoReporte == 1 && reporteDecision == 2){
+           
+            if (reporteSaldo == "Pendiente"){
+                 query2 = `Prestamos.id_empleado = ${id_empleado}  AND Prestamos.saldo > 0`;
+            }
+            if (reporteSaldo == "Cancelado"){
+                 query2 = `Prestamos.id_empleado = ${id_empleado} AND Prestamos.saldo <= 0`;
+            }
+        }else{
+            query2 = ` Prestamos.fecha_solicitud BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}'`;
+        }
+        
+        const query =  `SELECT Prestamos.id_prestamo, Prestamos.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Prestamos.fecha_solicitud,
+                        Prestamos.monto_solicitado, Prestamos.rebajo_salarial, Prestamos.saldo
+                        FROM Prestamos
+                        LEFT JOIN Empleado ON Prestamos.id_empleado = Empleado.id_empleado
+                        WHERE ${query2}
+                        ORDER BY Prestamos.fecha_solicitud DESC ;`;
+        conectDB.conexion.query(query, callback);
     };
 
 }

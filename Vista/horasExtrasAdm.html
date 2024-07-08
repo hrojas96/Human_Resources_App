@@ -12,6 +12,10 @@
     <link href="https://alertifyjs.com/build/css/alertify.css" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    
     <link rel="stylesheet" href="Css/menu.css">
     <link rel="stylesheet" href="Css/tablas.css">
     
@@ -57,10 +61,10 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 2%;">Marca</th>
-                                    <th style="width: 5%;">Fecha</th>
-                                    <th style="width: 5%;">Empleado</th>
-                                    <th style="width: 5%;">Horas Extras</th>
-                                    <th style="width: 5%;">RRHH</th>
+                                <th style="width: 5%;">Fecha</th>
+                                <th style="width: 5%;">Empleado</th>
+                                <th style="width: 5%;">Horas Extras</th>
+                                <th style="width: 5%;">RRHH</th>
                             </tr>
                         </thead>
                         <tbody id="contenedorDeligenciados" class="table-group-divider"> 
@@ -79,7 +83,26 @@
             <div id="conainerReportes" class="container">
                 <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
                     <h4 id="titulo">Reportes</h4>
-                    <div class="" id="tablaReportes" > </div>
+                    <div class="" id="tablaReportes" >
+
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 2%;">Marca</th>
+                                    <th style="width: 5%;">Fecha</th>
+                                    <th style="width: 5%;">Empleado</th>
+                                    <th style="width: 5%;">Horas Extras</th>
+                                    <th style="width: 5%;">Jefatura</th>
+                                    <th style="width: 5%;">RRHH</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="resultadoReporte" class="table-group-divider"> 
+                            </tbody>
+                        </table> <br> 
+
+
+                    </div>
                     <button id="btnImprimir" type="button" style="background-color:transparent; color: #255387; border-color:transparent;" >Imprimir  <i class="fa-solid fa-print"></i></button>
                     
                 </div>
@@ -115,8 +138,8 @@
             </div>
         </section>
 
-         <!--Modal Reportes-->
-         <section> 
+          <!--Modal Reportes-->
+        <section> 
             <div id="modalReportes" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -147,7 +170,18 @@
                                 <label for="fechaFinalRpt" class="form-label">Hasta:</label><br>
                                 <input type="date" class="form-control" id="fechaFinalRpt" required> <br>
                             </div> <br>
-                            
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Incluir decisión</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="decision" class="form-label">Decisión de RRHH:</label>
+                                <select class="form-select" id="decision" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Aprobado">Aprobado</option>
+                                    <option value="Denegado">Denegado</option>
+                                </select>
+                            </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

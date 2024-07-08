@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="alertifyjs/css/themes/default.min.css" />
     <link href="https://alertifyjs.com/build/css/alertify.css" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    
     <link rel="stylesheet" href="Css/menu.css">
     <link rel="stylesheet" href="Css/tablas.css">
     
@@ -54,10 +58,47 @@
                             <tbody class="table-group-divider"> 
                             </tbody>
                         </table> 
-                    </div>  
+                    </div> 
+                    <div>
+                        <a id="btnReportes" class=" btn   btn-sm" data-bs-toggle="modal" style="background-color:rgb(82, 80, 80); border-color: #070707; color:white;" data-bs-target="#modalReportes"> 
+                            Generar Reportes <i class="fa-regular fa-paste"></i>
+                        </a>
+                    </div><br> 
                 </div>
             </div>
         </section>
+
+        <!--Tabla Reportes-->
+        <section>
+            <div id="conainerReportes" class="container">
+                <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
+                    <h4 id="titulo">Reportes</h4>
+                    <div class="" id="tablaReportes" >
+
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 4%;">N. Préstamo</th>
+                                    <th style="width: 15%;">Empleado</th>
+                                    <th style="width: 10%;">Fecha de Solicitud</th>
+                                    <th style="width: 10%;">Monto Solicitado</th>
+                                    <th style="width: 10%;">Rebajo Salarial</th>
+                                    <th style="width: 10%;">Saldo</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="resultadoReporte" class="table-group-divider"> 
+                            </tbody>
+                        </table> <br> 
+
+
+                    </div>
+                    <button id="btnImprimir" type="button" style="background-color:transparent; color: #255387; border-color:transparent;" >Imprimir  <i class="fa-solid fa-print"></i></button>
+                    
+                </div>
+            </div>
+        </section>
+
        <!--Modal-->
         <section> 
             <div id="modalPrestamos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -96,6 +137,62 @@
                 </div>
                 </div>    
             </div>
+        </section>
+
+         <!--Modal Reportes-->
+        <section> 
+            <div id="modalReportes" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header  text-white">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Generar Reporte</h1>   
+                    </div>
+                    <div class="modal-body">
+                        <form id="formReportes" class="row g-2">
+                            <div class="form-check col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">Reporte Individual</label>
+                            </div>
+                            <div class="form-check col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">Reporte General</label>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="empleadoReporte" class="form-label">Empleado:</label>
+                                <select class="form-select" id="empleadoReporte" required disabled>
+                                    <option selected>Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaInicioRpt" class="form-label">Desde:</label><br>
+                                <input type="date" class="form-control" id="fechaInicioRpt" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaFinalRpt" class="form-label">Hasta:</label><br>
+                                <input type="date" class="form-control" id="fechaFinalRpt" required> <br>
+                            </div> <br>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Por Concepto de Saldos</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reporteSaldo" class="form-label">Concepto de Saldos:</label>
+                                <select class="form-select" id="reporteSaldo" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Generar</button>
+                    </div>
+                </form>
+                        
+                </div>
+                </div>    
+            </div>
+             
         </section>
     </main>
 

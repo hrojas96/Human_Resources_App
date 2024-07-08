@@ -11,6 +11,7 @@ class PrestamosController {
     inicializarRutas() {
         this.router.get('/', this.consultarPrestamos);
         this.router.post('/', this.insertarPrestamo);
+        this.router.post('/:tipoReporte', this.generarReportes);
         this.router.put('/:id_prestamo', this.editarPrestamo);
         this.router.delete('/:id_prestamo', this.eliminarPrestamo);
     };
@@ -105,6 +106,31 @@ class PrestamosController {
             };
         });
         
+    };
+
+    generarReportes(req, res) {      
+        console.log('llegooooos')
+        let tipoReporte = req.params.tipoReporte;
+        let id_empleado = req.body.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+        let reporteSaldo = req.body.reporteSaldo;
+        let reporteDecision = req.body.reporteDecision;
+
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteSaldo,reporteDecision, tipoReporte, (err, filas) => {
+            if (err) {
+                res.status(500).json({ error: "Error de servidor" });
+                throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
 }
 
