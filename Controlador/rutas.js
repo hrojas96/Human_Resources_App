@@ -4,6 +4,7 @@ const loginApp = require('./LoginController');
 const accesosApp = require('./AccesosController');
 const notificacionApp = require('./NotificacionesController');
 const marcasUsrApp = require('./Marcas_UsrController');
+const marcasAdmApp = require('./Marcas_AdmController');
 const horasExtrasUsrApp = require('./horasExtras_UsrController');
 const horasExtrasJefApp = require('./HorasExtras_JefController');
 const horasExtrasAdmApp = require('./HorasExtras_AdmController');
@@ -50,6 +51,7 @@ app.use('/api/notificaciones', notificacionApp);
 
 // Ruta para marcas
 app.use('/api/marcas', marcasUsrApp);
+app.use('/api/marcasAdm', marcasAdmApp);
 
 // Ruta para horas extras
 app.use('/api/horasExtrasUsr', horasExtrasUsrApp);

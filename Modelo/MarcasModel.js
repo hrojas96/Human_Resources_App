@@ -3,11 +3,7 @@ const email = require('../Controlador/Servicios/servidorEmail');
 
 class MarcasModel {
 
-    // Función para obtener todos las marcas
-    consultarMarcas(callback) {
-        const query = 'SELECT * FROM Marcas';
-        conectDB.conexion.query(query, callback);
-    };
+    //Usuario
 
      // Función para obtener las marcas de un empleado
      consultarMarcasEmp(id_empleado, callback) {
@@ -54,6 +50,17 @@ class MarcasModel {
     consultarMarcaIn(id_empleado, fecha, callback) {
         const query = 'SELECT id_marca, hora_entrada FROM Marcas WHERE id_empleado = ? AND fecha = ?';
         conectDB.conexion.query(query, [id_empleado, fecha], callback);
+    };
+
+    //Administrador
+    // Función para obtener todos las marcas
+    consultarMarcas(callback) {
+        const query =   `SELECT Marcas.id_marca, Marcas.fecha, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Marcas.hora_entrada, Marcas.hora_salida, Marcas.horas_ordinarias, Horas_Extras.horas_extras 
+                        FROM Marcas 
+                        LEFT JOIN Horas_Extras ON Marcas.id_marca = Horas_Extras.id_marca
+                        LEFT JOIN Empleado ON Marcas.id_empleado = Empleado.id_empleado
+                        ORDER BY Marcas.fecha DESC;`;
+        conectDB.conexion.query(query, callback);
     };
 }
 

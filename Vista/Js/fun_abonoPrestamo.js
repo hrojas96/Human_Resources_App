@@ -11,6 +11,7 @@ const montoOriginal = document.getElementById('montoOriginal');
 const rebajoA = document.getElementById('rebajoA');
 const saldoA = document.getElementById('saldoA');
 let datos = '';
+let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
 verificarUsuario ();
 cargarAbonos();
@@ -34,18 +35,18 @@ function verificarUsuario () {
 function mostrarAbonos(abonos) {
     abonos.forEach(a => {
         numPrestamo.textContent = JSON.parse(localStorage.getItem("prestamoid")) || false;
-        empleadoA.textContent = a.id_empleado;
-        fechaA.textContent = a.fecha_solicitud.slice(0, 10);
-        montoOriginal.textContent = a.monto_solicitado;
-        rebajoA.textContent = a.rebajo_salarial;
+        empleadoA.textContent = a.nombre + ' ' + a.apellido1 + ' ' + a.apellido2;
+        fechaA.textContent = new Date(a.fecha_solicitud).toLocaleDateString('es-ES');
+        montoOriginal.textContent = colon.format(a.monto_solicitado);
+        rebajoA.textContent = colon.format(a.rebajo_salarial);
         datos += `<tr>
                             <td>${a.id_abono}</td>
-                            <td>${a.fecha_abono.slice(0, 10)}</td>
-                            <td>${a.monto}</td>
-                            <td>${a.saldo}</td>
+                            <td>${new Date(a.fecha_abono).toLocaleDateString('es-ES')}</td>
+                            <td>${colon.format(a.monto)}</td>
+                            <td>${colon.format(a.saldo)}</td>
                         </tr>    
                      `
-        saldoA.textContent = a.saldo;
+        saldoA.textContent = colon.format(a.saldo);
     });
     contenedorAbonos.innerHTML = datos;
 };

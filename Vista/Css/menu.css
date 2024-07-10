@@ -124,4 +124,13 @@ body{
     
 }
 
+#menuLateral{
+    background-color: #696666;
+}
+
+#opcionesMenu, #ntfPermiso{
+    color: white;
+    text-decoration: none;
+}
+
 

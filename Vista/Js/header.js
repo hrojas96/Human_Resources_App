@@ -53,25 +53,25 @@ menuGeneral.innerHTML =`
                     <img src="Img/logo.png" href="principal.html" alt="logo">
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body">
+                <div class="offcanvas-body" id= "menuLateral">
                     <div>
-                        <a href="marcasEmpl.html">Marcas</a>
+                        <a id="opcionesMenu" href="marcasEmpl.html">Marcas</a>
                     </div>
                     <div>
-                        <a href="planillaUsr.html">Desglose de Salarios</a>
+                        <a id="opcionesMenu" href="planillaUsr.html">Desglose de Salarios</a>
                     </div>
                     <div>
-                        <a href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
+                        <a id="opcionesMenu" href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
                     </div>
                     <div>
-                        <a href="vacacionesUsuario.html">Vacaciones</a>
+                        <a id="opcionesMenu" href="vacacionesUsuario.html">Vacaciones</a>
                     </div>
                     <div>
-                        <a href="permisosUsuario.html">Permisos</a>
+                        <a id="opcionesMenu" href="permisosUsuario.html">Permisos</a>
                     </div>
                     <br>
-                    <spam>___________________ </spam>
-                    <br><br>
+                    <spam id="opcionesMenu">___________________ </spam>
+                    <div id = "menuMarcasAdm"> </div>
                     <div id = "menuplanilla"> </div>
                     <div id = "menuHorasExtrasAdm"> </div>
                     <div id = "menuBonos"> </div>
@@ -82,6 +82,8 @@ menuGeneral.innerHTML =`
                     <div id = "menuAguinaldoAdm"> </div>
                     <div id = "menuLiquidacionesAdm"> </div>
                     <div id = "menuMantenimientos"> </div>
+                    <br>
+                    <spam id="opcionesMenu">___________________ </spam>
                     <div id = "menuVacacionesJF"> </div> 
                     <div id = "menuPermisosJF"> </div>  
                     <div id = "menuHorasExtrasJef"> </div>          
@@ -93,61 +95,67 @@ function tipoUsuario () {
         .then(response => response.json())
         .then(data => {
             console.log(data[0])
+            if (data[0].acc_horasExtras_RRHH == 1) {
+                menuMarcasAdm.innerHTML = 
+                    `<div>
+                        <a id="opcionesMenu" href="marcasAdm.html">Marcas</a>
+                    </div>`
+            };
             if (data[0].acc_planilla == 1) {
                 menuplanilla.innerHTML = 
                     `<div>
-                        <a href="planillaAdm.html">Planilla</a>
+                        <a id="opcionesMenu" href="planillaAdm.html">Planilla</a>
                     </div>
                     <div>
-                        <a href="bonos.html">Bonos</a>
+                        <a id="opcionesMenu" href="bonos.html">Bonos</a>
                     </div>`
             };
             if (data[0].acc_horasExtras_RRHH == 1) {
                 menuHorasExtrasAdm.innerHTML = 
                     `<div>
-                        <a href="horasExtrasAdm.html">Horas Extras Adm</a>
+                        <a id="opcionesMenu" href="horasExtrasAdm.html">Horas Extras Adm</a>
                     </div>`
             };
             if (data[0].acc_prestamos == 1) {
                 menuPrestamos.innerHTML = 
                     `<div>
-                        <a href="prestamos.html">Préstamos</a> 
+                        <a id="opcionesMenu" href="prestamos.html">Préstamos</a> 
                     </div>`
             };
             if (data[0].acc_vacaciones_RRHH == 1) {
                 menuVacacionesAdm.innerHTML = 
                     `<div>
-                        <a id= "" href="vacacionesAdm.html">Vacaciones RRHH</a> 
+                        <a id="opcionesMenu" href="vacacionesAdm.html">Vacaciones RRHH</a> 
                     </div>`
             };
             if (data[0].acc_permisos_RRHH == 1) {
                 menuPermisosAdm.innerHTML = 
                     `<div>
-                        <a id= "" href="permisosAdm.html">Permisos RRHH</a> 
+                        <a id="opcionesMenu" href="permisosAdm.html">Permisos RRHH</a> 
                     </div>`
             };
             if (data[0].acc_incapacidades == 1) {
                 menuIncapacidadesAdm.innerHTML = 
                     `<div>
-                        <a id= "" href="incapacidadesAdm.html">Incapacidades RRHH</a> 
+                        <a id="opcionesMenu" href="incapacidadesAdm.html">Incapacidades RRHH</a> 
                     </div>`
             };
             if (data[0].acc_aguinaldo == 1) {
                 menuAguinaldoAdm.innerHTML = 
                     `<div>
-                        <a id= "" href="aguinaldoAdm.html">Aguinaldos</a> 
+                        <a id="opcionesMenu" href="aguinaldoAdm.html">Aguinaldos</a> 
                     </div>`
             };
             if (data[0].acc_liquidacion == 1) {
                 menuLiquidacionesAdm.innerHTML = 
                     `<div>
-                        <a id= "" href="liquidacionAdm.html">Liquidaciones</a> 
+                        <a  id="opcionesMenu" href="liquidacionAdm.html">Liquidaciones</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {
                 menuMantenimientos.innerHTML = 
                     `<div class="dropdown mt-3">
-                        <a class="dropdown-toggle" id="droplist" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="dropdown-toggle" id="opcionesMenu" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
                             Mantenimientos
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end content" id="drop">
@@ -162,19 +170,19 @@ function tipoUsuario () {
             if (data[0].acc_vacaciones_jefatura == 1) {
                 menuVacacionesJF.innerHTML = 
                     `<div>
-                        <a id= "" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
+                        <a id="opcionesMenu" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_permisos_jefatura == 1) {
                 menuPermisosJF.innerHTML = 
                     `<div>
-                        <a id= "ntfPermiso" href="permisosJefatura.html">Permisos Jefatura</a> 
+                        <a id="ntfPermiso" href="permisosJefatura.html">Permisos Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_horasExtras_jefatura == 1) {
                 menuHorasExtrasJef.innerHTML = 
                     `<div>
-                        <a id= "" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
+                        <a id="opcionesMenu" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
                     </div>`
             };
             

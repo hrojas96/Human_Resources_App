@@ -20,13 +20,13 @@ class Prest_AbonoController {
                 console.log('Hubo un error');
                 //throw error;
             } else {
-                let saldo = filas[0][0].monto_solicitado;
-                filas[0].forEach(a => {
+                let saldo = filas[0].monto_solicitado;
+                filas.forEach(a => {
                     saldo -= a.monto;
                     a.saldo = saldo;
                 });
                 //console.log(filas[0]);
-                res.send(filas[0]);
+                res.send(filas);
                 
             };
         });

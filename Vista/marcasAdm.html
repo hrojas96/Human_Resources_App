@@ -32,20 +32,14 @@
         <section>
             <div id="" class="container">
                 <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
-                    <h4 id="titulo">Registro de Marcas</h4>
-                    <div class="navbar ">
-                        <div class="container-fluid">
-                            <button id="btnEntrada" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalMarcas" >Registrar Entrada <i class="fa-solid fa-right-to-bracket"></i></button>
-                            <button id="btnSalida" type="button" class="btn btn-primary">Registrar Salida <i class="fa-solid fa-right-from-bracket"></i></button>
-                        </div>
-                        
-                    </div>
+                    <h4 id="titulo">Gestión de de Marcas</h4>
                     <div class="" id="contTabla">
                         <table class="table table-sm table-bordered table-striped">
                             <thead><br>
                                 <tr class="text-center">
                                     <th style="width: 4%;">Marca</th>
                                     <th style="width: 10%;">Fecha</th>
+                                    <th style="width: 10%;">Empleado</th>
                                     <th style="width: 10%;">Entrada</th>
                                     <th style="width: 10%;">Salida</th>
                                     <th style="width: 10%;">Horas Ordinarias</th>
@@ -61,32 +55,7 @@
                 </div>
             </div>
         </section>
-       <!--Modal-->
-        <section> 
-            <div id="modalMarcas" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Marca Entrada</h1>   
-                    </div>
-                    <div class="modal-body">
-                        <form id="formMarcas">
-                            <div>
-                                <label for="codigoEntrada" class="form-label">Inserte el código recibido en su correo:</label><br>
-                                <input type="text" class="form-control-sm" id="codigoEntrada" required>
-                                <label id="tiempoCodigo"></label>
-                            </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </form>
-                        
-                </div>
-                </div>    
-            </div>
-        </section>
+       
     </main>
 
      <!--Scripts-->
@@ -96,7 +65,7 @@
     <script src="https://kit.fontawesome.com/591c2f1dc8.js" crossorigin="anonymous"></script>
    
     <script src="./Js/header.js"></script>
-    <script src="./Js/fun_marcasEmp.js"></script>
+    <script src="./Js/fun_marcasAdm.js"></script>
     
 </body>
 </html>

@@ -4,8 +4,13 @@ class Prest_AbonoModel {
 
     // Función para obtener los abonos realizados por un empleado específico
     consultarAbonos(prestamo, callback) {
-        //const query = 'SELECT id_abono, fecha_abono, monto FROM Abono WHERE id_prestamo = ?;';
-        const query = 'CALL SP_ConsultaAbonosPrestamos(?)';
+        
+        const query = `SELECT Prestamos.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Prestamos.fecha_solicitud, Prestamos.monto_solicitado, 
+                        Prestamos.rebajo_salarial, Abono.id_abono, Abono.fecha_abono, Abono.monto
+                        FROM Prestamos
+                        LEFT JOIN Abono ON Prestamos.id_prestamo = Abono.id_prestamo
+                        LEFT JOIN Empleado ON Prestamos.id_empleado = Empleado.id_empleado
+                        WHERE Prestamos.id_prestamo = ?;`;
         conectDB.conexion.query(query, [prestamo],callback);
     };
 
