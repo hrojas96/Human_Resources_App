@@ -16,19 +16,6 @@ class Per_MarcasController {
         this.router.put('/:id_empleado', this.editarMarca);
     };
 
-    //Consulta todas las marcas de todos los empleados (Adm)
-    /*consultarMarcas(req, res) {
-        
-        accesos.consultarMarcas((error, filas) => {
-            if (error) {
-                console.log('Hubo un error');
-                //throw err;
-            } else {
-                res.send(filas);
-            };
-        });
-    };*/
-
     //Consulta todas las marcas de un empleado específico
     consultarMarcasEmp(req, res) {
         let id_empleado = req.params.id_empleado;
@@ -49,17 +36,7 @@ class Per_MarcasController {
         let codigo = req.body.codigo;
         try {
             
-            accesos.enviarCodigo(codigo, id_empleado, (err, fila) => {
-                
-                if (err) {
-                    
-                    res.status(400).json({ error: "Error al enviar el correo. Verifique que su correo sea correcto en el sistema." });
-                    
-                } else {
-                    // Enviamos respuesta de BD
-                    return res.json({message:'Revise su correo por el código de marca'});
-                }
-            });
+            accesos.enviarCodigo(codigo, id_empleado);
         } catch (error) {
             console.error("Error during database insertion:", error);
             res.status(500).json({ error: "Error de servidor" });
@@ -82,7 +59,7 @@ class Per_MarcasController {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
                         console.log('Hubo un error');
-                        //throw err;
+                        res.status(400).json({ error: "Hubo un error al registrar su marca " });
                     };
                 } else {
                     // Enviamos respuesta de BD
@@ -132,38 +109,6 @@ class Per_MarcasController {
                     //Revisa si hay registro de extrass
                     if(horasTrabajadas > horas_ordinarias){ 
                         horas_extras = horasTrabajadas - horas_ordinarias;
-                        let estado = 'Pendiente';
-                        let decision_jefatura = 'Pendiente';
-                        let decision_RRHH = 'Pendiente';
-                        try {
-                            let data = [{
-                                id_marca,
-                                horas_extras,
-                                estado,
-                                decision_jefatura,
-                                decision_RRHH
-                            }];
-                            //Hace el resgistro de las extras
-                            accesos.insertarHoraExtra(data, (err, fila) => {
-                                
-                                if (err) {
-                                    if (err.code === 'ER_DUP_ENTRY') {
-                                        res.status(400).json({ error: "Datos duplicados" });
-                                    } else {
-                                        console.log('Hubo un error')
-                                        //throw err;
-                                    };
-                                } else {
-                                    console.log('Horas extras registradas')
-                                    // Enviamos respuesta de BD
-                                    //res.send(fila);
-                                };
-                            });
-                            } catch (error) {
-                                console.error("Error during database insertion:", error);
-                                res.status(500).json({ error: "Error de servidor" });
-                        };
-
                     }else{
                         horas_ordinarias = horasTrabajadas.toFixed(2);
                     }
@@ -180,6 +125,37 @@ class Per_MarcasController {
                                     //throw err;
                                 };
                             } else {
+                                let estado = 'Pendiente';
+                                let decision_jefatura = 'Pendiente';
+                                let decision_RRHH = 'Pendiente';
+                                try {
+                                    let data = [{
+                                        id_marca,
+                                        horas_extras,
+                                        estado,
+                                        decision_jefatura,
+                                        decision_RRHH
+                                    }];
+                                    //Hace el resgistro de las extras
+                                    accesos.insertarHoraExtra(data, (err, fila) => {
+                                        
+                                        if (err) {
+                                            if (err.code === 'ER_DUP_ENTRY') {
+                                                res.status(400).json({ error: "Datos duplicados" });
+                                            } else {
+                                                console.log('Hubo un error')
+                                                //throw err;
+                                            };
+                                        } else {
+                                            console.log('Horas extras registradas')
+                                            // Enviamos respuesta de BD
+                                            //res.send(fila);
+                                        };
+                                    });
+                                    } catch (error) {
+                                        console.error("Error during database insertion:", error);
+                                        res.status(500).json({ error: "Error de servidor" });
+                                };
                                 res.send(fila);
                             };
                         });

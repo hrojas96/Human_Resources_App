@@ -9,11 +9,13 @@ const tiempoCodigo = document.getElementById('tiempoCodigo');
 
 let opcion = '';
 let resultados = '';
+let marcasEmpleados = [];
 
 
 cargarTabla();
 
 function mostrarTabla(marcas) {
+    marcasEmpleados = marcas;
     resultados = '';
     marcas.forEach(m =>{
         if (m.hora_salida == null ){
@@ -44,66 +46,74 @@ function cargarTabla () {
 };
 
 btnEntrada.addEventListener('click', ()=>{
-    //Se crea el código de doble verificación
-    let codigo = '';
-    let str = '0123456789';
-    for (let i = 1; i <= 5; i++) {
-        let char = Math.floor(Math.random()
-            * str.length + 1);
-        codigo += str.charAt(char)
-    };
-    console.log(codigo);
 
-    //Se encripta el código
-    //const codigo = crypto.createHash('md5').update(pass).digest('hex');
-    localStorage.setItem("codigoMarca", JSON.stringify(codigo));
-
-    //Se envía el código al usuario por email
-    fetch(url + cedula, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ codigo: codigo }),
-    })
-    .then((response) => response.json())
-    .then( data =>{
-        console.log(data);
-        if (data.error) {
+    let date = new Date().toISOString().split('T')[0];
+    if (marcasEmpleados[0].fecha.slice(0, 10) == date && marcasEmpleados[0].hora_entrada != ''){
+    
+        alertify
+            .alert('Aviso', 'Ya existe una marca de entrada registrada el día de hoy', function(){
+                alertify.message('OK');
+                modalMarcas.hide();
+            });
             
-            alertify
-                .alert('Aviso', data.error, function(){
-                    alertify.message('OK');
-                });
-            //alert(data.error)
-        } else {
-            alertify
-                .alert('Aviso', data.message, function(){
-                    alertify.message('OK');
-                });
-        }
-    })
-    .catch((error) => console.error("Error en la solicitud:", error));
+    }else{
+        //Se crea el código de doble verificación
+        let codigo = '';
+        let str = '0123456789';
+        for (let i = 1; i <= 5; i++) {
+            let char = Math.floor(Math.random()
+                * str.length + 1);
+            codigo += str.charAt(char)
+        };
+        console.log(codigo);
 
-    //Configuración de cronómetro
-    codigoEntrada.value = "";
-    let temporizador = 45;
-    let tiempo = setInterval(()=>{
-        tiempoCodigo.textContent = temporizador + ' segundos';
-        temporizador --;
-        if (temporizador == 0){
-            alertify
-                    .alert('Alerta', `Su tiempo para el ingreso del código ha caducado. Por favor solicite uno
-                                         nuevamente ingresando la marca de entrada`, function(){
+        //Se encripta el código
+        //const codigo = crypto.createHash('md5').update(pass).digest('hex');
+        localStorage.setItem("codigoMarca", JSON.stringify(codigo));
+
+        //Se envía el código al usuario por email
+        fetch(url + cedula, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ codigo: codigo }),
+        })
+        .then((response) => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', 'Ha ocurrido un error. Verifique que su correo sea correcto', function(){
                         alertify.message('OK');
-                        clearInterval(tiempo);
-                        location.reload();
                     });
-            
-        }
-    }, 1000);
+                
+            };
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
 
-    modalMarcas.show();
+        //Configuración de cronómetro
+        codigoEntrada.value = "";
+        let temporizador = 45;
+        let tiempo = setInterval(()=>{
+            tiempoCodigo.textContent = temporizador + ' segundos';
+            temporizador --;
+            if (temporizador == 0){
+                alertify
+                        .alert('Alerta', `Su tiempo para el ingreso del código ha caducado. Por favor solicite uno
+                                            nuevamente ingresando la marca de entrada`, function(){
+                            alertify.message('OK');
+                            clearInterval(tiempo);
+                            location.reload();
+                        });
+                
+            }
+        }, 1000);
+
+        modalMarcas.show();
+        
+    }   
     
 });
 
@@ -114,7 +124,6 @@ formMarcas.addEventListener('submit', (e)=> {
 
     const codigoMarca = JSON.parse(localStorage.getItem("codigoMarca")) || false;
     if (codigoEntrada.value == codigoMarca){
-        alert('codigo correcto')
 
         let DateTime = new Date();
         console.log(DateTime);
@@ -125,8 +134,6 @@ formMarcas.addEventListener('submit', (e)=> {
         let horaFormato = DateTime.toTimeString();
         let horaEntrada = horaFormato.slice(0,8);
         console.log('hora: '+ horaEntrada);
-
-       
         
         fetch(url, {
             method: 'POST',
@@ -154,6 +161,12 @@ formMarcas.addEventListener('submit', (e)=> {
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
+    }else{
+        alertify
+            .alert('Aviso', 'El código digitado es incorrecto, intentelo nuevamente', function(){
+                alertify.message('OK');
+            });
+
     }
     modalMarcas.hide();
         
@@ -170,32 +183,43 @@ btnSalida.addEventListener('click', ()=>{
     let horaFormato = DateTime.toTimeString();
     let horaSalida = horaFormato.slice(0,8)
     
-    fetch(url+cedula, {
-        method: 'PUT',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            id_empleado:cedula,
-            fecha:fecha,
-            hora_salida:horaSalida
+    let date = new Date().toISOString().split('T')[0];
+    if (marcasEmpleados[0].fecha.slice(0, 10) == date && marcasEmpleados[0].hora_salida != 'Pendiente'){
+    
+        alertify
+            .alert('Aviso', 'Ya existe una marca de salida registrada el día de hoy', function(){
+                alertify.message('OK');
+                modalMarcas.hide();
+            });
+            
+    }else{
+        fetch(url+cedula, {
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:cedula,
+                fecha:fecha,
+                hora_salida:horaSalida
+            })
         })
-    })
-    .then( response => response.json())
-    .then( data =>{
-        if (data.error) {
-            
-            alertify.alert(data.error, function(){
-                    alertify.message('OK');
-                });
-            
-        } else {
-            //console.log('algo pasó')
-            location.reload();
-        }
-    })
-    .catch((error) => console.error("Error en la solicitud:", error));
-    });
+        .then( response => response.json())
+        .then( data =>{
+            if (data.error) {
+                
+                alertify.alert(data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                //console.log('algo pasó')
+                location.reload();
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error)); 
+    }
+})
 
 btnImprimir.addEventListener('click', ()=>{
     console.log('Contenedor', contenedorMarcas)

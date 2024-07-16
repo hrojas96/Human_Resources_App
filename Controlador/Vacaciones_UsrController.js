@@ -92,7 +92,6 @@ class Vacaciones_UsrController {
             console.error('Error durante el proceso:', error);
             return res.status(500).json({ error: 'Hubo un error al consultar si las fechas registradas son hábiles' });
         }
-
     };
     
 
