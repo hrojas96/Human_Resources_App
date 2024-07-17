@@ -48,6 +48,31 @@ class SolicitudesModel {
                 
     };
 
+    consultarPermisos(id_permiso) {
+
+        const query = `SELECT Permisos.id_permiso, Permisos.id_empleado, Permisos.inicio_permiso, Permisos.final_permiso
+                        FROM Permisos 
+                        WHERE Permisos.id_permiso = ?`;
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query, [id_permiso], (err, filas) => {
+                if (err){
+                    reject(err);
+                }
+                else { 
+                    //const [filas] = results;
+                    resolve(filas);
+                }
+            });
+        });
+    };
+
+    insertarSolicitudPermisos(id_permiso, id_empleado, dia_solicitado, pago_dia, callback) {
+        console.log('diadiadia: ', dia_solicitado)
+        const query = 'INSERT INTO Solicitudes (`id_permiso`, `id_empleado`, `dia_solicitado`, `pago_dia`) VALUES (?, ?, ?, ?); ';
+        
+        conectDB.conexion.query(query, [id_permiso, id_empleado, dia_solicitado, pago_dia], callback);
+                
+    };
 }
 
 module.exports = new SolicitudesModel();

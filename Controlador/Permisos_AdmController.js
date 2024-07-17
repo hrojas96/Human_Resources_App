@@ -1,6 +1,7 @@
 const express = require('express');
 
 const accesos = require('../Modelo/PermisosModel');
+const solicitudes = require('./SolicitudesController');
 
 class Permisos_AdmController {
     constructor () {
@@ -42,6 +43,9 @@ class Permisos_AdmController {
                     return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                 } else {
                     console.log(resultado);
+                    if (decision_RRHH == 'Aprobado' && derecho_pago == 'Aprobado'){
+                        solicitudes.solicitudesPermisos(id_permiso);
+                    }
                     return res.json({message: 'La edición del permiso #' + id_permiso + ', se ha realizado correctamente'});
                 }
             });
