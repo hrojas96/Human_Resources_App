@@ -7,10 +7,10 @@ class VacacionesModel {
 
         const query = `SELECT Vacaciones.id_vacaciones, Vacaciones.inicio_vacacion, Vacaciones.final_vacacion, Vacaciones.cant_dias_solicitados, 
 		                Vacaciones.decision_jefatura, Vacaciones.msj_jefatura, Vacaciones.decision_RRHH, Vacaciones.msj_RRHH, Empleado.fecha_ingreso   
-                        FROM Vacaciones 
-                        LEFT JOIN Empleado ON Vacaciones.id_empleado = Empleado.id_empleado 
-                        WHERE Vacaciones.id_empleado = ?
-                        ORDER BY inicio_vacacion DESC;`;
+                        FROM Empleado 
+                        LEFT JOIN Vacaciones ON Empleado.id_empleado = Vacaciones.id_empleado 
+                        WHERE Empleado.id_empleado = ?
+                        ORDER BY Vacaciones.inicio_vacacion DESC;`;
         conectDB.conexion.query(query, [id_empleado], callback);
     };
 
@@ -59,7 +59,7 @@ class VacacionesModel {
     editarVacacionesAdm(decision_RRHH, msj_RRHH, id_vacaciones, callback) {
 
         const query = 'UPDATE Vacaciones SET decision_RRHH = ?, msj_RRHH = ? WHERE id_vacaciones = ?';
-        conectDB.conexion.query(query, [decision_RRHH, msj_RRHH, derecho_pago, id_vacaciones], callback);
+        conectDB.conexion.query(query, [decision_RRHH, msj_RRHH, id_vacaciones], callback);
     };
 
     // Función para obtener el delsglose de un salario

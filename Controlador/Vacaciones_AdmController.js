@@ -1,6 +1,7 @@
 const express = require('express');
 
 const accesos = require('../Modelo/VacacionesModel');
+const solicitudes = require('./SolicitudesController');
 
 class Vacaciones_AdmController {
     constructor () {
@@ -42,6 +43,9 @@ class Vacaciones_AdmController {
                     return res.status(500).json({ error: 'Error al editar las vacaciones en la base de datos' });
                 } else {
                     console.log(resultado);
+                    if (decision_RRHH == 'Aprobado'){
+                        solicitudes.solicitudesVacaciones(id_vacaciones);
+                    }
                     return res.json({message: 'La edición del registro #' + id_vacaciones + ', se ha realizado correctamente'});
                 }
             });

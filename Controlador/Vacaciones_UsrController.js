@@ -24,21 +24,26 @@ class Vacaciones_UsrController {
                 console.log('Hubo un error');
                 //throw err;
             } else {
-                //Tomo la fecha de hoy y la de ingreso del empleado
-                let hoy = new Date();
-                let fechaIngreso = new Date (resultado[0].fecha_ingreso);
-                //Obtengo un resultado en milisegndos
-                let diferencia = (hoy.getTime() - fechaIngreso.getTime()) /1000;
-                //Se pasa a días
-                diferencia /= (60 * 60 * 24);
-                //Se pasa a meses
-                diferencia /= 30.5;
-                //Saca los días de vacaciones disponibles
-                let dias_acumulados = diferencia * 1.25;
-                resultado.forEach(a => {
-                    dias_acumulados -= a.cant_dias_solicitados;
-                    a.dias_acumulados = dias_acumulados;
-                });
+                if (resultado.length > 0) {
+                    let dias_acumulados = 0;
+                    console.log('esta llegando aca');
+                    console.log(resultado);
+                    //Tomo la fecha de hoy y la de ingreso del empleado
+                    let hoy = new Date();
+                    let fechaIngreso = new Date (resultado[0].fecha_ingreso);
+                    //Obtengo un resultado en milisegndos
+                    let diferencia = (hoy.getTime() - fechaIngreso.getTime()) /1000;
+                    //Se pasa a días
+                    diferencia /= (60 * 60 * 24);
+                    //Se pasa a meses
+                    diferencia /= 30.5;
+                    //Saca los días de vacaciones disponibles
+                    dias_acumulados = diferencia * 1.25;
+                    resultado.forEach(a => {
+                        dias_acumulados -= a.cant_dias_solicitados;
+                        a.dias_acumulados = dias_acumulados;
+                    });
+                }
                 //console.log(resultado)
                 res.send(resultado);
             };
@@ -49,6 +54,7 @@ class Vacaciones_UsrController {
         let fechaInicial = new Date (req.body.inicio_vacacion);
         let fechaFinal = new Date (req.body.final_vacacion);
         let diasDisponibles = req.body.diasDisponibles;
+        console.log('fechafehcafehca: ',fechaInicial);
 
         try{
             const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal);

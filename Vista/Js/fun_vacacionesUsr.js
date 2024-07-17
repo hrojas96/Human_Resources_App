@@ -22,7 +22,10 @@ consultarDatos();
 function cargarTabla(vacaciones) {
     
     vacaciones.forEach(v =>{
-        
+        diasDisponibles.value = v.dias_acumulados.toFixed(1);
+        if (v.id_vacaciones === null) {
+            return;  
+        }
         if (v.msj_jefatura == null || v.msj_RRHH == null ){
             v.msj_jefatura = " ";
             v.msj_RRHH = " "
@@ -58,7 +61,7 @@ function cargarTabla(vacaciones) {
                             </tr>`
             
             contenedorDeligenciados.innerHTML = resultadosx;
-            diasDisponibles.value = v.dias_acumulados.toFixed(1);
+            
         } 
     });
     

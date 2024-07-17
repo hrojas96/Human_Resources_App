@@ -7,6 +7,7 @@ class DiasHabilesController {
 
     //Insertar puestos
     prosesarDiasHabiles(fechaInicial, fechaFinal) {
+        console.log('llegue a dias habiles')
         return new Promise((resolve, reject) => {
             const diaHabiles = [];
             const dias_solicitados = [];
