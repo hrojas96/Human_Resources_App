@@ -51,10 +51,10 @@ class Vacaciones_UsrController {
     };
 
     async insertarVacacionesUsr(req, res) {
+        
         let fechaInicial = new Date (req.body.inicio_vacacion);
         let fechaFinal = new Date (req.body.final_vacacion);
         let diasDisponibles = req.body.diasDisponibles;
-        console.log('fechafehcafehca: ',fechaInicial);
 
         try{
             const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal);
@@ -62,7 +62,6 @@ class Vacaciones_UsrController {
             if (filas.length <= 0){
                 return res.status(400).json({ error: 'Seleccione días viables para la solicitud de sus vacaciones.' });
             } else{
-                console.log ('Hola dias: ', filas.length);
                 
                 const cant_dias_solicitados = filas.length;
 
@@ -81,10 +80,9 @@ class Vacaciones_UsrController {
                         
                         if (err) {
                                 console.log('Hubo un error', err);
-                                //throw err;
                                 return res.status(500).json({ error: 'Error al insertar las vacaciones en la base de datos' });
                         } else {
-                            console.log(resultado);
+                            //console.log(resultado);
                             return res.json({message:'La solicitud de sus vacaciones se ha realizado correctamente'});
                         }
                     });

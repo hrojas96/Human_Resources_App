@@ -7,14 +7,14 @@ class DiasHabilesController {
 
     //Insertar puestos
     prosesarDiasHabiles(fechaInicial, fechaFinal) {
-        console.log('llegue a dias habiles')
+        
         return new Promise((resolve, reject) => {
             const diaHabiles = [];
             const dias_solicitados = [];
 
             //Toma todos los dias de una fecha a la otra
             while (fechaInicial <= fechaFinal){
-
+                console.log('Fecha actual: ', fechaInicial);
                 //Toma el numero de día (Lunes=0)
                 const diaSemana = fechaInicial.getDay();
 
@@ -27,7 +27,6 @@ class DiasHabilesController {
             
                 fechaInicial.setDate(fechaInicial.getDate() + 1);
             };
-            console.log('esto es diaHabiles: ', diaHabiles)
 
             //Consulta a la BD los feriados registrados
             feriados.consultarFeriados( (err, filas) => {

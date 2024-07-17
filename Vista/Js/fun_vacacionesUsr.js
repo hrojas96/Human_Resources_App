@@ -151,6 +151,7 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formVacacionesUsr.addEventListener('submit', (e)=> {
+    alert('1: ', fechaInicio.value);
     //Previene que se recargue la página
     e.preventDefault();  
     const pendiente = 'Pendiente';

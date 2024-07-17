@@ -10,32 +10,28 @@ class SolicitudesController {
 
     //Insertar puestos
     async solicitudesVacaciones(id_vacaciones) {
-        console.log('id vacaciones: ', id_vacaciones)
+    
         try {
             const vacaciones = await accesos.consultarVacaciones(id_vacaciones);
-            console.log('Vacaciones: ', vacaciones);
-            console.log('length: ', vacaciones.length);
+            
             if (vacaciones.length > 0) {
-                let fechaInicial = vacaciones[0].inicio_vacacion;
-                console.log('fechaInicial: ', fechaInicial);
-                let fechaFinal = vacaciones[0].final_vacacion;
-                console.log('fechaFinal: ', fechaFinal);
+
+                let fechaInicialFormato = vacaciones[0].inicio_vacacion.toISOString().slice(0, 10);
+                let fechaInicial = new Date(fechaInicialFormato);
+                let fechaFinalFormato = vacaciones[0].final_vacacion.toISOString().slice(0, 10);
+                let fechaFinal = new Date(fechaFinalFormato);
+             
                 const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal);
-                if (filas.length > 0){
-                    console.log('Filas: ', filas);
+
+                if (filas.length > 0){ 
                     let id_empleado = vacaciones[0].id_empleado;
                     const pagoHora = await accesos.consultarPagoDia(id_empleado);
-                    console.log('pagoHora: ', pagoHora);
                     let pago_dia = pagoHora[0].monto_por_hora * 8;
 
                     for (const i of filas) {
-
-                        console.log('pago_dia: ', pago_dia);
-                        let dia_solicitado = i;
-                        console.log('dia_solicitado: ', dia_solicitado);
+                        let dia_solicitado = i.toISOString().slice(0, 10);
 
                         try {
-
                             await accesos.insertarSolicitudVacaciones(id_vacaciones, id_empleado, dia_solicitado, pago_dia);
                             
                         } catch (error) {
