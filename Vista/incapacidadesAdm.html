@@ -44,14 +44,34 @@
                                 <tr class="text-center">
                                     <th style="width: 5%;">N.</th>
                                     <th style="width: 15%;">Empleado</th>
-                                    <th style="width: 35%;">Incapacidad</th>
+                                    <th style="width: 25%;">Incapacidad</th>
                                     <th style="width: 15%;">Ficha Inicio:</th>
                                     <th style="width: 15%;">Ficha Fin:</th>
                                     <th style="width: 15%;">Monto Subcidio Diario</th>
+                                    <th style="width: 15%;">Estado</th>
                                     <th style="width: 7%;">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider"> 
+                            <tbody id="contenedorIncAdm" class="table-group-divider"> 
+                            </tbody>
+                        </table> 
+                    </div>  
+                </div>
+                <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
+                    <h4 id="titulo">Incapacidades Procesadas</h4>
+                    <div class="" id="contTabla">
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 5%;">N.</th>
+                                    <th style="width: 15%;">Empleado</th>
+                                    <th style="width: 25%;">Incapacidad</th>
+                                    <th style="width: 15%;">Ficha Inicio:</th>
+                                    <th style="width: 15%;">Ficha Fin:</th>
+                                    <th style="width: 15%;">Monto Subcidio Diario</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contenedorProcesados" class="table-group-divider"> 
                             </tbody>
                         </table> 
                     </div>  
@@ -80,6 +100,7 @@
                                     <th style="width: 15%;">Ficha Inicio:</th>
                                     <th style="width: 15%;">Ficha Fin:</th>
                                     <th style="width: 15%;">Monto Subcidio Diario</th>
+                                    
 
                                 </tr>
                             </thead>
@@ -115,7 +136,6 @@
                                     <option selected>Seleccione</option>
                                 </select>
                             </div>
-                            <label style="font-size:medium" for="">Cantidad máxima por ley: <label for="">??</label> </label>
                             <div class="col-md-6">
                                 <label for="fechaDesde" class="form-label">Desde:</label><br>
                                 <input type="date" class="form-control" id="fechaDesde" required>
@@ -123,6 +143,34 @@
                             <div class="col-md-6">
                                 <label for="fechaHasta" class="form-label">Hasta:</label><br>
                                 <input type="date" class="form-control" id="fechaHasta" required>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+                        
+                </div>
+                </div>    
+            </div>
+        </section>
+
+        <!--Modal Estado-->
+        <section> 
+            <div id="modalEstado" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header  text-white">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Aprobar pago incapacidad</h1>   
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEstado" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="estado" class="form-label">Estado:</label>
+                                <select class="form-select" id="estado" required>
+                                    <option value="Aprobado">Aprobado</option>
+                                </select>
                             </div>
                     </div>
                     <div class="modal-footer">

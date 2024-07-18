@@ -102,6 +102,52 @@ class SolicitudesController {
         
     };
 
+    //Solicitudes Incapacidades
+    async solicitudesIncapacidades(id_incapacidad) {
+    
+        try {
+            const incapacidades = await accesos.consultarIncapacidades(id_incapacidad);
+            
+            if (incapacidades.length > 0) {
+
+                let fechaInicialFormato = incapacidades[0].fecha_desde.toISOString().slice(0, 10);
+                let fechaInicial = new Date(fechaInicialFormato);
+                let fechaFinalFormato = incapacidades[0].fecha_hasta.toISOString().slice(0, 10);
+                let fechaFinal = new Date(fechaFinalFormato);
+             
+                const filas = await diasHabiles.prosesarDiasHabiles(fechaInicial, fechaFinal);
+
+                if (filas.length > 0){ 
+                    let id_empleado = incapacidades[0].id_empleado;
+                    let pago_dia = incapacidades[0].monto_subcidio;
+
+                    for (const i of filas) {
+                        let dia_solicitado = i.toISOString().slice(0, 10);
+
+                        try {
+                            await accesos.insertarSolicitudIncapacidad(id_incapacidad, id_empleado, dia_solicitado, pago_dia);
+                            
+                        } catch (error) {
+                            if (error.code === 'ER_DUP_ENTRY') {
+                                console.error("Error: Datos duplicados", error);
+                            } else {
+                                console.error("Error de servidor", error);
+                            }
+                        }
+
+                    }
+                    console.log ('solicitudes agregadas')
+                }
+                
+            }
+
+            
+        } catch (error) {
+            console.error("Error de servidor", error);
+        }
+        
+    };
+
 }
 
 module.exports = new SolicitudesController();

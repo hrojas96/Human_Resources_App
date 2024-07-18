@@ -8,7 +8,7 @@ class IncapacidadesModel {
     };
 
     consultarIncapacidadesAdm(callback) {
-        const query = `SELECT Incapacidad.id_incapacidad, Incapacidad.id_empleado,  Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Incapacidad.id_tipo_incapacidad, Tipo_Incapacidad.concepto, Incapacidad.fecha_desde, Incapacidad.fecha_hasta, Incapacidad.monto_subcidio
+        const query = `SELECT Incapacidad.id_incapacidad, Incapacidad.id_empleado,  Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Incapacidad.id_tipo_incapacidad, Tipo_Incapacidad.concepto, Incapacidad.fecha_desde, Incapacidad.fecha_hasta, Incapacidad.monto_subcidio, Incapacidad.estado
                         FROM Incapacidad 
                         LEFT JOIN Empleado ON Incapacidad.id_empleado = Empleado.id_empleado
                         LEFT JOIN Tipo_Incapacidad ON Incapacidad.id_tipo_incapacidad = Tipo_Incapacidad.id_tipo_incapacidad
@@ -17,18 +17,18 @@ class IncapacidadesModel {
     };
 
     // Función para obtener todos los puestos
-    consultarDatosIncapacidades(fecha_hasta, id_empleado, callback) {
+    consultarDatosIncapacidades(fecha_desde, id_empleado, callback) {
        
         const query = `SELECT Empleado.id_empleado, Puesto.salario_base, SalarioPromedio.salario_promedio
                         FROM Empleado
                         LEFT JOIN 
                             (SELECT id_empleado, SUM(salario_bruto) AS salario_promedio
-                            FROM Planilla WHERE fecha_hasta >= DATE_SUB(?, INTERVAL 3 MONTH)
+                            FROM Planilla WHERE fecha_desde >= DATE_SUB(?, INTERVAL 3 MONTH)
                             GROUP BY id_empleado) 
                             SalarioPromedio ON Empleado.id_empleado = SalarioPromedio.id_empleado
                         LEFT JOIN Puesto ON Empleado.id_puesto = Puesto.id_puesto
                         WHERE Empleado.id_empleado = ?;`;
-        conectDB.conexion.query(query,[fecha_hasta, id_empleado ], callback);
+        conectDB.conexion.query(query,[fecha_desde, id_empleado ], callback);
     };
 
 
@@ -49,6 +49,12 @@ class IncapacidadesModel {
         console.log('llego 1' );
         const query = 'DELETE FROM Incapacidad WHERE id_incapacidad = ? ';
         conectDB.conexion.query(query, [id_incapacidad], callback);
+    };
+
+    aceptarIncapacidad(estado, id_incapacidad, callback) {
+        
+        const query = 'UPDATE Incapacidad SET estado = ? WHERE id_incapacidad = ?';
+        conectDB.conexion.query(query, [estado, id_incapacidad], callback);
     };
 
     generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteTipoInc,reporteDecision, tipoReporte, callback) {

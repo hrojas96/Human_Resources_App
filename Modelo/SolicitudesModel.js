@@ -73,6 +73,32 @@ class SolicitudesModel {
         conectDB.conexion.query(query, [id_permiso, id_empleado, dia_solicitado, pago_dia], callback);
                 
     };
+
+    consultarIncapacidades(id_incapacidad) {
+
+        const query = `SELECT Incapacidad.id_incapacidad, Incapacidad.id_empleado, Incapacidad.fecha_desde, Incapacidad.fecha_hasta, Incapacidad.monto_subcidio
+                        FROM Incapacidad 
+                        WHERE Incapacidad.id_incapacidad = ?`;
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query, [id_incapacidad], (err, filas) => {
+                if (err){
+                    reject(err);
+                }
+                else { 
+                    //const [filas] = results;
+                    resolve(filas);
+                }
+            });
+        });
+    };
+
+    insertarSolicitudIncapacidad(id_incapacidad, id_empleado, dia_solicitado, pago_dia, callback) {
+        console.log('diadiadia: ', dia_solicitado)
+        const query = 'INSERT INTO Solicitudes (`id_incapacidad`, `id_empleado`, `dia_solicitado`, `pago_dia`) VALUES (?, ?, ?, ?); ';
+        
+        conectDB.conexion.query(query, [id_incapacidad, id_empleado, dia_solicitado, pago_dia], callback);
+                
+    };
 }
 
 module.exports = new SolicitudesModel();

@@ -1,6 +1,7 @@
 express = require('express');
 
 const accesos = require('../Modelo/IncapacidadesModel');
+const solicitudes = require('./SolicitudesController');
 
 class Incapacidades_AdmController {
     constructor () {
@@ -13,6 +14,7 @@ class Incapacidades_AdmController {
         this.router.post('/', this.calcularIncapacidades);
         this.router.post('/:tipoReporte', this.generarReportes);
         this.router.put('/:id_incapacidad', this.editarIncapacidadesAdm);
+        this.router.put('/', this.aceptarIncapacidad);
         this.router.delete('/:id_incapacidad', this.eliminarIncapacidadesAdm);
     };
    
@@ -37,15 +39,17 @@ class Incapacidades_AdmController {
         let id_tipo_incapacidad = req.body.id_tipo_incapacidad;
         let fecha_desde = req.body.fecha_desde;
         let fecha_hasta = req.body.fecha_hasta;
+        let estado = req.body.estado;
 
         try {
-            accesos.consultarDatosIncapacidades(fecha_hasta, id_empleado,  async (err, filas) => {
+            accesos.consultarDatosIncapacidades(fecha_desde, id_empleado,  async (err, filas) => {
              
                 if (err) {
                     console.log('Hubo un error');
                     return res.status(500).json({ error: 'Hubo un error al consultar datos de las incapacidades' });
                     
                 } else {
+                    console.log(filas);
                     //Salario promedio de un mes
                     let salarioPromedio = filas[0].salario_promedio;
                     //Salario mínimo según ley por hora (192 horas que se trabajan en un mes)
@@ -76,7 +80,8 @@ class Incapacidades_AdmController {
                         id_tipo_incapacidad,
                         fecha_desde,
                         fecha_hasta,
-                        monto_subcidio
+                        monto_subcidio,
+                        estado
                     }];
                     console.log('DAta: ', data)
                         
@@ -198,6 +203,32 @@ class Incapacidades_AdmController {
                 return res.json({message: 'La eliminación del registro de incapacidad #' + id_incapacidad + ', se ha realizado correctamente'});
             }
         });
+    };
+
+    //Edita el estado de la incapacidad a aceptado
+    aceptarIncapacidad(req, res) {
+        let id_incapacidad = req.body.id_incapacidad;
+        let estado = req.body.estado;
+
+        try {
+            accesos.aceptarIncapacidad( estado, id_incapacidad, (err, resultado) => {
+                
+                if (err) {
+                    console.log('Hubo un error', err);
+                    //throw err;
+                    return res.status(500).json({ error: 'Error al editar la incapacidad en la base de datos' });
+                } else {
+                    console.log(resultado);
+                    if (estado == 'Aprobado'){
+                        solicitudes.solicitudesIncapacidades(id_incapacidad);
+                    }
+                    return res.json({message: 'La edición del registro #' + id_incapacidad + ', se ha realizado correctamente'});
+                }
+            });
+        } catch (error) {
+            console.error('Error durante el proceso:', error);
+        return res.status(500).json({ error: 'Error durante el proceso' });
+        }
     };
 
     generarReportes(req, res) {      

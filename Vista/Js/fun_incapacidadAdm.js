@@ -1,11 +1,16 @@
 const url = 'http://localhost:8000/api/incapacidades/';
-const contenedorLiquidaciones = document.querySelector('tbody');
-const modalIncapacidad = new bootstrap.Modal(document.getElementById('modalIncapacidad'))
+const contenedorIncAdm = document.getElementById('contenedorIncAdm');
+const contenedorProcesados = document.getElementById('contenedorProcesados');
+const modalIncapacidad = new bootstrap.Modal(document.getElementById('modalIncapacidad'));
 const formIncapacidad = document.getElementById('formIncapacidad');
 const empleado = document.getElementById('empleado');
 const tipoIncapacidad = document.getElementById('tipoIncapacidad');
 const fechaDesde = document.getElementById('fechaDesde');
 const fechaHasta = document.getElementById('fechaHasta');
+
+const modalEstado = new bootstrap.Modal(document.getElementById('modalEstado'));
+const formEstado = document.getElementById('formEstado');
+const estado = document.getElementById('estado');
 
 const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
 const formReportes = document.getElementById('formReportes');
@@ -23,6 +28,7 @@ conainerReportes.style.display = 'none';
 let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 let opcion = '';
 let resultados = '';
+let resultadosx = '';
 let tipoReporte;
 let reporteDecision;
 let tablaResultados = '';
@@ -52,25 +58,43 @@ function verificarUsuario () {
 // Muestra resultados en cuanto la página carga
 function cargarTabla(incapacidades) {
     incapacidades.forEach(p =>{
-        console.log(p)
-        resultados += ` <tr data-idCliente="${p.id_empleado}" data-tipoI="${p.id_tipo_incapacidad}" data-fechaDesde="${p.fecha_desde.slice(0, 10)}" data-fechaHasta="${p.fecha_hasta.slice(0, 10)}" >
-                            <td class="text-center">${p.id_incapacidad}</td>
-                            <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
-                            <td class="text-center">${p.concepto}</td> 
-                            <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
-                            <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-center">${colon.format(p.monto_subcidio)}</td> 
-                            <td class="centrar"> 
-                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
-                                <a class="btnBorrar btn btn-danger btn-sm"> 
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </a>
-                            </td> 
-                        </tr>`
+        if (p.estado != 'Aprobado'){
+            console.log(p)
+            resultados += ` <tr data-idCliente="${p.id_empleado}" data-tipoI="${p.id_tipo_incapacidad}" data-fechaDesde="${p.fecha_desde.slice(0, 10)}" data-fechaHasta="${p.fecha_hasta.slice(0, 10)}" >
+                                <td class="text-center">${p.id_incapacidad}</td>
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
+                                <td class="text-center">${p.concepto}</td> 
+                                <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
+                                <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${colon.format(p.monto_subcidio)}</td> 
+                                <td class="text-center">${p.estado}</td> 
+                                <td class="centrar"> 
+                                    <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                    <a class="btnBorrar btn btn-danger btn-sm"> 
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </a>
+                                    <a class="btnEstado btn btn-primary btn-sm" style="background-color:green; border-color: green;">
+                                        <i class="fa-regular fa-circle-check"></i>
+                                    </a>
+                                </td> 
+                            </tr>`
+            contenedorIncAdm.innerHTML = resultados;
+        }else{
+            resultadosx += ` <tr data-idCliente="${p.id_empleado}" data-tipoI="${p.id_tipo_incapacidad}" data-fechaDesde="${p.fecha_desde.slice(0, 10)}" data-fechaHasta="${p.fecha_hasta.slice(0, 10)}" >
+                                <td class="text-center">${p.id_incapacidad}</td>
+                                <td class="text-center">${p.nombre} ${p.apellido1} ${p.apellido2}</td> 
+                                <td class="text-center">${p.concepto}</td> 
+                                <td class="text-center">${new Date(p.fecha_desde).toLocaleDateString('es-ES')}</td>  
+                                <td class="text-center">${new Date(p.fecha_hasta).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${colon.format(p.monto_subcidio)}</td>  
+                            </tr>`
+            contenedorProcesados.innerHTML = resultadosx;
+
+        }
     });
-    contenedorLiquidaciones.innerHTML = resultados;
+    
 };
 
 //Función para Mostrar resultados
@@ -210,7 +234,7 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formIncapacidad.addEventListener('submit', (e)=> {
-
+    let estado = "Pendiente";
     //Previene que se recargue la página
     e.preventDefault();  
 
@@ -227,7 +251,8 @@ formIncapacidad.addEventListener('submit', (e)=> {
                 id_empleado:empleado.value,
                 id_tipo_incapacidad:tipoIncapacidad.value,
                 fecha_desde:fechaDesde.value,
-                fecha_hasta:fechaHasta.value
+                fecha_hasta:fechaHasta.value,
+                estado:estado
             })
         })
         .then( response => response.json())
@@ -284,6 +309,57 @@ formIncapacidad.addEventListener('submit', (e)=> {
     };
     
     modalIncapacidad.hide();
+
+});
+
+//Aceptar Incapacidad
+let idIncapacidad = 0;
+on(document, 'click', '.btnEstado', e => {
+    //Se asigna una posición a cada valor en la tabla para identificar el id
+    const fila = e.target.closest('tr');
+    idIncapacidad = fila.children[0].innerHTML;
+    const estadoForm = fila.children[6].innerHTML;
+
+    estado.value = estadoForm;
+    modalEstado.show();
+});
+
+//Guardar cambios editados o creados
+formEstado.addEventListener('submit', (e)=> {
+    //Previene que se recargue la página
+    e.preventDefault();  
+
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            id_incapacidad:idIncapacidad,
+            estado:estado.value
+        })
+    })
+    .then( response => response.json())
+    .then( data =>{
+        if (data.error) {
+            
+            alertify
+                .alert('Aviso', data.error, function(){
+                    alertify.message('OK');
+                });
+            //alert(data.error)
+        } else {
+            alertify
+                .alert('Aviso', data.message, function(){
+                    alertify.message('OK');
+                    location.reload();
+                });
+        }
+    })
+    .catch((error) => console.error("Error en la solicitud:", error));
+    
+    
+    modalEstado.hide();
 
 });
 
