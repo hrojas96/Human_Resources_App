@@ -33,6 +33,7 @@ const vacacionesUsrApp = require('./Vacaciones_UsrController');
 const vacacionesJefApp = require('./Vacaciones_JefController');
 const vacacionesAdmApp = require('./Vacaciones_AdmController');
 const aguinaldosAdmApp = require('./Aguinaldos_AdmControler');
+const aguinaldosUsrApp = require('./Aguinaldo_UsrController');
 const liquidacionesAdmApp = require('./Liquidaciones_AdmController');
 
 
@@ -104,6 +105,7 @@ app.use('/api/vacacionesAdm', vacacionesAdmApp);
 
 // Ruta para cacular aguinaldos
 app.use('/api/aguinaldos', aguinaldosAdmApp);
+app.use('/api/aguinaldoUsr', aguinaldosUsrApp);
 
 // Ruta para cacular liquidaciones
 app.use('/api/liquidaciones', liquidacionesAdmApp);

@@ -8,7 +8,7 @@ class HorasExtrasModel {
         const query = `SELECT Horas_Extras.id_marca, Marcas.fecha, Horas_Extras.horas_extras, Horas_Extras.estado  
                             FROM Horas_Extras 
                             LEFT JOIN Marcas ON Horas_Extras.id_marca = Marcas.id_marca
-                            WHERE id_empleado = ?
+                            WHERE id_empleado = ? AND Horas_Extras.horas_extras > 0
                             ORDER BY fecha DESC;`;
         conectDB.conexion.query(query, [id_empleado], callback);
     };

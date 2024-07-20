@@ -69,6 +69,9 @@ menuGeneral.innerHTML =`
                     <div>
                         <a id="opcionesMenu" href="permisosUsuario.html">Permisos</a>
                     </div>
+                    <div>
+                        <a id="opcionesMenu" href="aguinaldoUsr.html">Aguinaldos</a>
+                    </div>
                     <br>
                     <spam id="opcionesMenu">___________________ </spam>
                     <div id = "menuMarcasAdm"> </div>

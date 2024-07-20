@@ -51,13 +51,19 @@ class PlanillaController {
     //CalcularSalarios
    
     async calcularPlanilla(req, res) {
+        let id_empleado = req.body.id_empleado;
         let fecha_desde = req.body.fecha_desde;
         let fecha_hasta = req.body.fecha_hasta;
-
+        let calculo = req.body.calculo;
+        let filas;
         try {
-            let filas = await accesos.consultarDatosPlanilla(fecha_desde, fecha_hasta);
-            console.log(filas)
-            
+            if(calculo == 2){
+                filas = await accesos.consultarDatosPlanillaGeneral(fecha_desde, fecha_hasta);
+                console.log( filas);
+            }else if(calculo == 1){
+                filas = await accesos.consultarDatosPlanillaIndividual(id_empleado, fecha_desde, fecha_hasta);
+                console.log(filas);
+            }
             if (filas.length == 0) {
                 console.log('No existen datos en el parámetro de fechas dado, para el cálculo de salarios. Revise las fechas dadas.');
                 return res.status(400).json({ error: 'No existen datos en el parámetro de fechas dado, para el cálculo de salarios. Revise las fechas dadas.' });
@@ -75,9 +81,10 @@ class PlanillaController {
                 let id_empleado = i.id_empleado;
                 let monto_horas_ordinarias = i.pago_horas_ordinarias;
                 let monto_horas_extras = i.pago_horas_extras;
+                let id_bono = i.id_bono;
                 let monto_bono = i.total_bonos;
-                let vacaciones = i.total_dias_solicitados * 8 * i.monto_por_hora;
-                let salario_bruto = monto_horas_ordinarias + monto_horas_extras + vacaciones + monto_bono;
+                let monto_dias_solicitados = i.pago_dias_solicitados;
+                let salario_bruto = monto_horas_ordinarias + monto_horas_extras + monto_dias_solicitados + monto_bono;
                 
                 let deduccion_ccss = salario_bruto * i.rebajo_ccss;
                 let deduccion_bancopopular = salario_bruto * i.rebajo_bancoPopular;
@@ -118,7 +125,9 @@ class PlanillaController {
                     fecha_hasta,
                     monto_horas_ordinarias,
                     monto_horas_extras,
+                    id_bono,
                     monto_bono,
+                    monto_dias_solicitados,
                     salario_bruto,
                     deduccion_ccss,
                     deduccion_bancopopular,
@@ -164,19 +173,58 @@ class PlanillaController {
 
     eliminarPlanilla(req,res) {
         console.log('llego a eliminar');
+        let id_empleado = req.body.id_empleado;
         let fecha_desde = req.body.fecha_desde;
         let fecha_hasta = req.body.fecha_hasta;
-        accesos.eliminarPlanilla(fecha_desde, fecha_hasta,  (error, filas) => {
-            if (error) {
-                console.log('Hubo un error', error );
-                return res.status(500).json({ error: 'Hubo un error al eliminar la planilla' });
-                //throw err;
-            } else {
-                console.log('Planilla eliminada correctamente', filas);
-                return res.status(200).json({ message: 'Planilla eliminada correctamente' });
+        let calculo = req.body.calculo;
+
+        if(calculo == 2){
+            try {
+                accesos.eliminarPlanillaGeneral(fecha_desde, fecha_hasta,  (error, filas) => {
+                    if (error) {
+                        console.log('Hubo un error', error );
+                        return res.status(500).json({ error: 'Hubo un error al eliminar la planilla' });
+                        
+                    } else {
+                        if (filas.affectedRows === 0) {
+                            console.log('No se encontraron planillas con los criterios especificados');
+                            return res.status(404).json({ message: 'No se encontraron planillas con los criterios especificados' });
+                        } else {
+                            console.log('Planilla eliminada correctamente');
+                            return res.status(200).json({ message: 'Planilla eliminada correctamente' });
+                        }
+                    };
+                });
+                
+            } catch (error) {
+                console.error("Error de servidor", error);
+                return res.status(500).json({ error: "Error de servidor" });
+                
             };
-        });
-        
+        }else if(calculo == 1){
+            try {
+                accesos.eliminarPlanillaIndividual(id_empleado, fecha_desde, fecha_hasta,  (error, filas) => {
+                    if (error) {
+                        console.log('Hubo un error', error );
+                        return res.status(500).json({ error: 'Hubo un error al eliminar la planilla' });
+                        
+                    } else {
+                        if (filas.affectedRows === 0) {
+                            console.log('No se encontraron planillas con los criterios especificados');
+                            return res.status(404).json({ message: 'No se encontraron planillas con los criterios especificados' });
+                        } else {
+                            console.log('Planilla eliminada correctamente');
+                            return res.status(200).json({ message: 'Planilla eliminada correctamente' });
+                        }
+                    };
+                });
+                
+            } catch (error) {
+                console.error("Error de servidor", error);
+                return res.status(500).json({ error: "Error de servidor" });
+                
+            };
+        }  
     };
 
     generarReportes(req, res) {      

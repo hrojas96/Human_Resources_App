@@ -5,16 +5,19 @@ const url = 'http://localhost:8000/api/planilla/';
 const urlrenta = 'http://localhost:8000/api/renta/';
 const contenedorPlanilla = document.querySelector('tbody');
 const modalPlanilla = new bootstrap.Modal(document.getElementById('modalPlanilla'));
-
 const formPlanillas = document.getElementById('formPlanillas');
+const calculoIndividual = document.getElementById('calculoIndividual');
+const calculoGeneral = document.getElementById('calculoGeneral');
+const empleado = document.getElementById('empleado');
 const fechaDesde = document.getElementById('fechaDesde');
 const fechaHasta = document.getElementById('fechaHasta');
+let calculo;
 
 const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
 const formReportes = document.getElementById('formReportes');
 const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
 const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
-const empleado = document.getElementById('empleado');
+const empleadoReporte = document.getElementById('empleadoReporte');
 const fechaInicioRpt = document.getElementById('fechaInicioRpt');
 const fechaFinalRpt = document.getElementById('fechaFinalRpt');
 const flexSwitchCheckChecked = document.getElementById('flexSwitchCheckChecked');
@@ -83,27 +86,78 @@ function cargarTabla () {
         .catch(error => console.log(error))
 };
 
+cargarEmpleados();
+//Carga lista de empleados registrados
+function cargarEmpleados() {
+    fetch("http://localhost:8000/api/empleadosRegistrados/")
+        .then(response => response.json())
+        .then(data => {
+            // Recorre los datos y crea las opciones
+            data.forEach((optionData) => {
+                // Crea un elemento option
+                const opcion = document.createElement("option");
+
+                // Establece el valor y texto de la opción
+                opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
+                opcion.value = optionData.id_empleado;
+                // Agrega la opción al elemento select
+                empleado.add(opcion); 
+                const opcionCopia = opcion.cloneNode(true);
+                empleadoReporte.add(opcionCopia);   
+            });
+        })
+        .catch(error => {
+            console.error("Error al obtener los datos:", error);
+        });
+};
+
 //Boton de crear abre modal y limpio
 nuevaPlanilla.addEventListener('click', ()=>{
+    calculoGeneral.checked = true;
+    empleado.value = "";
+    empleado.disabled = true;
     fechaDesde.value = ""; 
     fechaHasta.value = "";  
     modalPlanilla.show();
+    calculo = 2;
     opcion = 'crear';
+});
+
+//Activa el input empleado si se selecciona un calculo individual
+calculoIndividual.addEventListener('click', ()=>{
+    empleado.value = "";
+    empleado.disabled = false;
+    calculo = 1;
+    console.log(calculo);
+});
+
+//Desactiva el input empleado si se selecciona un calculo general
+calculoGeneral.addEventListener('click', ()=>{
+    empleado.value = "";
+    empleado.disabled = true;
+    calculo = 2;
+    console.log(calculo);
 });
 
 //Boton de calcular renta abre modal y limpio
 btnRenta.addEventListener('click', ()=>{
+    calculoGeneral.checked = true;
     fechaDesde.value = ""; 
     fechaHasta.value = "";  
     modalPlanilla.show();
+    calculo = 2;
     opcion = 'renta';
 });
 
 //Borra la planilla de una fecha específica
 btnBorrar.addEventListener('click', e => {
+    calculoGeneral.checked = true;
+    empleado.value = "";
+    empleado.disabled = true;
     fechaDesde.value = ""; 
     fechaHasta.value = "";  
     modalPlanilla.show();
+    calculo = 2;
     opcion = 'borrar';
 });
 
@@ -129,36 +183,72 @@ formPlanillas.addEventListener('submit', (e)=> {
     e.preventDefault();  
     //Insert
     if (opcion == 'crear'){
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                fecha_desde:fechaDesde.value,
-                fecha_hasta:fechaHasta.value
-                
+        if (calculo == '2'){
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    calculo:calculo,
+                    fecha_desde:fechaDesde.value,
+                    fecha_hasta:fechaHasta.value
+                    
+                })
             })
-        })
-        .then( response => response.json())
-        .then( data =>{
-            console.log(data);
-            if (data.error) {
-                
-                alertify
-                    .alert('Aviso', data.error, function(){
-                        alertify.message('OK');
-                    });
-                
-            } else {
-                alertify
-                    .alert('Aviso', data.message, function(){
-                        alertify.message('OK');
-                        location.reload();
-                    });
-            }
-        })
-        .catch((error) => console.error("Error en la solicitud:", error));
+            .then( response => response.json())
+            .then( data =>{
+                console.log(data);
+                if (data.error) {
+                    
+                    alertify
+                        .alert('Aviso', data.error, function(){
+                            alertify.message('OK');
+                        });
+                    
+                } else {
+                    alertify
+                        .alert('Aviso', data.message, function(){
+                            alertify.message('OK');
+                            location.reload();
+                        });
+                }
+            })
+            .catch((error) => console.error("Error en la solicitud:", error));
+        }else if (calculo == '1'){
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    calculo:calculo,
+                    id_empleado:empleado.value,
+                    fecha_desde:fechaDesde.value,
+                    fecha_hasta:fechaHasta.value
+                    
+                })
+            })
+            .then( response => response.json())
+            .then( data =>{
+                console.log(data);
+                if (data.error) {
+                    
+                    alertify
+                        .alert('Aviso', data.error, function(){
+                            alertify.message('OK');
+                        });
+                    
+                } else {
+                    alertify
+                        .alert('Aviso', data.message, function(){
+                            alertify.message('OK');
+                            location.reload();
+                        });
+                }
+            })
+            .catch((error) => console.error("Error en la solicitud:", error));
+        }
     };
 
     if (opcion == 'renta'){
@@ -199,38 +289,72 @@ formPlanillas.addEventListener('submit', (e)=> {
         
         alertify.confirm('Alerta', '¿Seguro que desea borrar este registro?',
         function(){
-
-            fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    fecha_desde:fechaDesde.value,
-                    fecha_hasta:fechaHasta.value
+            if (calculo == '2'){
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        calculo:calculo,
+                        fecha_desde:fechaDesde.value,
+                        fecha_hasta:fechaHasta.value
+                    })
                 })
-            })
-            .then( response => response.json())
-            .then( data => {
-                console.log(data);
-                if (data.error) {
-                    console.log('Error recibido:', data.error);
-                    alertify
-                        .alert('Aviso', data.error, function(){
-                            alertify.message('OK');
-                        });
-                    //alert(data.error)
-                } else {
-                    console.log('Mensaje recibido:', data.message);
-                    alertify
-                        .alert('Aviso', data.message, function(){
-                            alertify.message('OK');
-                            location.reload();
-                        });
-                }
-            })
-            .catch((error) => console.error("Error en la solicitud:", error));
-            
+                .then( response => response.json())
+                .then( data => {
+                    console.log(data);
+                    if (data.error) {
+                        console.log('Error recibido:', data.error);
+                        alertify
+                            .alert('Aviso', data.error, function(){
+                                alertify.message('OK');
+                            });
+                        //alert(data.error)
+                    } else {
+                        console.log('Mensaje recibido:', data.message);
+                        alertify
+                            .alert('Aviso', data.message, function(){
+                                alertify.message('OK');
+                                location.reload();
+                            });
+                    }
+                })
+                .catch((error) => console.error("Error en la solicitud:", error));
+            }else if (calculo == '1'){
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        calculo:calculo,
+                        id_empleado:empleado.value,
+                        fecha_desde:fechaDesde.value,
+                        fecha_hasta:fechaHasta.value
+                    })
+                })
+                .then( response => response.json())
+                .then( data => {
+                    console.log(data);
+                    if (data.error) {
+                        console.log('Error recibido:', data.error);
+                        alertify
+                            .alert('Aviso', data.error, function(){
+                                alertify.message('OK');
+                            });
+                        //alert(data.error)
+                    } else {
+                        console.log('Mensaje recibido:', data.message);
+                        alertify
+                            .alert('Aviso', data.message, function(){
+                                alertify.message('OK');
+                                location.reload();
+                            });
+                    }
+                })
+                .catch((error) => console.error("Error en la solicitud:", error));
+            }
         },
         function(){
             alertify.error('Cancelado');
@@ -244,7 +368,7 @@ formPlanillas.addEventListener('submit', (e)=> {
 //Abre modal reportes limpio
 btnReportes.addEventListener('click', ()=>{
     flexRadioDefault2.checked = true;
-    empleado.value = ""; 
+    empleadoReporte.value = ""; 
     fechaInicioRpt.value = "";
     fechaFinalRpt.value = ""; 
     flexSwitchCheckChecked.checked = true;
@@ -260,16 +384,16 @@ btnReportes.addEventListener('click', ()=>{
 
 //Activa el input empleado si se selecciona un reporte individual
 flexRadioDefault1.addEventListener('click', ()=>{
-    empleado.value = "";
-    empleado.disabled = false;
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = false;
     tipoReporte = 1;
     console.log(tipoReporte);
 });
 
 //Desactiva el input empleado si se selecciona un reporte individual
 flexRadioDefault2.addEventListener('click', ()=>{
-    empleado.value = "";
-    empleado.disabled = true;
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = true;
     tipoReporte = 2;
     console.log(tipoReporte);
 });
@@ -291,29 +415,6 @@ flexSwitchCheckChecked.addEventListener('click', ()=>{
     
 });
 
-cargarEmpleados();
-//Carga lista de empleados registrados
-function cargarEmpleados() {
-    fetch("http://localhost:8000/api/empleadosRegistrados/")
-        .then(response => response.json())
-        .then(data => {
-            // Recorre los datos y crea las opciones
-            data.forEach((optionData) => {
-                // Crea un elemento option
-                const opcion = document.createElement("option");
-
-                // Establece el valor y texto de la opción
-                opcion.text = `${optionData.nombre} ${optionData.apellido1} ${optionData.apellido2}`;
-                opcion.value = optionData.id_empleado;
-                // Agrega la opción al elemento select
-                empleado.add(opcion);    
-            });
-        })
-        .catch(error => {
-            console.error("Error al obtener los datos:", error);
-        });
-};
-
 //Envía la consulta del reporte
 formReportes.addEventListener('submit', (e)=> {
     e.preventDefault();
@@ -324,7 +425,7 @@ formReportes.addEventListener('submit', (e)=> {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                id_empleado:empleado.value,
+                id_empleado:empleadoReporte.value,
                 fechaInicioRpt:fechaInicioRpt.value,
                 fechaFinalRpt:fechaFinalRpt.value, 
                 minimo:minimo.value,

@@ -2,8 +2,8 @@
 
 //Variables
 
-const urlAbonos = 'http://localhost:8000/api/planillaUsr/';
-const contenedorPlanillaUsr = document.querySelector('tbody');
+const urlAbonos = 'http://localhost:8000/api/aguinaldoUsr/';
+const contenedorAguinaldoUsr = document.querySelector('tbody');
 let colon = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC' });
 
 let resultados = '';
@@ -14,10 +14,10 @@ cargarSalarios();
 function mostrarSalarios(salarios) {
     salarios.forEach(a => {
         resultados += `<tr>
-                            <td class="text-center">${a.id_salario}</td>
+                            <td class="text-center">${a.id_aguinaldo}</td>
                             <td class="text-center">${new Date(a.fecha_desde).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${new Date(a.fecha_hasta).toLocaleDateString('es-ES')}</td>
-                            <td class="text-end">${colon.format(a.monto_cancelado)}</td>
+                            <td class="text-end">${colon.format(a.monto_pagado)}</td>
                             <td class="centrar"> 
                                 <a class="btnDesglose btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                     <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -26,7 +26,7 @@ function mostrarSalarios(salarios) {
                         </tr>    
                      `
     });
-    contenedorPlanillaUsr.innerHTML = resultados;
+    contenedorAguinaldoUsr.innerHTML = resultados;
 };
 
 function cargarSalarios() {
@@ -50,7 +50,7 @@ const on = (element, event, selector, handler) => {
 
 on(document, 'click', '.btnDesglose', e => {
     const fila = e.target.closest('tr');
-    let salario = fila.children[0].innerHTML;
-    localStorage.setItem("salarioid", JSON.stringify(salario));
-    window.location.assign("desgloseSalario.html");
+    let aguinaldo = fila.children[0].innerHTML;
+    localStorage.setItem("aguinaldoid", JSON.stringify(aguinaldo));
+    window.location.assign("desgloseAguinaldo.html");
 });

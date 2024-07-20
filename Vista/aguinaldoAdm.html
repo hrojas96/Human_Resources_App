@@ -106,6 +106,20 @@
                     </div>
                     <div class="modal-body">
                         <form id="formAguinaldo" class="row g-2">
+                            <div class="form-check col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="calculoIndividual">
+                                <label class="form-check-label" for="calculoIndividual">Reporte Individual</label>
+                            </div>
+                            <div class="form-check col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="calculoGeneral" checked>
+                                <label class="form-check-label" for="calculoGeneral">Reporte General</label>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="empleado" class="form-label">Empleado:</label>
+                                <select class="form-select" id="empleado" required disabled>
+                                    <option selected>Seleccione</option>
+                                </select>
+                            </div>
                             <div class="col-md-6">
                                 <label for="fechaDesde" class="form-label">Desde:</label><br>
                                 <input type="date" class="form-control" id="fechaDesde" required>
@@ -144,8 +158,8 @@
                                 <label class="form-check-label" for="flexRadioDefault2">Reporte General</label>
                             </div>
                             <div class="col-md-12">
-                                <label for="empleado" class="form-label">Empleado:</label>
-                                <select class="form-select" id="empleado" required disabled>
+                                <label for="empleadoReporte" class="form-label">Empleado:</label>
+                                <select class="form-select" id="empleadoReporte" required disabled>
                                     <option selected>Seleccione</option>
                                 </select>
                             </div>

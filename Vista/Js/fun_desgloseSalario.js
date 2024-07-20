@@ -17,14 +17,15 @@ cargarDesglose();
 function mostrarDesglose(abonos) {
     abonos.forEach(p => {
         console.log(p);
-        fechaDesde.textContent = p.fecha_desde.slice(0, 10);
-        fechaHasta.textContent = p.fecha_hasta.slice(0, 10);;
+        fechaDesde.textContent = new Date(p.fecha_desde).toLocaleDateString('es-ES');
+        fechaHasta.textContent = new Date(p.fecha_hasta).toLocaleDateString('es-ES');
         empleado.textContent = p.nombre + p.apellido1 + p.apellido2;
         idSalario.textContent = p.id_salario;
         datosx += `<tr>
                             <td class="text-end">${colon.format(p.monto_horas_ordinarias)}</td>
                             <td class="text-end">${colon.format(p.monto_horas_extras)}</td>
                             <td class="text-end">${colon.format(p.monto_bono)}</td>
+                            <td class="text-end">${colon.format(p.monto_dias_solicitados)}</td>
                             <td class="text-end">${colon.format(p.deduccion_ccss)}</td>
                             <td class="text-end">${colon.format(p.deduccion_bancopopular)}</td>
                             <td class="text-end">${colon.format(p.deduccion_renta)}</td>
