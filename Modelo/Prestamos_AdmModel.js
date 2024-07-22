@@ -7,14 +7,16 @@ class PrestamosModel {
         const query = `SELECT Prestamos.id_prestamo, Prestamos.id_empleado, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Prestamos.fecha_solicitud,
                         Prestamos.monto_solicitado, Prestamos.rebajo_salarial, Prestamos.saldo
                         FROM Prestamos
-                        LEFT JOIN Empleado ON Prestamos.id_empleado = Empleado.id_empleado;`;
+                        LEFT JOIN Empleado ON Prestamos.id_empleado = Empleado.id_empleado
+                        WHERE Prestamos.saldo > 0
+                        ORDER BY Empleado.nombre ASC, Prestamos.fecha_solicitud DESC;`;
         
         conectDB.conexion.query(query, callback);
     };
 
     // Carga los empleados ya registrados para lista desplegable
     cargarEmpleados(callback) {
-        const query = 'SELECT id_empleado, nombre, apellido1, apellido2  FROM Empleado WHERE estado != "Liquidado"';
+        const query = 'SELECT id_empleado, nombre, apellido1, apellido2  FROM Empleado WHERE estado != "Liquidado" ORDER BY nombre';
         conectDB.conexion.query(query, callback);
     }
 

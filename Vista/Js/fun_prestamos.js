@@ -30,6 +30,7 @@ let resultados = '';
 let tipoReporte;
 let reporteDecision;
 let tablaResultados = '';
+let listaPrestamos;
 
 verificarUsuario ();
 cargarTabla();
@@ -53,6 +54,7 @@ function verificarUsuario () {
 
 // Muestra resultados en cuanto la página carga
 function mostrar(prestamos) {
+    listaPrestamos = prestamos;
     prestamos.forEach(p =>{
         resultados += ` <tr data-fecha="${p.fecha_solicitud.slice(0, 10)}" 
                             data-idCliente="${p.id_empleado}" 
@@ -68,14 +70,20 @@ function mostrar(prestamos) {
                                 <a class="btnAbonos btn btn-primary btn-sm" style="background-color:green; border-color: green;">
                                     <i class="fa-solid fa-magnifying-glass-plus"></i>
                                 </a>
+                            
+                        `;
+        // Añadir botones solo si monto_solicitado es igual a saldo
+        if (p.monto_solicitado === p.saldo) {
+            resultados += `
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                                 <a class="btnBorrar btn btn-danger btn-sm"> 
                                     <i class="fa-regular fa-trash-can"></i>
-                                </a>
-                            </td> 
-                        </tr>`
+                                </a>`;
+        }
+        resultados += `</td> 
+                        </tr>`;
     });
     contenedorPrestamos.innerHTML = resultados;
 };
@@ -188,70 +196,87 @@ formPrestamos.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
 
-    //Insert
-    if (opcion == 'crear'){
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                id_empleado:empleado.value,
-                fecha_solicitud:fecha.value,
-                monto_solicitado:monto.value,
-                rebajo_salarial:rebajo.value,
-                saldo:monto.value,
-                
+    let prestamoPendiente = false;
+
+    // Verifica si ya existe un préstamo pendiente para el empleado
+    for (let i = 0; i < listaPrestamos.length; i++) {
+        if (listaPrestamos[i].id_empleado == empleado.value && listaPrestamos[i].saldo > 0) {
+            prestamoPendiente = true;
+            break;
+        }
+    }
+
+    if (prestamoPendiente){
+        alertify
+            .alert('Aviso', 'Ya existe una préstamo a nombre del mismo empleado con un saldo pendiente', function(){
+                alertify.message('OK');
+            });
+    }else{
+        //Insert
+        if (opcion == 'crear'){
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    id_empleado:empleado.value,
+                    fecha_solicitud:fecha.value,
+                    monto_solicitado:monto.value,
+                    rebajo_salarial:rebajo.value,
+                    saldo:monto.value,
+                    
+                })
             })
-        })
-        .then( response => response.json())
-        .then( data =>{
-            console.log(data);
-            if (data.error) {
-                
-                alertify
-                    .alert(data.error, function(){
-                        alertify.message('OK');
-                    });
-                //alert(data.error)
-            } else {
-                location.reload();
-            }
-        })
-        .catch((error) => console.error("Error en la solicitud:", error));
-    };
-    //Update
-    if(opcion == 'editar'){
-      
-        fetch(url+idForm, {
-            method: 'PUT',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                id_empleado:empleado.value,
-                fecha_solicitud:fecha.value,
-                monto_solicitado:monto.value,
-                rebajo_salarial:rebajo.value,
-                saldo:monto.value
+            .then( response => response.json())
+            .then( data =>{
+                console.log(data);
+                if (data.error) {
+                    
+                    alertify
+                        .alert(data.error, function(){
+                            alertify.message('OK');
+                        });
+                    //alert(data.error)
+                } else {
+                    location.reload();
+                }
             })
-        })
-        .then( response => response.json())
-        .then( data =>{
-            if (data.error) {
-                
-                alertify
-                    .alert(data.error, function(){
-                        alertify.message('OK');
-                    });
-                //alert(data.error)
-            } else {
-                //console.log('algo pasó')
-                location.reload();
-            }
-        })
-        .catch((error) => console.error("Error en la solicitud:", error));
-    };
+            .catch((error) => console.error("Error en la solicitud:", error));
+        };
+        //Update
+        if(opcion == 'editar'){
+        
+            fetch(url+idForm, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    id_empleado:empleado.value,
+                    fecha_solicitud:fecha.value,
+                    monto_solicitado:monto.value,
+                    rebajo_salarial:rebajo.value,
+                    saldo:monto.value
+                })
+            })
+            .then( response => response.json())
+            .then( data =>{
+                if (data.error) {
+                    
+                    alertify
+                        .alert(data.error, function(){
+                            alertify.message('OK');
+                        });
+                    //alert(data.error)
+                } else {
+                    //console.log('algo pasó')
+                    location.reload();
+                }
+            })
+            .catch((error) => console.error("Error en la solicitud:", error));
+        };
+    }
     
     modalPrestamos.hide();
 

@@ -70,11 +70,6 @@ class PlanillaController {
             }
 
             console.log(filas);
-            //let CCSS = 0.0967;
-            //let BP = 0.01;
-            
-
-            //console.log(CCSS, BP)
             
             for (const i of filas) {
             //filas[0].forEach((i) => {

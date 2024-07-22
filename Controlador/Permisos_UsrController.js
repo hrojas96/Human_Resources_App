@@ -101,7 +101,7 @@ class Permisos_UsrController {
                     
                     if (err) {
                             console.log('Hubo un error', err);
-                            //throw err;
+                            
                             return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                     } else {
                         console.log(resultado);

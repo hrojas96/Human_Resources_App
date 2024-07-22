@@ -14,10 +14,9 @@ class Prest_AbonoModel {
         conectDB.conexion.query(query, [prestamo],callback);
     };
 
-
-
-    /*registrarAbono(id_prestamo,monto, saldo, callback) {
-        const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES ( ?, ?)'; 
+    insertarAbono(id_prestamo, monto, saldo, callback) {
+    
+        const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES (?, ?)';
         conectDB.conexion.query(query, [id_prestamo, monto], (err, result) => {
             if (err) {
                 console.error('Error en la base de datos:', err);
@@ -25,16 +24,38 @@ class Prest_AbonoModel {
             } else {
                 callback(null, result);
                 this.editaPrestamo(id_prestamo, saldo);
-                
             };
         });
     };
 
-    editaPrestamo(id_prestamo, saldo, callback) {
-        const query = 'UPDATE Prestamos SET  saldo = ? WHERE id_prestamo = ?';
-        conectDB.conexion.query(query, [saldo, id_prestamo], callback);
-    };*/
+    editarAbono( monto, id_abono, id_prestamo, saldo, callback) {
+        
+        const query = 'UPDATE Abono SET monto = ? WHERE id_abono = ?';
+        conectDB.conexion.query(query, [monto, id_abono], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                callback(null, result);
+                this.editaPrestamo(id_prestamo, saldo);
+            };
+        });
+    };
 
+    eliminarAbono(id_prestamo, saldo, id_abono, callback) {
+        
+        const query = 'DELETE FROM Abono WHERE id_abono = ?';
+        conectDB.conexion.query(query, [id_abono], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                callback(null, result);
+                this.editaPrestamo(id_prestamo, saldo);
+            };
+        });
+    };
+    
     registrarAbono(id_prestamo, monto, saldo) {
         return new Promise((resolve, reject) => {
             const query = 'INSERT INTO Abono (id_prestamo, monto) VALUES (?, ?)';
@@ -52,6 +73,7 @@ class Prest_AbonoModel {
     }
 
     editaPrestamo(id_prestamo, saldo) {
+        console.log('llega a editar prestamo')
         return new Promise((resolve, reject) => {
             const query = 'UPDATE Prestamos SET saldo = ? WHERE id_prestamo = ?';
             conectDB.conexion.query(query, [saldo, id_prestamo], (err, result) => {

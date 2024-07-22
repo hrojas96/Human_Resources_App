@@ -63,7 +63,7 @@
                     </div><br>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#modalPrestamos" >Registrar Abono <i class="fa-solid fa-plus"></i></button>
+                            <button id="btnCrear" type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#modalAbonoPrestamos" >Registrar Abono <i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="" id="contTabla">
@@ -74,29 +74,28 @@
                                     <th style="width: 7%;">Fecha de Abono</th>
                                     <th style="width: 7%;">Monto Abonado</th>
                                     <th style="width: 7%;">Saldo</th>
+                                    <th style="width: 5%;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider"> 
                             </tbody>
                         </table> 
                     </div>  
+                    
+                    <a href="prestamos.html" class="text-end" type="button" style="background-color:transparent; color: #255387; border-color:transparent;" >Regresar a Préstamos</a>
                 </div>
             </div>
         </section>
        <!--Modal-->
         <section> 
-            <div id="modalPrestamos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="modalAbonoPrestamos" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Abono Extraordinario</h1>   
                     </div>
                     <div class="modal-body">
-                        <form id="formEmpleados" class="row g-2">
-                            <div class="col-md-6">
-                                <label for="fechaA" class="form-label">Fecha de Abono:</label>
-                                <input type="date" class="form-control" id="fechaA" required>
-                            </div>
+                        <form id="formAbonos" class="row g-2">
                             <div class="col-md-6">
                                 <label for="abono" class="form-label">Abono Extraordinario:</label>
                                 <input type="number" class="form-control" id="abono" required>
