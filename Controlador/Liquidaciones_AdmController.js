@@ -180,7 +180,7 @@ class LiquidacionesController {
                                         if (err.code === 'ER_DUP_ENTRY') {
                                             return res.status(400).json({ error: "Datos duplicados. La liquidación de este empleado ha sido ya calculada previamente" });
                                         } else {
-                                            console.log('Hubo un error');
+                                            console.log('Hubo un error', err);
                                             return reject(err);
                                         };
                                     } else {

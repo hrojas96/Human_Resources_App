@@ -27,7 +27,9 @@ const permisosAdmApp = require('./Permisos_AdmController');
 const planillaAdmApp = require('./Planilla_AdmController');
 const bonosApp = require('./BonosController');
 const cargasSocialesApp = require('./CargasSocialesController');
+const FactRentaApp = require('./Fact_RentaController');
 const rentaAdmApp = require('./Renta_AdmController');
+const facturacionRentaAdmApp = require('./Facturacion_RentaController');
 const creditosFiscalesApp = require('./CreditosFisclesController');
 const planillaUsrApp = require('./Planilla_UsrController');
 const vacacionesUsrApp = require('./Vacaciones_UsrController');
@@ -94,7 +96,9 @@ app.use('/api/planilla', planillaAdmApp);
 app.use('/api/bonos', bonosApp);
 app.use('/api/cargasSociales', cargasSocialesApp);
 app.use('/api/renta', rentaAdmApp);
+app.use('/api/listaRenta', FactRentaApp);
 app.use('/api/creditoFiscal', creditosFiscalesApp);
+app.use('/api/factRenta', facturacionRentaAdmApp);
 
 // Ruta para planilla Usr
 app.use('/api/planillaUsr', planillaUsrApp);
