@@ -14,9 +14,9 @@ class NotificacionesController {
 
     consultarNotificaciones(req, res) {
         
-        accesos.consultarNotificaciones((error, filas) => {
-            if (error) {
-                console.log('Hubo un error');
+        accesos.consultarNotificaciones((err, filas) => {
+            if (err) {
+                console.log('Hubo un error',err);
                 //throw error;
             } else {
                 res.send(filas);

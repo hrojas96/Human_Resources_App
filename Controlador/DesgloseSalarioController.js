@@ -10,6 +10,7 @@ class Planulla_UsrController {
 
     inicializarRutas() {
         this.router.get('/:id_empleado', this.consultarPlanillaUsr);
+        
     };
 
     //Consulta todas los salarios de un empleado específico
@@ -25,6 +26,9 @@ class Planulla_UsrController {
             };
         });
     };
+
+    
+
 
     
 };

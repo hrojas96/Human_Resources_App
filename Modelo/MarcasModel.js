@@ -79,11 +79,33 @@ class MarcasModel {
         conectDB.conexion.query(query, [horas_extras, id_marca], callback);
     };
 
-    eliminarMarcaAdm(id_marca, callback) {
-        console.log('llego 1' );
-        const query = 'DELETE FROM Marcas WHERE id_marca = ? ';
-        conectDB.conexion.query(query, [id_marca], callback);
+    eliminarHoraExtraAdm(id_marca, callback) {
+        
+        const query = 'DELETE FROM Horas_Extras WHERE id_marca = ? ';
+        conectDB.conexion.query(query, [id_marca], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                callback(null, result);
+                this.eliminarMarcaAdm(id_marca);
+            };
+        });
     };
+
+    eliminarMarcaAdm(id_marca) {
+        return new Promise((resolve, reject) => {
+            const query = 'DELETE FROM Marcas WHERE id_marca = ? ';
+            conectDB.conexion.query(query, [id_marca], (err, result) => {
+                if (err) {
+                    console.error('Error en la base de datos:', err);
+                    return reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
 }
 
 module.exports = new MarcasModel();

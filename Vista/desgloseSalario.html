@@ -82,7 +82,52 @@
                             </tbody>
                         </table> 
                     </div> 
+                    <a class="btnEditarPlanilla btn btn-primary btn-sm" style=" background-color:#255387; border-color: #255387;  display: none;" disabled data-bs-toggle="modal" data-bs-target="#modalEditar">
+                        Editar Planilla <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
                 </div>
+            </div>
+        </section>
+
+        <!--Modal-->
+        <section> 
+            <div id="modalEditar" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header  text-white">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Planilla</h1>   
+                    </div>
+                    <div class="modal-body">
+                        <form id="formDesgloses" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="horasOrdinarias" class="form-label">Horas Ordinarias:</label>
+                                <input type="number" step="10" class="form-control" id="horasOrdinarias" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="horasExtras" class="form-label">Horas Extras:</label>
+                                <input type="number" step="10" class="form-control" id="horasExtras" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="montoBono" class="form-label">Bonos:</label>
+                                <input type="number" step="10" class="form-control" id="montoBono" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="diasPagos" class="form-label">Días con derecho a pago:</label>
+                                <input type="number" step="10" class="form-control" id="diasPagos" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="prestamo" class="form-label">Deducción por préstamos:</label>
+                                <input type="number" step="10" class="form-control" id="prestamo" required>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+                        
+                </div>
+                </div>    
             </div>
         </section>
 

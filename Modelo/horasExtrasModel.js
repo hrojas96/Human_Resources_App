@@ -26,15 +26,15 @@ class HorasExtrasModel {
                         FROM Horas_Extras 
                         LEFT JOIN Marcas ON Horas_Extras.id_marca = Marcas.id_marca
                         LEFT JOIN Empleado ON Marcas.id_empleado = Empleado.id_empleado
-                        WHERE Empleado.id_jefatura = ? AND Horas_Extras.estado = "Solicitado" 
+                        WHERE  Horas_Extras.estado = "Solicitado" OR Horas_Extras.estado = "Denegado" OR Horas_Extras.estado = "Aprobado" AND Empleado.id_jefatura = ? 
                         ORDER BY fecha DESC`; 
         conectDB.conexion.query(query, [id_jefatura], callback);
     };
 
-    editarHorasExtrasJef(decision_jefatura, id_marca, callback) {
+    editarHorasExtrasJef(estado, decision_jefatura, id_marca, callback) {
         
-        const query = 'UPDATE Horas_Extras SET decision_jefatura = ? WHERE id_marca = ?';
-        conectDB.conexion.query(query, [decision_jefatura, id_marca], callback);
+        const query = 'UPDATE Horas_Extras SET estado = ?, decision_jefatura = ? WHERE id_marca = ?';
+        conectDB.conexion.query(query, [estado, decision_jefatura, id_marca], callback);
     };
 
     //ADMINISTRADOR
@@ -49,10 +49,10 @@ class HorasExtrasModel {
         conectDB.conexion.query(query, callback);
     };
 
-    editarHorasExtrasAdm(decision_RRHH, id_marca, callback) {
+    editarHorasExtrasAdm(estado, decision_RRHH, id_marca, callback) {
         console.log('Llega a editar');
-        const query = 'UPDATE Horas_Extras SET decision_RRHH = ? WHERE id_marca = ?';
-        conectDB.conexion.query(query, [decision_RRHH, id_marca], callback);
+        const query = 'UPDATE Horas_Extras SET estado = ?, decision_RRHH = ? WHERE id_marca = ?';
+        conectDB.conexion.query(query, [estado, decision_RRHH, id_marca], callback);
     };
 
     generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, callback) {

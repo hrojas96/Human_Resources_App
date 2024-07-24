@@ -30,14 +30,14 @@ function cargarTabla(vacaciones) {
             v.msj_jefatura = " ";
             v.msj_RRHH = " "
         }
-        if (v.decision_jefatura == 'Pendiente' && v.decision_RRHH == 'Pendiente'){
+        if (v.decision_jefatura == 'Pendiente'){
             resultados += ` <tr data-fechaInicio="${v.inicio_vacacion.slice(0, 10)}" data-fechaFinal="${v.final_vacacion.slice(0, 10)}">
                                 <td class="text-center">${(v.id_vacaciones)}</td> 
                                 <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
                                 <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
                                 <td class="text-center">${v.cant_dias_solicitados}</td>
-                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
-                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
+                                <td class="text-center">${v.decision_jefatura}. ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}. ${v.msj_RRHH}</td> 
                                 <td class="centrar"> 
                                     <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                         <i class="fa-regular fa-pen-to-square"></i>
@@ -55,8 +55,8 @@ function cargarTabla(vacaciones) {
                                 <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
                                 <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
                                 <td class="text-center">${v.cant_dias_solicitados}</td>
-                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
-                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
+                                <td class="text-center">${v.decision_jefatura}. ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}. ${v.msj_RRHH}</td> 
                                 
                             </tr>`
             
@@ -151,7 +151,7 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formVacacionesUsr.addEventListener('submit', (e)=> {
-    alert('1: ', fechaInicio.value);
+    
     //Previene que se recargue la página
     e.preventDefault();  
     const pendiente = 'Pendiente';

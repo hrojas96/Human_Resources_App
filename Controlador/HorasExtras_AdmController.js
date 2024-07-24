@@ -27,6 +27,39 @@ class HorasExtras_AdmController {
     };
 
     //Editar registro de permisos de un único empleado
+    editarHorasExtrasAdm(req, res) {
+        let id_marca = req.params.id_marca;
+        let decision_RRHH = req.body.decision_RRHH;
+
+        let estado = "";
+        if (decision_RRHH == "Aprobado"){
+            estado = "Aprobado"
+        } else if (decision_RRHH == "Denegado"){
+            estado = "Denegado"
+        } else{
+            estado = "Pendiente"
+        }
+        
+        try{   
+             accesos.editarHorasExtrasAdm(estado, decision_RRHH, id_marca, (err, resultado) => {
+                
+                if (err) {
+                        console.log('Hubo un error', err);
+                        //throw err;
+                        return res.status(500).json({ error: 'Error al realizar la solicitud' });
+                } else {
+                    console.log(resultado);
+                    return res.json({message: 'La solicitud #' + id_marca + ', se ha deligenciado correctamente'});
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error durante el proceso:', error);
+            return res.status(500).json({ error: 'Error durante el proceso' });
+        }
+    };
+
+    /*/Editar registro de permisos de un único empleado
     async editarHorasExtrasAdm(req, res) {
         let id_marca = req.params.id_marca;
         let decision_RRHH = req.body.decision_RRHH;
@@ -66,7 +99,7 @@ class HorasExtras_AdmController {
             console.error('Error durante el proceso:', error);
             return res.status(500).json({ error: 'Error durante el proceso' });
         }
-    };
+    };*/
 
     generarReportes(req, res) {      
         console.log('llegooooos')

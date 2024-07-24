@@ -63,8 +63,8 @@ function cargarTabla(vacaciones) {
                                 <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
                                 <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
                                 <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
-                                <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
-                                <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td>   
+                                <td class="text-center">${v.decision_jefatura}. ${v.msj_jefatura}</td> 
+                                <td class="text-center">${v.decision_RRHH}. ${v.msj_RRHH}</td>   
                                 <td class="centrar"> 
                                     <a class="btnDecision btn btn-primary btn-sm" style="background-color:green; border-color: #255387;">
                                     Decisión
@@ -78,8 +78,8 @@ function cargarTabla(vacaciones) {
                             <td class="text-center">${v.nombre} ${v.apellido1} ${v.apellido2}</td>
                             <td class="text-center">${new Date(v.inicio_vacacion).toLocaleDateString('es-ES')}</td> 
                             <td class="text-center">${new Date(v.final_vacacion).toLocaleDateString('es-ES')}</td>
-                            <td class="text-center">${v.decision_jefatura}: ${v.msj_jefatura}</td> 
-                            <td class="text-center">${v.decision_RRHH}: ${v.msj_RRHH}</td> 
+                            <td class="text-center">${v.decision_jefatura}. ${v.msj_jefatura}</td> 
+                            <td class="text-center">${v.decision_RRHH}. ${v.msj_RRHH}</td> 
                             </tr>`
             contenedorDeligenciasos.innerHTML = resultadosx;
 

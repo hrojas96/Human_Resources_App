@@ -30,9 +30,16 @@ class HorasExtras_JefController {
     editarHorasExtrasJef(req, res) {
         let id_marca = req.params.id_marca;
         let decision_jefatura = req.body.decision_jefatura;
+
+        let estado = "";
+        if (decision_jefatura == "Denegado"){
+            estado = "Denegado"
+        } else{
+            estado = "Solicitado"
+        }
         
         try{   
-            accesos.editarHorasExtrasJef(decision_jefatura, id_marca, (err, resultado) => {
+            accesos.editarHorasExtrasJef(estado, decision_jefatura, id_marca, (err, resultado) => {
                 
                 if (err) {
                         console.log('Hubo un error', err);

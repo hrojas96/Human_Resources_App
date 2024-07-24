@@ -21,8 +21,8 @@ class EmpleadoController {
     
         accesos.consultarEmpleados((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Quiero ver el error', error);
+                throw error;
             } else {
                 res.send(filas);
                 //console.log(filas);
@@ -59,19 +59,19 @@ class EmpleadoController {
             telefono:req.body.telefono,
             estado_civil:req.body.estado_civil,
             hijos_dependientes:req.body.hijos_dependientes,
-            provincia:req.body.provincia,
-            canton:req.body.canton,
-            distrito:req.body.distrito,
+            id_provincia:req.body.id_provincia,
+            id_canton:req.body.id_canton,
+            id_distrito:req.body.id_distrito,
             direccion:req.body.direccion
         }];
         try {
-            accesos.insertarEmpleado(data, pass, (error, respuesta) => {
+            accesos.insertarEmpleado(data, pass, (err, respuesta) => {
                 
-                if (error) {
-                    if (error.code === 'ER_DUP_ENTRY') {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La cédula que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error');
+                        console.log('Hubo un error', err);
                         //throw error;
                     };
                 } else {
@@ -102,19 +102,19 @@ class EmpleadoController {
         let telefono = req.body.telefono;
         let estado_civil = req.body.estado_civil;
         let hijos_dependientes = req.body.hijos_dependientes;
-        let provincia = req.body.provincia;
-        let canton = req.body.canton;
-        let distrito = req.body.distrito;
+        let id_provincia = req.body.id_provincia;
+        let id_canton = req.body.id_canton;
+        let id_distrito = req.body.id_distrito;
         let direccion = req.body.direccion;
     
         try {
-            accesos.editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, provincia, canton, distrito, direccion, id_empleado, (error, resultado) => {
+            accesos.editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, (err, resultado) => {
                 
-                if (error) {
-                    if (error.code === 'ER_DUP_ENTRY') {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La cédula que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error')
+                        console.log('Hubo un error', err)
                         //throw error;
                     };
                 } else {
@@ -131,9 +131,9 @@ class EmpleadoController {
     
     eliminarEmpleado(req,res){
         let id_empleado = req.params.id_empleado;
-        accesos.eliminarEmpleado(id_empleado, (error, resultado) => {
-            if (error) {
-                console.log('Hubo un error', error);
+        accesos.eliminarEmpleado(id_empleado, (err, resultado) => {
+            if (err) {
+                console.log('Hubo un error', err);
                 //throw error;
             } else {
                 console.log(resultado);

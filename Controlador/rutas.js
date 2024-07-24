@@ -14,6 +14,7 @@ const tipoIncapacidadApp = require('./TipoIncapacidadController');
 const consultarTiposIncapacidadesApp = require('./Incapacidades_TiposController');
 const incapacidadesApp = require('./Incapacidades_AdmController');
 const empleadosApp = require('./EmpleadoController');
+const direccionesApp = require('./DireccionesController');
 const puestosEmpleadosApp = require('./Emp_PuestosController');
 const rolesEmpleadosApp = require('./Emp_RolesController');
 const feriadosApp = require('./FeriadosController');
@@ -74,6 +75,7 @@ app.use('/api/incapacidades', incapacidadesApp);
 app.use('/api/empleados', empleadosApp);
 app.use('/api/puestosRegistrados', puestosEmpleadosApp);
 app.use('/api/rolesRegistrados', rolesEmpleadosApp);
+app.use('/api/direcciones', direccionesApp);
 
 // Ruta para prestamos
 app.use('/api/prestamos', prestamosAdmApp);

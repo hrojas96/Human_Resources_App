@@ -42,8 +42,14 @@ class VacacionesModel {
     };
 
     editarVacacionesJef(decision_jefatura, msj_jefatura, id_vacaciones, callback) {
+        let query2 = ``;
+        if (decision_jefatura == 'Denegado'){
+            query2 = 'cant_dias_solicitados = 0,';
+        }else{
+            query2 = ``
+        }
         
-        const query = 'UPDATE Vacaciones SET decision_jefatura = ?, msj_jefatura = ? WHERE id_vacaciones = ?';
+        const query = `UPDATE Vacaciones SET ${query2} decision_jefatura = ?, msj_jefatura = ? WHERE id_vacaciones = ?`;
         conectDB.conexion.query(query, [decision_jefatura, msj_jefatura, id_vacaciones], callback);
     };
 
@@ -57,8 +63,13 @@ class VacacionesModel {
     };
 
     editarVacacionesAdm(decision_RRHH, msj_RRHH, id_vacaciones, callback) {
-
-        const query = 'UPDATE Vacaciones SET decision_RRHH = ?, msj_RRHH = ? WHERE id_vacaciones = ?';
+        let query2 = ``;
+        if (decision_RRHH == 'Denegado'){
+            query2 = 'cant_dias_solicitados = 0,';
+        }else{
+            query2 = ``
+        }
+        const query = `UPDATE Vacaciones SET ${query2} decision_RRHH = ?, msj_RRHH = ? WHERE id_vacaciones = ?`;
         conectDB.conexion.query(query, [decision_RRHH, msj_RRHH, id_vacaciones], callback);
     };
 

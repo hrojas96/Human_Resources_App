@@ -25,15 +25,15 @@ function cargarTabla(permisos) {
             p.msj_jefatura = " ";
             p.msj_RRHH = " "
         }
-        if (p.decision_jefatura == 'Pendiente' || p.decision_RRHH == 'Pendiente'){
+        if (p.decision_jefatura == 'Pendiente'){
             resultados += ` <tr data-fechaInicio="${p.inicio_permiso.slice(0, 10)}" data-fechaFinal="${p.final_permiso.slice(0, 10)}">
                                 <td class="text-center">${(p.id_permiso)}</td> 
                                 <td class="text-center">${new Date(p.inicio_permiso).toLocaleDateString('es-ES')}</td> 
                                 <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td>
                                 <td class="text-center">${p.cant_dias_solicitados}</td>
                                 <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td> 
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
+                                <td class="text-center">${p.decision_jefatura}. ${p.msj_jefatura}</td> 
+                                <td class="text-center">${p.decision_RRHH}. ${p.msj_RRHH}</td> 
                                 <td class="text-center">${p.derecho_pago}</td>
                                 <td class="centrar"> 
                                     <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
@@ -52,8 +52,8 @@ function cargarTabla(permisos) {
                                 <td class="text-center">${new Date(p.final_permiso).toLocaleDateString('es-ES')}</td>
                                 <td class="text-center">${p.cant_dias_solicitados}</td>
                                 <td class="text-center">${p.msj_empleado}</td>
-                                <td class="text-center">${p.decision_jefatura}: ${p.msj_jefatura}</td> 
-                                <td class="text-center">${p.decision_RRHH}: ${p.msj_RRHH}</td> 
+                                <td class="text-center">${p.decision_jefatura}. ${p.msj_jefatura}</td> 
+                                <td class="text-center">${p.decision_RRHH}. ${p.msj_RRHH}</td> 
                                 <td class="text-center">${p.derecho_pago}</td>
                                 
                             </tr>`

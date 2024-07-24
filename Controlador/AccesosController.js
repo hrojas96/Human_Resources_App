@@ -15,9 +15,9 @@ class AccesosController {
 
     consultarAccesos(req, res) {
         let usuario = req.params.usuario;
-        accesos.consultarAccesos(usuario,(error, filas) => {
-            if (error) {
-                console.log('Hubo un error');
+        accesos.consultarAccesos(usuario,(err, filas) => {
+            if (err) {
+                console.log('Hubo un error', err);
                 //throw error;
             } else {
                 //console.log(filas[0]);

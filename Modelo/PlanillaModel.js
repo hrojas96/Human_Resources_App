@@ -87,6 +87,12 @@ class PlanillaModel {
         conectDB.conexion.query(query, [id_salario], callback);
     };
 
+    editarDesglosePlanilla(monto_horas_ordinarias, monto_horas_extras, monto_bono, monto_dias_solicitados, salario_bruto, deduccion_ccss, deduccion_bancopopular, deduccion_prestamo, monto_cancelado, id_salario, callback) {
+
+        const query = 'UPDATE Planilla SET monto_horas_ordinarias = ?, monto_horas_extras = ?, monto_bono = ?, monto_dias_solicitados = ?, salario_bruto = ?, deduccion_ccss = ?, deduccion_bancopopular = ?, deduccion_prestamo = ?, monto_cancelado = ? WHERE id_salario = ?';
+        conectDB.conexion.query(query, [monto_horas_ordinarias, monto_horas_extras, monto_bono, monto_dias_solicitados, salario_bruto, deduccion_ccss, deduccion_bancopopular, deduccion_prestamo, monto_cancelado, id_salario], callback);
+    };
+
     // Función para obtener el reporte de salarios
     generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, callback) {
         

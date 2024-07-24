@@ -103,7 +103,7 @@ function cargarEmpleados() {
             });
         })
         .catch(error => {
-            console.error("Error al obtener los datos:", error);
+            console.error("Error al obtener los datos");
         });
 };
 

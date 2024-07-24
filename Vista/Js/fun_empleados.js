@@ -2,8 +2,9 @@
 
 //VARIABLES
 const url = 'http://localhost:8000/api/empleados/';
+const urlDirecciones = 'http://localhost:8000/api/direcciones/';
 const contenedorEmpleados = document.querySelector('tbody');
-const modalEmpleados = new bootstrap.Modal(document.getElementById('modalEmpleados'))
+const modalEmpleados = new bootstrap.Modal(document.getElementById('modalEmpleados'));
 const formEmpleados = document.getElementById('formEmpleados');
 const cedula = document.getElementById('cedula');
 const nombre = document.getElementById('nombre');
@@ -57,7 +58,12 @@ function verificarUsuario () {
 // Muestra resultados en cuanto la página carga
 function mostrar(empleados) {
     empleados[0].forEach(e =>{
-        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" data-puesto="${e.id_puesto}" data-rol="${e.id_rol}" data-jefatura="${e.id_jefatura}" >
+        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" 
+                            data-puesto="${e.id_puesto}" data-rol="${e.id_rol}" 
+                            data-jefatura="${e.id_jefatura}"
+                            data-provincia="${e.id_provincia}"
+                            data-canton="${e.id_canton}"
+                            data-distrito="${e.id_distrito}" >
                             <td class="text-center">${e.id_empleado}</td>
                             <td class="text-center">${e.nombre}</td> 
                             <td class="text-center">${e.apellido1}</td> 
@@ -123,64 +129,75 @@ btnCrear.addEventListener('click', ()=>{
 
 cargarProvincia();
 function cargarProvincia() {
-    fetch('https://ubicaciones.paginasweb.cr/provincias.json')
+    fetch(urlDirecciones)
     .then(response => response.json())
     .then(data => {
-        let prov = "<option>Seleccione</option>";
-        Object.entries(data).forEach(([i, province])  => {
-            prov += `<option value=${i}>${province}</option>`;
+        // Recorre los datos y crea las opciones
+        data.forEach((optionData) => {
+            // Crea un elemento option
+            const opcion = document.createElement("option");
+
+            // Establece el valor y texto de la opción
+            opcion.text = optionData.descripcion;
+            opcion.value = optionData.id_provincia;
+            // Agrega la opción al elemento select
+            provincia.add(opcion);
         });
-            provincia.innerHTML = prov;
-        })
+    })
            
-        .catch(error => {
-            console.error("Error al obtener los datos:", error);
-        });
+    .catch(error => {
+        console.error("Error al obtener los datos");
+    });
 };
+
 provincia.addEventListener('change', (e) => {
-    provinciaSelec = e.target.options[e.target.selectedIndex].text; // Valor seleccionado del cliente
-    cargarCanton();
-});
-
-function cargarCanton() { 
-    console.log(provinciaSelec);
-    fetch(`https://ubicaciones.paginasweb.cr/provincia/${provincia.value}/cantones.json`)
-        .then(response => response.json())
-        .then(data => {
-            let cant = "<option>Seleccione</option>";
-            Object.entries(data).forEach(([i, county])  => {
-                cant += `<option value=${i}>${county}</option>`;
-            });
-            canton.innerHTML = cant;
-        })
-           
-        .catch(error => {
-            console.error("Error al obtener los datos:", error);
-        });
-};
-canton.addEventListener('change', (e) => {
-    cantonSelec = e.target.options[e.target.selectedIndex].text; // Valor seleccionado del cliente
-    cargarDistrito();
-});
-
-function cargarDistrito(){
-    fetch(`https://ubicaciones.paginasweb.cr/provincia/${provincia.value}/canton/${canton.value}/distritos.json`)
+    fetch(urlDirecciones + provincia.value)
     .then(response => response.json())
     .then(data => {
-            let dist = "<option selected>Seleccione</option>";
-            Object.entries(data).forEach(([i, city]) => {
-                dist += `<option value=${i}>${city}</option>`;
-            });
-            distrito.innerHTML = dist;
-        })
-           
-        .catch(error => {
-            console.error("Error al obtener los datos:", error);
+        // Recorre los datos y crea las opciones
+        data.forEach((optionData) => {
+            // Crea un elemento option
+            const opcion = document.createElement("option");
+
+            // Establece el valor y texto de la opción
+            opcion.text = optionData.descripcion;
+            opcion.value = optionData.id_canton;
+            // Agrega la opción al elemento select
+            canton.add(opcion);
         });
-};
-distrito.addEventListener('change', (e) => {
-    distritoSelec = e.target.options[e.target.selectedIndex].text; // Valor seleccionado del cliente
-   
+    })
+           
+    .catch(error => {
+        console.error("Error al obtener los datos");
+    });
+});
+
+canton.addEventListener('change', (e) => {
+
+    fetch(urlDirecciones, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            id_canton:canton.value,
+            
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Recorre los datos y crea las opciones
+        data.forEach((optionData) => {
+            // Crea un elemento option
+            const opcion = document.createElement("option");
+
+            // Establece el valor y texto de la opción
+            opcion.text = optionData.descripcion;
+            opcion.value = optionData.id_distrito;
+            // Agrega la opción al elemento select
+            distrito.add(opcion);
+        });
+    })
 });
 
 //Carga lista de puestos registrados
@@ -279,9 +296,9 @@ on(document, 'click', '.btnEditar', e => {
     const telefonoForm = fila.children[11].innerHTML;
     const estadoCivilForm = fila.children[12].innerHTML;
     const cantHijjosForm = fila.children[13].innerHTML;
-    const provinciaForm = fila.children[14].innerHTML;
-    const cantonForm = fila.children[15].innerHTML;
-    const distritoForm = fila.children[16].innerHTML;
+    const provinciaForm = fila.getAttribute('data-provincia');
+    const cantonForm = fila.getAttribute('data-canton');
+    const distritoForm = fila.getAttribute('data-distrito');
     const direccionForm = fila.children[17].innerHTML;
 
     cedula.value = cedulaForm;
@@ -372,9 +389,9 @@ formEmpleados.addEventListener('submit', (e)=> {
                 telefono:telefono.value,
                 estado_civil:estadoCivil.value, 
                 hijos_dependientes:cantHijjos.value,
-                provincia:provincia.value,
-                canton:canton.value,
-                distrito:distrito.value,
+                id_provincia:provincia.value,
+                id_canton:canton.value,
+                id_distrito:distrito.value,
                 direccion:direccion.value
                 
             })
@@ -420,9 +437,9 @@ formEmpleados.addEventListener('submit', (e)=> {
                 telefono:telefono.value,
                 estado_civil:estadoCivil.value, 
                 hijos_dependientes:cantHijjos.value,
-                provincia:provincia.value,
-                canton:canton.value,
-                distrito:distrito.value,
+                id_provincia:provincia.value,
+                id_canton:canton.value,
+                id_distrito:distrito.value,
                 direccion:direccion.value
             })
         })

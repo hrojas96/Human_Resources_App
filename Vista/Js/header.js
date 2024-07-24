@@ -12,7 +12,7 @@ function verificarIngreso() {
   if (!usuarioID){
     
     alertify.alert('Acceso Denegado', ' Por favor, inicie sesión');
-    window.location = "index.html";
+    window.location = "marcasEmp.html";
   } ;
 };
 
@@ -195,9 +195,8 @@ function tipoUsuario () {
 
 cerrarSesion.addEventListener("click", function (event) {
     // event.preventDefault(); 
-    localStorage.removeItem('userID');
-    localStorage.removeItem('prestamoid');
-    window.location = "index.html";
+    //localStorage.removeItem('userID');
+    localStorage.clear();
  });
     
     

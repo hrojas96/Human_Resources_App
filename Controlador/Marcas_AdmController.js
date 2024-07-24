@@ -156,13 +156,13 @@ class Marcas_AdmController {
 
     eliminarMarcaAdm(req,res) {
         let id_marca = req.params.id_marca;
-        accesos.eliminarMarcaAdm(id_marca,  (error, filas) => {
+        accesos.eliminarHoraExtraAdm(id_marca,  (error, filas) => {
             if (error) {
                 console.log('Hubo un error', error );
-                res.status(500).json({ error: 'Hubo un error al eliminar la marca. No es posible eliminar una marca si esta ha sido tramitrada como horas extras' });
+                res.status(500).json({ error: 'Hubo un error al eliminar la marca.' });
                 
             } else {
-                console.log('Liquidación eliminada correctamente', filas);
+                //console.log('Marca eliminada correctamente', filas);
                 res.status(200).json({ message: 'Marca eliminada correctamente' });
             };
         });    

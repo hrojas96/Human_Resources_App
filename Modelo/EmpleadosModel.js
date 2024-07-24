@@ -38,10 +38,10 @@ class EmpleadoModel {
         });
     };
 
-    editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono,estado_civil, hijos_dependientes, provincia, canton, distrito, direccion, id_empleado, callback) {
+    editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono,estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, callback) {
 
-        const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_rol = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, estado_civil = ?, hijos_dependientes = ?, provincia = ?, canton = ?, distrito = ?, direccion = ? WHERE id_empleado = ?';
-        conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, provincia, canton, distrito, direccion, id_empleado], callback);
+        const query = 'UPDATE Empleado SET nombre = ?, apellido1 = ?, apellido2 = ?, genero = ?, id_puesto = ?, id_rol = ?, id_jefatura = ?, fecha_ingreso = ?, estado = ?, correo = ?, telefono = ?, estado_civil = ?, hijos_dependientes = ?, id_provincia = ?, id_canton = ?, id_distrito = ?, direccion = ? WHERE id_empleado = ?';
+        conectDB.conexion.query(query, [nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado], callback);
     };
 
     eliminarEmpleado(id_empleado, callback) {
