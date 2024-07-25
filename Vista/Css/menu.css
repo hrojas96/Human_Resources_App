@@ -128,7 +128,7 @@ body{
     background-color: #696666;
 }
 
-#opcionesMenu, #ntfPermiso{
+#opcionesMenu, #ntfPermiso, #ntfExtras, #ntfVacaciones, #ntfAdmPermiso, #ntfAdmVacaciones, #ntfAdmExtras{
     color: white;
     text-decoration: none;
 }

@@ -26,7 +26,7 @@ loginForm.addEventListener("submit", function (e) {
         console.log(data);
         if (data.success == true){
             localStorage.setItem("userID", JSON.stringify(numEmpleado.value));
-            window.location = "principal.html"; 
+            window.location = "marcasEmpl.html"; 
         }else {
             alertify
             .alert('Error', 'Credenciales inválidas. Intentelo nuevamente');

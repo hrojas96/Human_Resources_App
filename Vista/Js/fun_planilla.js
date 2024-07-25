@@ -142,6 +142,8 @@ calculoGeneral.addEventListener('click', ()=>{
 //Boton de calcular renta abre modal y limpio
 btnRenta.addEventListener('click', ()=>{
     calculoGeneral.checked = true;
+    empleado.value = "";
+    empleado.disabled = true;
     fechaDesde.value = ""; 
     fechaHasta.value = "";  
     modalPlanilla.show();
@@ -252,36 +254,74 @@ formPlanillas.addEventListener('submit', (e)=> {
     };
 
     if (opcion == 'renta'){
-        fetch(urlrenta, {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                fecha_desde:fechaDesde.value,
-                fecha_hasta:fechaHasta.value
-                
+        alert(calculo);
+        if (calculo == '2'){
+            fetch(urlrenta, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    calculo:calculo,
+                    fecha_desde:fechaDesde.value,
+                    fecha_hasta:fechaHasta.value
+                    
+                })
             })
-        })
-        .then( response => response.json())
-        .then( data =>{
-            console.log(data);
-            if (data.error) {
-                
-                alertify
-                    .alert('Aviso', data.error, function(){
-                        alertify.message('OK');
-                    });
-                
-            } else {
-                alertify
-                    .alert('Aviso', data.message, function(){
-                        alertify.message('OK');
-                        location.reload();
-                    });
-            }
-        })
-        .catch((error) => console.error("Error en la solicitud:", error));
+            .then( response => response.json())
+            .then( data =>{
+                console.log(data);
+                if (data.error) {
+                    
+                    alertify
+                        .alert('Aviso', data.error, function(){
+                            alertify.message('OK');
+                        });
+                    
+                } else {
+                    alertify
+                        .alert('Aviso', data.message, function(){
+                            alertify.message('OK');
+                            location.reload();
+                        });
+                }
+            })
+            .catch((error) => console.error("Error en la solicitud:", error));
+        }else if (calculo == '1'){
+            fetch(urlrenta, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    calculo:calculo,
+                    id_empleado:empleado.value,
+                    fecha_desde:fechaDesde.value,
+                    fecha_hasta:fechaHasta.value
+                    
+                })
+            })
+            .then( response => response.json())
+            .then( data =>{
+                console.log(data);
+                if (data.error) {
+                    
+                    alertify
+                        .alert('Aviso', data.error, function(){
+                            alertify.message('OK');
+                        });
+                    
+                } else {
+                    alertify
+                        .alert('Aviso', data.message, function(){
+                            alertify.message('OK');
+                            location.reload();
+                        });
+                }
+            })
+            .catch((error) => console.error("Error en la solicitud:", error));
+
+        }
     };
 
     //Borrar

@@ -133,14 +133,14 @@ on(document, 'click', '.btnEditar', e => {
     const fechaHastaForm = fila.getAttribute('data-fechaHasta');
     const montoForm = fila.getAttribute('data-monto');
     const rebajoForm = fila.getAttribute('data-rebajo');
-    const saldoForm = fila.getAttribute('data-saldo');
+    //const saldoForm = fila.getAttribute('data-saldo');
    
     empleado.value = empleadoForm;
     fechaDesde.value = fechaDesdeForm;
     fechaHasta.value = fechaHastaForm;
     monto.value = montoForm;
     rebajo.value = rebajoForm;
-    saldo.value = saldoForm;
+    //saldo.value = saldoForm;
 
     modalRenta.show();
 });
@@ -200,7 +200,7 @@ formRenta.addEventListener('submit', (e)=> {
                 fecha_hasta:fechaHasta.value,
                 monto_por_cobrar:monto.value,
                 rebajo_semanal:rebajo.value,
-                saldo_renta:saldo.value
+                saldo_renta:monto.value
             })
         })
         .then( response => response.json())

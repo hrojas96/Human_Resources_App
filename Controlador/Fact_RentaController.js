@@ -60,13 +60,13 @@ class Fact_RentaController {
     eliminarRentaxCobrar(req,res) {
 
         let id_rentaxc = req.params.id_rentaxc;
-        accesos.eliminarRentaxCobrar(id_prestamo, (err, filas) => {
+        accesos.eliminarRentaxCobrar(id_rentaxc, (err, filas) => {
             if (err) {
                 console.log('Hubo un error', err);
                 //throw err;
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
-                console.log(resultado);
+                console.log(filas);
                 return res.json({message: 'La eliminación del registro #' + id_rentaxc + ', se ha realizado correctamente'});
             }
         });

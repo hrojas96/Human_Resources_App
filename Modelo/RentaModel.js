@@ -9,7 +9,7 @@ class RentaModel {
     };
 
     // Función para obtener todos los datos para el cálculo de la renta
-    consultarDatosRenta(fecha1, fecha2, callback) {
+    consultarDatosRentaGeneral(fecha1, fecha2) {
         const query = `SELECT Subconsulta.id_empleado, Subconsulta.suma_total, Impuesto_Renta.id_impuesto, Impuesto_Renta.porcentaje_salarial, Empleado.hijos_dependientes, Empleado.estado_civil,
                             (SELECT monto_rebajo FROM Créditos_Fiscal_Renta WHERE concepto = 'Cónyugue') AS rebajo_matrimonio,
                             (SELECT monto_rebajo FROM Créditos_Fiscal_Renta WHERE concepto = 'Hijo') AS rebajo_hijo
@@ -21,8 +21,45 @@ class RentaModel {
                         JOIN Impuesto_Renta ON Subconsulta.suma_total 
                         BETWEEN Impuesto_Renta.tramo1 AND COALESCE(Impuesto_Renta.tramo2, Subconsulta.suma_total)
                         JOIN Empleado ON Subconsulta.id_empleado = Empleado.id_empleado;`;
-        conectDB.conexion.query(query,[fecha1, fecha2], callback);
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query,[fecha1, fecha2], (err, results) => {
+                if (err){
+                    reject(err);
+                }
+                else { 
+                    //const [filas] = results;
+                    resolve(results);
+                }
+            });
+        });
     };
+
+    consultarDatosRentaIndividual(fecha1, fecha2, id_empleado) {
+        const query = `SELECT Subconsulta.id_empleado, Subconsulta.suma_total, Impuesto_Renta.id_impuesto, Impuesto_Renta.porcentaje_salarial, Empleado.hijos_dependientes, Empleado.estado_civil,
+                            (SELECT monto_rebajo FROM Créditos_Fiscal_Renta WHERE concepto = 'Cónyugue') AS rebajo_matrimonio,
+                            (SELECT monto_rebajo FROM Créditos_Fiscal_Renta WHERE concepto = 'Hijo') AS rebajo_hijo
+                        FROM 
+                            (SELECT Planilla.id_empleado, SUM(Planilla.salario_bruto) AS suma_total
+                            FROM Planilla
+                            WHERE Planilla.fecha_desde >= ? AND Planilla.fecha_hasta <= ?
+                            GROUP BY Planilla.id_empleado) Subconsulta
+                        JOIN Impuesto_Renta ON Subconsulta.suma_total 
+                        BETWEEN Impuesto_Renta.tramo1 AND COALESCE(Impuesto_Renta.tramo2, Subconsulta.suma_total)
+                        JOIN Empleado ON Subconsulta.id_empleado = Empleado.id_empleado
+                        WHERE Empleado.id_empleado =? ;`;
+        return new Promise((resolve, reject) => {
+            conectDB.conexion.query(query,[fecha1, fecha2, id_empleado], (err, results) => {
+                if (err){
+                    reject(err);
+                }
+                else { 
+                    //const [filas] = results;
+                    resolve(results);
+                }
+            });
+        });
+    };
+
 
     insertarRenta(data, callback) {
 

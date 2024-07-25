@@ -9,16 +9,38 @@ class NotificacionesController {
     }
 
     inicializarRutas() {
-        this.router.get('/', this.consultarNotificaciones);
+        this.router.get('/:id_jefatura', this.consultarNotificacionesJef);
+        this.router.post('/', this.consultarNotificacionesAdm);
     };
 
-    consultarNotificaciones(req, res) {
+    consultarNotificacionesJef(req, res) {
+        let id_jefatura = req.params.id_jefatura
         
-        accesos.consultarNotificaciones((err, filas) => {
+        accesos.consultarNotificacionesJef(id_jefatura, (err, filas) => {
             if (err) {
                 console.log('Hubo un error',err);
                 //throw error;
             } else {
+                console.log(filas);
+                //console.log((filas.id_permiso).length);
+
+                res.send(filas);
+                //console.log(filas);
+            };
+        });
+    };
+
+    consultarNotificacionesAdm(req, res) {
+        let id_jefatura = req.body.id_jefatura
+        
+        accesos.consultarNotificacionesAdm(id_jefatura, (err, filas) => {
+            if (err) {
+                console.log('Hubo un error',err);
+                //throw error;
+            } else {
+                console.log(filas);
+                //console.log((filas.id_permiso).length);
+
                 res.send(filas);
                 //console.log(filas);
             };

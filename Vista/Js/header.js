@@ -116,7 +116,7 @@ function tipoUsuario () {
             if (data[0].acc_horasExtras_RRHH == 1) {
                 menuHorasExtrasAdm.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="horasExtrasAdm.html">Horas Extras Adm</a>
+                        <a id="ntfAdmExtras" href="horasExtrasAdm.html">Horas Extras Adm</a>
                     </div>`
             };
             if (data[0].acc_prestamos == 1) {
@@ -128,13 +128,13 @@ function tipoUsuario () {
             if (data[0].acc_vacaciones_RRHH == 1) {
                 menuVacacionesAdm.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="vacacionesAdm.html">Vacaciones RRHH</a> 
+                        <a id="ntfAdmVacaciones" href="vacacionesAdm.html">Vacaciones RRHH</a> 
                     </div>`
             };
             if (data[0].acc_permisos_RRHH == 1) {
                 menuPermisosAdm.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="permisosAdm.html">Permisos RRHH</a> 
+                        <a id="ntfAdmPermiso" href="permisosAdm.html">Permisos RRHH</a> 
                     </div>`
             };
             if (data[0].acc_incapacidades == 1) {
@@ -173,7 +173,7 @@ function tipoUsuario () {
             if (data[0].acc_vacaciones_jefatura == 1) {
                 menuVacacionesJF.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
+                        <a id="ntfVacaciones" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_permisos_jefatura == 1) {
@@ -185,7 +185,7 @@ function tipoUsuario () {
             if (data[0].acc_horasExtras_jefatura == 1) {
                 menuHorasExtrasJef.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
+                        <a id="ntfExtras" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
                     </div>`
             };
             
@@ -207,8 +207,9 @@ cerrarSesion.addEventListener("click", function (event) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const nuevaNotificacion = document.getElementById('nuevaNotificacion');
+    const urlNotificaciones = 'http://localhost:8000/api/notificaciones/';
 
-    fetch('http://localhost:8000/api/notificaciones/')
+    fetch(urlNotificaciones + usuarioID)
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -217,16 +218,90 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 if (data.length > 0){
                     campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
-                    nuevaNotificacion.textContent = ("Tiene " + data.length +  " solicitud(es) pendiente(s)");
+                    nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
                 }else{
                     nuevaNotificacion.textContent = "No tiene notificaciones recientes";
                 }
-                if (data[0].id_permiso) {
+
+                let hasPermiso = false;
+                let hasExtras = false;
+                let hasVacaciones = false;
+
+                data.forEach(item => {
+                    if (item.id_permiso) {
+                        hasPermiso = true;
+                    }
+                    if (item.id_marca) {
+                        hasExtras = true;
+                    }
+                    if (item.id_vacaciones) {
+                        hasVacaciones = true;
+                    }
+                });
+                if (hasPermiso) {
                     ntfPermiso.innerHTML = `Permisos Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                }
+                if (hasExtras) {
+                    ntfExtras.innerHTML = `Horas Extras Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                }
+                if (hasVacaciones) {
+                    ntfVacaciones.innerHTML = `Vacaciones Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
                 }
             }
         })
         .catch(error => console.log(error));
-    
+        
+
+
+
+    fetch(urlNotificaciones, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            id_jefatura:usuarioID
+        })
+    })
+    .then( response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.error) {
+            console.log('algo pasó', data.error);
+        } else {
+            if (data.length > 0){
+                campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
+            }else{
+                nuevaNotificacion.textContent = "No tiene notificaciones recientes";
+            }
+
+            let hasPermiso = false;
+            let hasExtras = false;
+            let hasVacaciones = false;
+
+            data.forEach(item => {
+                if (item.id_permiso) {
+                    hasPermiso = true;
+                }
+                if (item.id_marca) {
+                    hasExtras = true;
+                }
+                if (item.id_vacaciones) {
+                    hasVacaciones = true;
+                }
+            });
+            if (hasPermiso) {
+                ntfAdmPermiso.innerHTML = `Permisos Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+            }
+            if (hasExtras) {
+                ntfAdmExtras.innerHTML = `Horas Extras Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+            }
+            if (hasVacaciones) {
+                ntfAdmVacaciones.innerHTML = `Vacaciones Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+            }
+        }
+    })
+    .catch(error => console.log(error));
 });                          
 

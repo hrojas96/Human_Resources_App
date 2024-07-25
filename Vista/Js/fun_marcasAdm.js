@@ -24,6 +24,7 @@ function mostrarTabla(marcas) {
         if (m.hora_salida == null ){
             m.hora_salida = "Pendiente";
             m.horas_ordinarias = "Pendiente";
+            m.horas_extras = "Pendiente";
         }
         
         resultados += ` <tr data-fecha="${m.fecha.slice(0, 10)}" data-idCliente="${m.id_empleado}">
