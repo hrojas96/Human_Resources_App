@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const accesos = require('../Modelo/LoginModel');
+const recuperarPass = require('../Modelo/EmpleadosModel');
 
 class LoginController {
     constructor () {
@@ -10,6 +11,7 @@ class LoginController {
 
     inicializarRutas() {
         this.router.post('/:id_empleado', this.consultarUsuario);
+        this.router.get('/:id_empleado', this.recuperarContrasena);
     };
 
     consultarUsuario(req,res) {
@@ -64,6 +66,40 @@ class LoginController {
             }
         });
         
+    };
+
+    //Editar registro de empleados
+    recuperarContrasena(req, res){
+        console.log("llego a recuperar")
+        let id_empleado = req.params.id_empleado;
+
+        let pass = '';
+        let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+            'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+        for (let i = 1; i <= 8; i++) {
+            let char = Math.floor(Math.random()
+                * str.length + 1);
+            pass += str.charAt(char)
+        };
+     
+        const contrasena = crypto.createHash('md5').update(pass).digest('hex');
+    
+        try {
+            recuperarPass.recuperarContrasena(contrasena, id_empleado, pass, (err, resultado) => {
+                
+                if (err) {
+                    console.log('Hubo un error', err);
+                    res.status(400).json({ error: "Ocurrió un error en el envío del correo." });
+                } else {
+                    console.log(resultado);
+                    // Enviamos respuesta de BD
+                    res.json({message: 'Se le ha enviado un correo para la recuperación de su contraseña'});
+                };
+            });
+        } catch (error) {
+            console.error("Error durante el proceso:", error);
+            res.status(500).json({ error: "Error durante el proceso" });
+        };
     };
 }
 

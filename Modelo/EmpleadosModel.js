@@ -67,6 +67,20 @@ class EmpleadoModel {
         
     };
 
+    recuperarContrasena(contrasena, id_empleado, pass, callback) {
+
+        const query = 'UPDATE Empleado SET contrasena = ?  WHERE id_empleado = ?';
+        conectDB.conexion.query(query, [ contrasena, id_empleado], (err, result) => {
+            if (err) {
+                console.error('Error en la base de datos:', err);
+                callback(err, null);
+            } else {
+                callback(null, result);
+                this.generarEmailCol(id_empleado, pass);
+            };
+        });
+    };
+
 };
 
 

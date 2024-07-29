@@ -15,10 +15,10 @@ class Fact_RentaModel {
     };
 
 
-    editarPrestamo(id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, saldo, id_prestamo, callback) {
+    editarRentaxCobrar(id_empleado, fecha_desde, fecha_hasta, monto_por_cobrar, rebajo_semanal, saldo_renta, id_rentaxc, callback) {
 
-        const query = 'UPDATE Prestamos SET id_empleado = ?, fecha_solicitud = ?, monto_solicitado = ?, rebajo_salarial = ?, saldo = ? WHERE id_prestamo = ?';
-        conectDB.conexion.query(query, [id_empleado, fecha_solicitud, monto_solicitado, rebajo_salarial, saldo, id_prestamo], callback);
+        const query = 'UPDATE RentaxCobrar SET id_empleado = ?, fecha_desde = ?, fecha_hasta = ?, monto_por_cobrar = ?, rebajo_semanal = ?, saldo_renta = ? WHERE id_rentaxc = ?';
+        conectDB.conexion.query(query, [id_empleado, fecha_desde, fecha_hasta, monto_por_cobrar, rebajo_semanal, saldo_renta, id_rentaxc,], callback);
     };
 
     eliminarRentaxCobrar(id_rentaxc, callback) {

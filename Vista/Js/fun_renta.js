@@ -172,22 +172,6 @@ formRenta.addEventListener('submit', (e)=> {
     //Previene que se recargue la página
     e.preventDefault();  
 
-    let prestamoPendiente = false;
-
-    // Verifica si ya existe un préstamo pendiente para el empleado
-    for (let i = 0; i < listaPrestamos.length; i++) {
-        if (listaPrestamos[i].id_empleado == empleado.value && listaPrestamos[i].saldo > 0) {
-            prestamoPendiente = true;
-            break;
-        }
-    }
-
-    if (prestamoPendiente){
-        alertify
-            .alert('Aviso', 'Ya existe una préstamo a nombre del mismo empleado con un saldo pendiente', function(){
-                alertify.message('OK');
-            });
-    }else{
         //Update
         fetch(url+idForm, {
             method: 'PUT',
@@ -218,8 +202,6 @@ formRenta.addEventListener('submit', (e)=> {
             }
         })
         .catch((error) => console.error("Error en la solicitud:", error));
-       
-    }
     
     modalRenta.hide();
 

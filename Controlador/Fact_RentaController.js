@@ -37,7 +37,7 @@ class Fact_RentaController {
         let saldo_renta = req.body.saldo_renta;
 
         try {
-            accesos.editarPrestamo(id_empleado, fecha_desde, fecha_hasta, monto_por_cobrar, rebajo_semanal, saldo_renta, id_rentaxc, (err, fila) => {
+            accesos.editarRentaxCobrar(id_empleado, fecha_desde, fecha_hasta, monto_por_cobrar, rebajo_semanal, saldo_renta, id_rentaxc, (err, fila) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {
