@@ -31,11 +31,8 @@
                     <h4 id="titulo">Registro de Empleados</h4>
                     <div class="navbar ">
                         <div class="container-fluid">
-                            <button id="btnCrear" type="button" class="btn btn-success fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#modalEmpleados" ></button>
-                          <form class="d-flex" role="search">
-                            <input class="form-control me-2" id="buscador" type="search" placeholder="..." aria-label="Search">
-                            <button class="btn btn-outline-success" id="buscador" type="submit">Buscar</button>
-                          </form>
+                            <button id="btnCrear" type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#modalEmpleados" >Nuevo Registro. <i class="fa-solid fa-plus"></i></button>
+                          
                         </div>
                     </div>
                     <div class="" id="contTabla">
@@ -44,8 +41,6 @@
                                 <tr class="text-center">
                                     <th>Cédula</th>
                                     <th>Nombre</th>
-                                    <th>Primer Apellido</th>
-                                    <th>Segundo Apellido</th>
                                     <th>Género</th>
                                     <th>Puesto</th>
                                     <th>Rol</th>
@@ -55,7 +50,7 @@
                                     <th>Correo</th>
                                     <th>Teléfono</th>
                                     <th>Estado Civil</th>
-                                    <th>Hijos Dependientes</th>
+                                    <th>Hijos</th>
                                     <th>Provincia</th>
                                     <th>Cantón</th>
                                     <th>Distrito</th>
@@ -76,13 +71,14 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header  text-white">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Tipo de Incapacidad</h1>   
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Empleado</h1>   
                     </div>
                     <div class="modal-body">
                         <form id="formEmpleados" class="row g-2">
+                            
                             <div class="col-md-6">
                                 <label for="cedula" class="form-label">Cédula:</label>
-                                <input type="number" class="form-control" id="cedula" required>
+                                <input type="number" class="form-control" id="cedula" required minlength="5" maxlength="16">
                             </div>
                             <div class="col-md-6">
                                 <label for="nombre" class="form-label">Nombre:</label>
@@ -99,7 +95,7 @@
                             <div class="col-md-6">
                                 <label for="genero" class="form-label">Género:</label>
                                 <select class="form-select" id="genero" required>
-                                    <option selected>Seleccione</option>
+                                    <option >Seleccione</option>
                                     <option>Femenino</option>
                                     <option>Masculino</option>
                                 </select>
@@ -107,7 +103,7 @@
                             <div class="col-md-6">
                                 <label for="puesto" class="form-label">Puesto:</label>
                                 <select class="form-select" id="puesto" required>
-                                    <option selected>Seleccione</option>
+                                    <option >Seleccione</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -123,7 +119,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="fechaI" class="form-label">Fecha de Ingreso (dd/mm/aaaa):</label>
+                                <label for="fechaI" class="form-label">Fecha de Ingreso:</label>
                                 <input type="date" class="form-control" id="fechaI" required>
                             </div>
                             <div class="col-md-6">

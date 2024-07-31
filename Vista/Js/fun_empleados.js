@@ -6,6 +6,8 @@ const urlDirecciones = 'http://localhost:8000/api/direcciones/';
 const contenedorEmpleados = document.querySelector('tbody');
 const modalEmpleados = new bootstrap.Modal(document.getElementById('modalEmpleados'));
 const formEmpleados = document.getElementById('formEmpleados');
+const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
+const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
 const cedula = document.getElementById('cedula');
 const nombre = document.getElementById('nombre');
 const apellido1 = document.getElementById('apellido1');
@@ -58,16 +60,17 @@ function verificarUsuario () {
 // Muestra resultados en cuanto la página carga
 function mostrar(empleados) {
     empleados[0].forEach(e =>{
-        resultados += ` <tr data-fecha="${e.fecha_ingreso.slice(0, 10)}" 
+        resultados += ` <tr data-nombre="${e.nombre}"
+                            data-apellido1="${e.apellido1}"
+                            data-apellido2="${e.apellido2}"
+                            data-fecha="${e.fecha_ingreso.slice(0, 10)}" 
                             data-puesto="${e.id_puesto}" data-rol="${e.id_rol}" 
                             data-jefatura="${e.id_jefatura}"
                             data-provincia="${e.id_provincia}"
                             data-canton="${e.id_canton}"
                             data-distrito="${e.id_distrito}" >
                             <td class="text-center">${e.id_empleado}</td>
-                            <td class="text-center">${e.nombre}</td> 
-                            <td class="text-center">${e.apellido1}</td> 
-                            <td class="text-center">${e.apellido2}</td> 
+                            <td class="text-center">${e.nombre} ${e.apellido1} ${e.apellido2}</td> 
                             <td class="text-center">${e.genero}</td> 
                             <td class="text-center">${e.puesto}</td>
                             <td class="text-center">${e.rol}</td>  
@@ -127,6 +130,28 @@ btnCrear.addEventListener('click', ()=>{
     opcion = 'crear';
 });
 
+cedula.addEventListener('change', (e) => {
+    
+   if((cedula.value).length < 5 || (cedula.value).length > 16 ){
+        alertify
+            .alert('Aviso', 'El número digitado no corresponde a una identificación nacional o internacional', function(){
+                alertify.message('OK');
+                cedula.value = ""; 
+            });
+   }
+});
+
+telefono.addEventListener('change', (e) => {
+    
+    if((telefono.value).length != 8) {
+         alertify
+             .alert('Aviso', 'El número digitado no es válido. Asegurese de digitar los 8 dígitos.', function(){
+                 alertify.message('OK');
+                 telefono.value = ""; 
+             });
+    }
+ });
+
 cargarProvincia();
 function cargarProvincia() {
     fetch(urlDirecciones)
@@ -151,6 +176,12 @@ function cargarProvincia() {
 };
 
 provincia.addEventListener('change', (e) => {
+    canton.value = "";
+    cargarCanton();
+});
+
+function cargarCanton(){
+    console.log(provincia.value);
     fetch(urlDirecciones + provincia.value)
     .then(response => response.json())
     .then(data => {
@@ -170,10 +201,16 @@ provincia.addEventListener('change', (e) => {
     .catch(error => {
         console.error("Error al obtener los datos");
     });
-});
+
+}
 
 canton.addEventListener('change', (e) => {
+    distrito.value = "";
+    cargarDistrito();
+    
+});
 
+function cargarDistrito(){
     fetch(urlDirecciones, {
         method: 'POST',
         headers: {
@@ -198,7 +235,7 @@ canton.addEventListener('change', (e) => {
             distrito.add(opcion);
         });
     })
-});
+}
 
 //Carga lista de puestos registrados
 function cargarPuestos() {
@@ -283,23 +320,31 @@ on(document, 'click', '.btnEditar', e => {
     //Se asigna una posición a cada valor en la tabla para identificar el id
     const fila = e.target.closest('tr');
     const cedulaForm = fila.children[0].innerHTML;
-    const nombreForm = fila.children[1].innerHTML;
-    const apellido1Form = fila.children[2].innerHTML;
-    const apellido2Form = fila.children[3].innerHTML;
-    const generoForm = fila.children[4].innerHTML;
+    const nombreForm = fila.getAttribute('data-nombre');
+    const apellido1Form = fila.getAttribute('data-apellido1');
+    const apellido2Form = fila.getAttribute('data-apellido2');
+    const generoForm = fila.children[2].innerHTML;
     const puestoForm = fila.getAttribute('data-puesto');
     const rolUsuarioForm = fila.getAttribute('data-rol');
     const jefaturaForm = fila.getAttribute('data-jefatura');
     const fechaIForm = fila.getAttribute('data-fecha');
-    const estadoForm = fila.children[9].innerHTML;
-    const correoForm = fila.children[10].innerHTML;
-    const telefonoForm = fila.children[11].innerHTML;
-    const estadoCivilForm = fila.children[12].innerHTML;
-    const cantHijjosForm = fila.children[13].innerHTML;
+    const estadoForm = fila.children[7].innerHTML;
+    const correoForm = fila.children[8].innerHTML;
+    const telefonoForm = fila.children[9].innerHTML;
+    const estadoCivilForm = fila.children[10].innerHTML;
+    const cantHijjosForm = fila.children[11].innerHTML;
     const provinciaForm = fila.getAttribute('data-provincia');
+    
+    provincia.value = provinciaForm;
+    cargarCanton();
     const cantonForm = fila.getAttribute('data-canton');
+    canton.value = cantonForm;
+    console.log(canton.value);
+    cargarDistrito();
     const distritoForm = fila.getAttribute('data-distrito');
-    const direccionForm = fila.children[17].innerHTML;
+    distrito.value = distritoForm;
+    console.log(distrito.value);
+    const direccionForm = fila.children[15].innerHTML;
 
     cedula.value = cedulaForm;
     nombre.value = nombreForm;
@@ -315,10 +360,6 @@ on(document, 'click', '.btnEditar', e => {
     telefono.value = telefonoForm;
     estadoCivil.value = estadoCivilForm; 
     cantHijjos.value = cantHijjosForm;
-    provincia.value = provinciaForm;
-    canton.value = cantonForm;
-    distrito.value = distritoForm;
-    console.log(distrito.value);
     direccion.value = direccionForm;
     opcion = 'editar';
     modalEmpleados.show();
@@ -366,7 +407,7 @@ formEmpleados.addEventListener('submit', (e)=> {
     
     //Previene que se recargue la página
     e.preventDefault();  
-
+        
     //Insert
     if (opcion == 'crear'){
         fetch(url, {
@@ -462,7 +503,7 @@ formEmpleados.addEventListener('submit', (e)=> {
         })
         .catch((error) => console.error("Error en la solicitud:", error));
     };
-    
+
     modalEmpleados.hide();
 
 });

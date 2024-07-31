@@ -10,6 +10,7 @@ const tiempoCodigo = document.getElementById('tiempoCodigo');
 let opcion = '';
 let resultados = '';
 let marcasEmpleados = [];
+let codigo = '';
 
 
 cargarTabla();
@@ -58,18 +59,18 @@ btnEntrada.addEventListener('click', ()=>{
             
     }else{
         //Se crea el código de doble verificación
-        let codigo = '';
+        //let codigo = '';
         let str = '0123456789';
         for (let i = 1; i <= 5; i++) {
             let char = Math.floor(Math.random()
                 * str.length + 1);
             codigo += str.charAt(char)
         };
-        console.log(codigo);
+        //console.log(codigo);
 
         //Se encripta el código
         //const codigo = crypto.createHash('md5').update(pass).digest('hex');
-        localStorage.setItem("codigoMarca", JSON.stringify(codigo));
+        //localStorage.setItem("codigoMarca", JSON.stringify(codigo));
 
         //Se envía el código al usuario por email
         fetch(url + cedula, {
@@ -122,8 +123,8 @@ formMarcas.addEventListener('submit', (e)=> {
  
     e.preventDefault();  
 
-    const codigoMarca = JSON.parse(localStorage.getItem("codigoMarca")) || false;
-    if (codigoEntrada.value == codigoMarca){
+    //const codigoMarca = JSON.parse(localStorage.getItem("codigoMarca")) || false;
+    if (codigoEntrada.value == codigo){
 
         let DateTime = new Date();
         console.log(DateTime);
@@ -208,7 +209,7 @@ btnSalida.addEventListener('click', ()=>{
         .then( data =>{
             if (data.error) {
                 
-                alertify.alert(data.error, function(){
+                alertify.alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
                 

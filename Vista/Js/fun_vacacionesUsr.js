@@ -10,6 +10,10 @@ const empleado = JSON.parse(localStorage.getItem("userID")) || false;
 const fechaInicio = document.getElementById('fechaInicio');
 const fechaFinal = document.getElementById('fechaFinal');
 const diasDisponibles = document.getElementById('diasDisponibles');
+let hoy = new Date();
+const hoyFormato = hoy.toISOString().split('T')[0];
+fechaInicio.min = hoyFormato;
+fechaFinal.min = hoyFormato;
 
 let opcion = '';
 let resultados = '';
@@ -153,7 +157,8 @@ on(document, 'click', '.btnBorrar', e => {
 formVacacionesUsr.addEventListener('submit', (e)=> {
     
     //Previene que se recargue la página
-    e.preventDefault();  
+    e.preventDefault(); 
+    
     const pendiente = 'Pendiente';
 
     //Insert
@@ -229,6 +234,7 @@ formVacacionesUsr.addEventListener('submit', (e)=> {
         })
         .catch((error) => console.error("Error en la solicitud:", error));
     };
+    
     
     modalVacacionesUsr.hide();
 

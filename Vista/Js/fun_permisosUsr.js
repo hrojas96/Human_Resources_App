@@ -10,6 +10,10 @@ const empleado = JSON.parse(localStorage.getItem("userID")) || false;
 const fechaInicio = document.getElementById('fechaInicio');
 const fechaFinal = document.getElementById('fechaFinal');
 const msjEmp = document.getElementById('msjEmp');
+let hoy = new Date();
+const hoyFormato = hoy.toISOString().split('T')[0];
+fechaInicio.min = hoyFormato;
+fechaFinal.min = hoyFormato;
 
 let opcion = '';
 let resultados = '';

@@ -165,6 +165,7 @@ class Per_MarcasController {
                     };
                 } else {
                     console.log('No existe una hora de entrada');
+                    res.status(400).json({ error: "Debe existir una hora de entrada para el correcto registro de una hora de salida" });
                 }
             }
                 
