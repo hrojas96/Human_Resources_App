@@ -128,7 +128,7 @@ body{
     background-color: #696666;
 }
 
-#opcionesMenu, #ntfPermiso, #ntfExtras, #ntfVacaciones, #ntfAdmPermiso, #ntfAdmVacaciones, #ntfAdmExtras{
+#opcionesMenu, #ntfPermiso, #ntfExtras, #ntfVacaciones, #ntfAdmPermiso, #ntfAdmVacaciones, #ntfAdmExtras, #tituloRRHH, #tituloJf{
     color: white;
     text-decoration: none;
 }

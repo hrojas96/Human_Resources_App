@@ -35,7 +35,7 @@ function verificarUsuario () {
                 window.location = "404.html";
             }
         })
-        .catch(error => alert(error))
+        .catch(error => console.log(error))
 };
 
 function mostrarAbonos(abonos) {
@@ -45,27 +45,33 @@ function mostrarAbonos(abonos) {
         empleadoA.textContent = a.nombre + ' ' + a.apellido1 + ' ' + a.apellido2;
         fechaA.textContent = new Date(a.fecha_desde).toLocaleDateString('es-ES');
         montoOriginal.textContent = colon.format(a.monto_por_cobrar);
-        datos += `<tr data-abono="${a.monto_fact}">
-                        <td class="text-center">${a.id_factRenta}</td>
-                        <td class="text-center">${new Date(a.fecha_fact).toLocaleDateString('es-ES')}</td>
-                        <td class="text-end">${colon.format(a.monto_fact)}</td>
-                        <td class="text-end">${colon.format(a.saldo)}</td>
-                        <td class="centrar">`
-        if (index === abonos.length - 1) {
-            datos += `
-                            <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </a>
-                            <a class="btnBorrar btn btn-danger btn-sm"> 
-                                <i class="fa-regular fa-trash-can"></i>
-                            </a>`;
-        }
+        if(a.id_factRenta != null){
+            datos += `<tr data-abono="${a.monto_fact}">
+                            <td class="text-center">${a.id_factRenta}</td>
+                            <td class="text-center">${new Date(a.fecha_fact).toLocaleDateString('es-ES')}</td>
+                            <td class="text-end">${colon.format(a.monto_fact)}</td>
+                            <td class="text-end">${colon.format(a.saldo)}</td>
+                            <td class="centrar">`
+            if (index === abonos.length - 1) {
+                datos += `
+                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a class="btnBorrar btn btn-danger btn-sm"> 
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>`;
+            }
 
-        datos += `   </td>
-                    </tr>`;
-        saldoA.textContent = colon.format(a.saldo);
-        ultimoAbono = a.monto_fact;
-        ultimoSaldo = a.saldo;
+            datos += `   </td>
+                        </tr>`;
+            saldoA.textContent = colon.format(a.saldo);
+            ultimoAbono = a.monto_fact;
+            ultimoSaldo = a.saldo;
+        }else{
+            saldoA.textContent = colon.format(a.saldo);
+            ultimoAbono = a.monto_fact;
+            ultimoSaldo = a.saldo;
+        }
     });
     contenedorFactRenta.innerHTML = datos;
 };
@@ -138,7 +144,6 @@ on(document, 'click', '.btnBorrar', e => {
                     .alert('Aviso', data.error, function(){
                         alertify.message('OK');
                     });
-                //alert(data.error)
             } else {
                 alertify
                     .alert('Aviso', data.message, function(){

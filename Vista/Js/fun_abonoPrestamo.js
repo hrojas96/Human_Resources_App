@@ -47,27 +47,34 @@ function mostrarAbonos(abonos) {
         fechaA.textContent = new Date(a.fecha_solicitud).toLocaleDateString('es-ES');
         montoOriginal.textContent = colon.format(a.monto_solicitado);
         rebajoA.textContent = colon.format(a.rebajo_salarial);
-        datos += `<tr data-abono="${a.monto}">
-                        <td class="text-center">${a.id_abono}</td>
-                        <td class="text-center">${new Date(a.fecha_abono).toLocaleDateString('es-ES')}</td>
-                        <td class="text-end">${colon.format(a.monto)}</td>
-                        <td class="text-end">${colon.format(a.saldo)}</td>
-                        <td class="centrar">`
-        if (index === abonos.length - 1) {
-            datos += `
-                            <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </a>
-                            <a class="btnBorrar btn btn-danger btn-sm"> 
-                                <i class="fa-regular fa-trash-can"></i>
-                            </a>`;
-        }
+        if(a.monto != null){
+            datos += `<tr data-abono="${a.monto}">
+                            <td class="text-center">${a.id_abono}</td>
+                            <td class="text-center">${new Date(a.fecha_abono).toLocaleDateString('es-ES')}</td>
+                            <td class="text-end">${colon.format(a.monto)}</td>
+                            <td class="text-end">${colon.format(a.saldo)}</td>
+                            <td class="centrar">`
+            if (index === abonos.length - 1) {
+                datos += `
+                                <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a class="btnBorrar btn btn-danger btn-sm"> 
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>`;
+            }
 
-        datos += `   </td>
-                    </tr>`;
-        saldoA.textContent = colon.format(a.saldo);
-        ultimoAbono = a.monto;
-        ultimoSaldo = a.saldo;
+            datos += `   </td>
+                        </tr>`;
+            saldoA.textContent = colon.format(a.saldo);
+            ultimoAbono = a.monto;
+            ultimoSaldo = a.saldo;
+        } else{
+            saldoA.textContent = colon.format(a.saldo);
+            ultimoAbono = a.monto;
+            ultimoSaldo = a.saldo;
+
+        }
     });
     contenedorAbonos.innerHTML = datos;
 };
@@ -117,9 +124,7 @@ on(document, 'click', '.btnEditar', e => {
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.closest('tr');
     const id_abono = fila.firstElementChild.innerHTML;
-    alert(ultimoAbono)
     let saldo1 = ultimoSaldo;
-    alert(saldo1)
     let saldo = saldo1 + ultimoAbono;
     alertify.confirm('Alerta', '¿Seguro que desea borrar este registro?',
     function(){

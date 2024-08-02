@@ -21,30 +21,33 @@ class NotificacionesController {
                 console.log('Hubo un error',err);
                 //throw error;
             } else {
-                console.log(filas);
-                //console.log((filas.id_permiso).length);
 
                 res.send(filas);
-                //console.log(filas);
             };
         });
     };
 
-    consultarNotificacionesAdm(req, res) {
-        let id_jefatura = req.body.id_jefatura
-        
-        accesos.consultarNotificacionesAdm(id_jefatura, (err, filas) => {
-            if (err) {
-                console.log('Hubo un error',err);
-                //throw error;
-            } else {
-                console.log(filas);
-                //console.log((filas.id_permiso).length);
+    async consultarNotificacionesAdm(req, res) {
+        let id_empleado = req.body.id_empleado
+        const roles = await accesos.consultarRoles(id_empleado);
+        console.log(roles);
 
-                res.send(filas);
-                //console.log(filas);
+        if (roles[0].acc_horasExtras_RRHH == 1 || roles[0].acc_permisos_RRHH == 1 || roles[0].acc_vacaciones_RRHH == 1){
+            try{
+                accesos.consultarNotificacionesAdm( (err, filas) => {
+                    if (err) {
+                        console.log('Hubo un error',err);
+                    } else {
+
+                        res.send(filas);
+                    };
+                });
+            } catch (error) {
+                
+                console.error("Error de servidor", error);
+                
             };
-        });
+        }
     };
 
 }

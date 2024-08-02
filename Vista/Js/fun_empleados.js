@@ -132,9 +132,9 @@ btnCrear.addEventListener('click', ()=>{
 
 cedula.addEventListener('change', (e) => {
     
-   if((cedula.value).length < 5 || (cedula.value).length > 16 ){
+   if((cedula.value).length != 9 || (cedula.value).length != 12 ){
         alertify
-            .alert('Aviso', 'El número digitado no corresponde a una identificación nacional o internacional', function(){
+            .alert('Aviso', 'El número digitado no corresponde a una identificación nacional o internacional. Por favor utilice los ceros.', function(){
                 alertify.message('OK');
                 cedula.value = ""; 
             });

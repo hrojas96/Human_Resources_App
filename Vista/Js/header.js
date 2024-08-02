@@ -16,7 +16,7 @@ function verificarIngreso() {
   } ;
 };
 
-//<a id="iconos" href="#"><i id="campana" class="fa-solid fa-bell"></i> <span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span></a>
+
 menuGeneral.innerHTML =`
 
                 <!--Menu Vertical-->
@@ -55,13 +55,13 @@ menuGeneral.innerHTML =`
                 </div>
                 <div class="offcanvas-body" id= "menuLateral">
                     <div>
+                        <h4 id="opcionesMenu" class="text-center">Personal</h4>
+                    </div>
+                    <div>
                         <a id="opcionesMenu" href="marcasEmpl.html">Marcas</a>
                     </div>
                     <div>
-                        <a id="opcionesMenu" href="planillaUsr.html">Desglose de Salarios</a>
-                    </div>
-                    <div>
-                        <a id="opcionesMenu" href="horasExtrasUsuario.html"> Pago de Horas Extras</a>
+                        <a id="opcionesMenu" href="horasExtrasUsuario.html">Horas Extras</a>
                     </div>
                     <div>
                         <a id="opcionesMenu" href="vacacionesUsuario.html">Vacaciones</a>
@@ -70,26 +70,37 @@ menuGeneral.innerHTML =`
                         <a id="opcionesMenu" href="permisosUsuario.html">Permisos</a>
                     </div>
                     <div>
+                        <a id="opcionesMenu" href="planillaUsr.html">Salarios</a>
+                    </div>
+                    <div>
                         <a id="opcionesMenu" href="aguinaldoUsr.html">Aguinaldos</a>
                     </div>
                     <br>
-                    <spam id="opcionesMenu">___________________ </spam>
+                    
+                    
+                    <div>
+                        <h4 id="tituloRRHH" class="text-center" hidden>Recursos Humanos</h4>
+                    </div>
                     <div id = "menuMarcasAdm"> </div>
-                    <div id = "menuplanilla"> </div>
+                    
                     <div id = "menuHorasExtrasAdm"> </div>
                     <div id = "menuBonos"> </div>
-                    <div id = "menuPrestamos"> </div>
                     <div id = "menuVacacionesAdm"> </div>
                     <div id = "menuPermisosAdm"> </div>
                     <div id = "menuIncapacidadesAdm"> </div>
+                    <div id = "menuPrestamos"> </div>
+                    <div id = "menuplanilla"> </div>
                     <div id = "menuAguinaldoAdm"> </div>
                     <div id = "menuLiquidacionesAdm"> </div>
                     <div id = "menuMantenimientos"> </div>
                     <br>
-                    <spam id="opcionesMenu">___________________ </spam>
+                    
+                    <div>
+                        <h4 id="tituloJf" class="text-center" hidden>Jefaturas</h4>
+                    </div>
+                    <div id = "menuHorasExtrasJef"> </div> 
                     <div id = "menuVacacionesJF"> </div> 
-                    <div id = "menuPermisosJF"> </div>  
-                    <div id = "menuHorasExtrasJef"> </div>          
+                    <div id = "menuPermisosJF"> </div>           
                 </div>
                 `;
 
@@ -99,63 +110,74 @@ function tipoUsuario () {
         .then(data => {
             console.log(data[0])
             if (data[0].acc_horasExtras_RRHH == 1) {
+                //mostrar titulo
+                tituloRRHH.hidden = false;
                 menuMarcasAdm.innerHTML = 
                     `<div>
                         <a id="opcionesMenu" href="marcasAdm.html">Marcas</a>
                     </div>`
             };
             if (data[0].acc_planilla == 1) {
+                tituloRRHH.hidden = false;
                 menuplanilla.innerHTML = 
                     `<div>
-                        <a id="opcionesMenu" href="planillaAdm.html">Planilla</a>
+                        <a id="opcionesMenu" href="bonos.html">Bonos</a>
                     </div>
                     <div>
-                        <a id="opcionesMenu" href="bonos.html">Bonos</a>
+                        <a id="opcionesMenu" href="planillaAdm.html">Planilla</a>
                     </div>`
             };
             if (data[0].acc_horasExtras_RRHH == 1) {
+                tituloRRHH.hidden = false;
                 menuHorasExtrasAdm.innerHTML = 
                     `<div>
                         <a id="ntfAdmExtras" href="horasExtrasAdm.html">Horas Extras Adm</a>
                     </div>`
             };
             if (data[0].acc_prestamos == 1) {
+                tituloRRHH.hidden = false;
                 menuPrestamos.innerHTML = 
                     `<div>
                         <a id="opcionesMenu" href="prestamos.html">Préstamos</a> 
                     </div>`
             };
             if (data[0].acc_vacaciones_RRHH == 1) {
+                tituloRRHH.hidden = false;
                 menuVacacionesAdm.innerHTML = 
                     `<div>
                         <a id="ntfAdmVacaciones" href="vacacionesAdm.html">Vacaciones RRHH</a> 
                     </div>`
             };
             if (data[0].acc_permisos_RRHH == 1) {
+                tituloRRHH.hidden = false;
                 menuPermisosAdm.innerHTML = 
                     `<div>
                         <a id="ntfAdmPermiso" href="permisosAdm.html">Permisos RRHH</a> 
                     </div>`
             };
             if (data[0].acc_incapacidades == 1) {
+                tituloRRHH.hidden = false;
                 menuIncapacidadesAdm.innerHTML = 
                     `<div>
                         <a id="opcionesMenu" href="incapacidadesAdm.html">Incapacidades RRHH</a> 
                     </div>`
             };
             if (data[0].acc_aguinaldo == 1) {
+                tituloRRHH.hidden = false;
                 menuAguinaldoAdm.innerHTML = 
                     `<div>
                         <a id="opcionesMenu" href="aguinaldoAdm.html">Aguinaldos</a> 
                     </div>`
             };
             if (data[0].acc_liquidacion == 1) {
+                tituloRRHH.hidden = false;
                 menuLiquidacionesAdm.innerHTML = 
                     `<div>
                         <a  id="opcionesMenu" href="liquidacionAdm.html">Liquidaciones</a> 
                     </div>`
             };
             if (data[0].acc_mantenimeintos == 1) {
+                tituloRRHH.hidden = false;
                 menuMantenimientos.innerHTML = 
                     `<div class="dropdown mt-3">
                         <a class="dropdown-toggle" id="opcionesMenu" href="#"  data-bs-toggle="dropdown" aria-expanded="false">
@@ -170,22 +192,25 @@ function tipoUsuario () {
                         </ul>
                     </div>`
             };
+            if (data[0].acc_horasExtras_jefatura == 1) {
+                tituloJf.hidden = false;
+                menuHorasExtrasJef.innerHTML = 
+                    `<div>
+                        <a id="ntfExtras" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
+                    </div>`
+            };
             if (data[0].acc_vacaciones_jefatura == 1) {
+                tituloJf.hidden = false;
                 menuVacacionesJF.innerHTML = 
                     `<div>
                         <a id="ntfVacaciones" href="vacacionesJefatura.html">Vacaciones Jefatura</a> 
                     </div>`
             };
             if (data[0].acc_permisos_jefatura == 1) {
+                tituloJf.hidden = false;
                 menuPermisosJF.innerHTML = 
                     `<div>
                         <a id="ntfPermiso" href="permisosJefatura.html">Permisos Jefatura</a> 
-                    </div>`
-            };
-            if (data[0].acc_horasExtras_jefatura == 1) {
-                menuHorasExtrasJef.innerHTML = 
-                    `<div>
-                        <a id="ntfExtras" href="horasExtrasJefatura.html">Horas Extras Jefatura</a> 
                     </div>`
             };
             
@@ -200,10 +225,9 @@ cerrarSesion.addEventListener("click", function (event) {
  });
     
     
- notificacion.innerHTML = `
+notificacion.innerHTML = `
                             <li><a id="nuevaNotificacion" class="dropdown-item" href="#"></a></li>
                             `
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const nuevaNotificacion = document.getElementById('nuevaNotificacion');
@@ -212,12 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(urlNotificaciones + usuarioID)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            
             if (data.error) {
                 console.log('algo pasó', data.error);
             } else {
                 if (data.length > 0){
-                    campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                    
                     nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
                 }else{
                     nuevaNotificacion.textContent = "No tiene notificaciones recientes";
@@ -230,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.forEach(item => {
                     if (item.id_permiso) {
                         hasPermiso = true;
+                        
                     }
                     if (item.id_marca) {
                         hasExtras = true;
@@ -240,16 +265,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (hasPermiso) {
                     ntfPermiso.innerHTML = `Permisos Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                    campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
                 }
                 if (hasExtras) {
                     ntfExtras.innerHTML = `Horas Extras Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                    campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
                 }
                 if (hasVacaciones) {
                     ntfVacaciones.innerHTML = `Vacaciones Jefatura<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                    campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
                 }
             }
-        })
-        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
         
 
 
@@ -260,21 +288,21 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type':'application/json'
         },
         body: JSON.stringify({
-            id_jefatura:usuarioID
+            id_empleado:usuarioID
         })
     })
     .then( response => response.json())
     .then(data => {
-        console.log(data);
+        console.log('Esto es notificaciones',data);
         if (data.error) {
             console.log('algo pasó', data.error);
         } else {
-            if (data.length > 0){
+            /*if (data.length > 0){
                 campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
                 nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
             }else{
                 nuevaNotificacion.textContent = "No tiene notificaciones recientes";
-            }
+            }*/
 
             let hasPermiso = false;
             let hasExtras = false;
@@ -292,13 +320,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             if (hasPermiso) {
+                campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
                 ntfAdmPermiso.innerHTML = `Permisos Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
-            }
-            if (hasExtras) {
+            } else if (hasExtras) {
+                campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
                 ntfAdmExtras.innerHTML = `Horas Extras Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
-            }
-            if (hasVacaciones) {
+            } else if (hasVacaciones) {
+                campana.innerHTML = `<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+                nuevaNotificacion.textContent = ("Tiene solicitudes pendiente(s)");
                 ntfAdmVacaciones.innerHTML = `Vacaciones Adm<span class="position-absolute  p-1 bg-danger border border-light rounded-circle"></span>`;
+            }else{
+                nuevaNotificacion.textContent = "No tiene notificaciones recientes";
             }
         }
     })

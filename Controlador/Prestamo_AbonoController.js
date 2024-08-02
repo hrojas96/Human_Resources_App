@@ -101,7 +101,7 @@ class Prest_AbonoController {
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
                 console.log(resultado);
-                return res.json({message: 'La eliminación del permiso #' + id_abono + ', se ha realizado correctamente. Recuerde, si este fue un abono realizado automaticamente por planillas, modifique la planilla'});
+                return res.json({message: 'La eliminación del abono #' + id_abono + ', se ha realizado correctamente. Recuerde, si este fue un abono realizado automaticamente por planillas, modifique la planilla'});
             }
         });
         
