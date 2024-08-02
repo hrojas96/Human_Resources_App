@@ -132,13 +132,75 @@ btnCrear.addEventListener('click', ()=>{
 
 cedula.addEventListener('change', (e) => {
     
-   if((cedula.value).length != 9 || (cedula.value).length != 12 ){
-        alertify
-            .alert('Aviso', 'El número digitado no corresponde a una identificación nacional o internacional. Por favor utilice los ceros.', function(){
-                alertify.message('OK');
-                cedula.value = ""; 
-            });
+   if((cedula.value).length != 9) {
+        if ((cedula.value).length != 12 ) {
+            alertify
+                .alert('Aviso', 'El número digitado no corresponde a una identificación nacional o internacional. Por favor utilice los ceros.', function(){
+                    alertify.message('OK');
+                    cedula.value = ""; 
+                });
+        }
    }
+});
+
+nombre.addEventListener('change', (e) => {
+    
+    if((nombre.value).length > 30 ) {
+         
+        alertify
+            .alert('Aviso', 'El nombre digitado contiene muchos caracteres', function(){
+                alertify.message('OK');
+                nombre.value = ""; 
+            });
+    }
+    if(/[0-9]/.test(nombre.value)) {
+         
+        alertify
+            .alert('Aviso', 'El nombre digitado no debe contener números', function(){
+                alertify.message('OK');
+                nombre.value = ""; 
+            });
+    }
+});
+
+apellido1.addEventListener('change', (e) => {
+    
+    if((apellido1.value).length > 30 ) {
+         
+        alertify
+            .alert('Aviso', 'El apellido digitado contiene muchos caracteres', function(){
+                alertify.message('OK');
+                apellido1.value = ""; 
+            });
+    }
+    if(/[0-9]/.test(apellido1.value)) {
+         
+        alertify
+            .alert('Aviso', 'El apellido digitado no debe contener números', function(){
+                alertify.message('OK');
+                apellido1.value = ""; 
+            });
+    }
+ });
+
+apellido2.addEventListener('change', (e) => {
+
+    if((apellido2.value).length > 30 ) {
+            
+        alertify
+            .alert('Aviso', 'El apellido digitado contiene muchos caracteres', function(){
+                alertify.message('OK');
+                apellido2.value = ""; 
+            });
+    }
+    if(/[0-9]/.test(apellido2.value)) {
+            
+        alertify
+            .alert('Aviso', 'El apellido digitado no debe contener números', function(){
+                alertify.message('OK');
+                apellido2.value = ""; 
+            });
+    }
 });
 
 telefono.addEventListener('change', (e) => {
