@@ -9,6 +9,7 @@ const formEmpleados = document.getElementById('formEmpleados');
 const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
 const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
 const cedula = document.getElementById('cedula');
+const fechaNacimiento = document.getElementById('fechaNacimiento');
 const nombre = document.getElementById('nombre');
 const apellido1 = document.getElementById('apellido1');
 const apellido2 = document.getElementById('apellido2');
@@ -56,20 +57,21 @@ function verificarUsuario () {
         .catch(error => alert(error))
 };
 
-
 // Muestra resultados en cuanto la página carga
 function mostrar(empleados) {
     empleados[0].forEach(e =>{
-        resultados += ` <tr data-nombre="${e.nombre}"
+        resultados += ` <tr data-fechaNacimiento="${e.fecha_nacimiento.slice(0, 10)}"
+                            data-nombre="${e.nombre}"
                             data-apellido1="${e.apellido1}"
                             data-apellido2="${e.apellido2}"
-                            data-fecha="${e.fecha_ingreso.slice(0, 10)}" 
+                            data-fecha="${e.fecha_ingreso.slice(0, 10)}"  
                             data-puesto="${e.id_puesto}" data-rol="${e.id_rol}" 
                             data-jefatura="${e.id_jefatura}"
                             data-provincia="${e.id_provincia}"
                             data-canton="${e.id_canton}"
                             data-distrito="${e.id_distrito}" >
                             <td class="text-center">${e.id_empleado}</td>
+                            <td class="text-center">${new Date(e.fecha_nacimiento).toLocaleDateString('es-ES')}</td>
                             <td class="text-center">${e.nombre} ${e.apellido1} ${e.apellido2}</td> 
                             <td class="text-center">${e.genero}</td> 
                             <td class="text-center">${e.puesto}</td>
@@ -109,6 +111,7 @@ function cargarTabla () {
 //Boton de crear abre modal y limpio
 btnCrear.addEventListener('click', ()=>{
     cedula.value = ""; 
+    fechaNacimiento.value = ""; 
     nombre.value = ""; 
     apellido1.value = ""; 
     apellido2.value = ""; 
@@ -142,6 +145,25 @@ cedula.addEventListener('change', (e) => {
         }
    }
 });
+
+fechaNacimiento.addEventListener('change', (e) => {
+
+    let hoy = new Date();
+    let fecha = new Date(fechaNacimiento.value);
+    //console.log ('fecha:', fecha);
+    let yearHoy = hoy.getFullYear();
+    let yearFecha = fecha.getFullYear();
+    let edad = yearHoy - yearFecha;
+
+    if(edad < 18) {
+        alertify
+            .alert('Aviso', 'La fecha digitada indica que el empleado es menor a 18 años.', function(){
+                alertify.message('OK');
+                fechaNacimiento.value = ""; 
+            });
+         
+    }
+ });
 
 nombre.addEventListener('change', (e) => {
     
@@ -213,6 +235,18 @@ telefono.addEventListener('change', (e) => {
              });
     }
  });
+
+ direccion.addEventListener('change', (e) => {
+
+    if((direccion.value).length > 400 ) {
+            
+        alertify
+            .alert('Aviso', 'La dirección digitada contiene muchos caracteres', function(){
+                alertify.message('OK');
+                //direccion.value = ""; 
+            });
+    }
+});
 
 cargarProvincia();
 function cargarProvincia() {
@@ -382,19 +416,20 @@ on(document, 'click', '.btnEditar', e => {
     //Se asigna una posición a cada valor en la tabla para identificar el id
     const fila = e.target.closest('tr');
     const cedulaForm = fila.children[0].innerHTML;
+    const fechaNacimientoForm = fila.getAttribute('data-fechaNacimiento');
     const nombreForm = fila.getAttribute('data-nombre');
     const apellido1Form = fila.getAttribute('data-apellido1');
     const apellido2Form = fila.getAttribute('data-apellido2');
-    const generoForm = fila.children[2].innerHTML;
+    const generoForm = fila.children[3].innerHTML;
     const puestoForm = fila.getAttribute('data-puesto');
     const rolUsuarioForm = fila.getAttribute('data-rol');
     const jefaturaForm = fila.getAttribute('data-jefatura');
     const fechaIForm = fila.getAttribute('data-fecha');
-    const estadoForm = fila.children[7].innerHTML;
-    const correoForm = fila.children[8].innerHTML;
-    const telefonoForm = fila.children[9].innerHTML;
-    const estadoCivilForm = fila.children[10].innerHTML;
-    const cantHijjosForm = fila.children[11].innerHTML;
+    const estadoForm = fila.children[8].innerHTML;
+    const correoForm = fila.children[9].innerHTML;
+    const telefonoForm = fila.children[10].innerHTML;
+    const estadoCivilForm = fila.children[11].innerHTML;
+    const cantHijjosForm = fila.children[12].innerHTML;
     const provinciaForm = fila.getAttribute('data-provincia');
     
     provincia.value = provinciaForm;
@@ -406,9 +441,10 @@ on(document, 'click', '.btnEditar', e => {
     const distritoForm = fila.getAttribute('data-distrito');
     distrito.value = distritoForm;
     console.log(distrito.value);
-    const direccionForm = fila.children[15].innerHTML;
+    const direccionForm = fila.children[16].innerHTML;
 
     cedula.value = cedulaForm;
+    fechaNacimiento.value = fechaNacimientoForm;
     nombre.value = nombreForm;
     apellido1.value = apellido1Form;
     apellido2.value = apellido2Form;
@@ -466,7 +502,7 @@ on(document, 'click', '.btnBorrar', e => {
 
 //Guardar cambios editados o creados
 formEmpleados.addEventListener('submit', (e)=> {
-    
+    console.log(fechaNacimiento.value);
     //Previene que se recargue la página
     e.preventDefault();  
         
@@ -479,6 +515,7 @@ formEmpleados.addEventListener('submit', (e)=> {
             },
             body: JSON.stringify({
                 id_empleado:cedula.value,
+                fecha_nacimiento:fechaNacimiento.value,
                 nombre:nombre.value,
                 apellido1:apellido1.value,
                 apellido2:apellido2.value,
@@ -527,6 +564,7 @@ formEmpleados.addEventListener('submit', (e)=> {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
+                fecha_nacimiento:fechaNacimiento.value,
                 nombre:nombre.value,
                 apellido1:apellido1.value,
                 apellido2:apellido2.value,

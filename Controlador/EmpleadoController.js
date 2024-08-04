@@ -21,11 +21,11 @@ class EmpleadoController {
     
         accesos.consultarEmpleados((error, filas) => {
             if (error) {
-                console.log('Quiero ver el error', error);
-                throw error;
+                console.log('Error', error);
             } else {
+                console.log(filas);
                 res.send(filas);
-                //console.log(filas);
+                
             };
         });
     };
@@ -45,6 +45,7 @@ class EmpleadoController {
         
         let data = [{
             id_empleado:req.body.id_empleado,
+            fecha_nacimiento:req.body.fecha_nacimiento,
             nombre:req.body.nombre,
             apellido1:req.body.apellido1,
             apellido2:req.body.apellido2,
@@ -72,7 +73,6 @@ class EmpleadoController {
                         res.status(400).json({ error: "La cédula que ingresó ya existe." });
                     } else {
                         console.log('Hubo un error', err);
-                        //throw error;
                     };
                 } else {
                     console.log(respuesta)
@@ -89,6 +89,7 @@ class EmpleadoController {
     //Editar registro de empleados
     editarEmpleado(req, res){
         let id_empleado = req.params.id_empleado;
+        let fecha_nacimiento = req.body.fecha_nacimiento;
         let nombre = req.body.nombre;
         let apellido1 = req.body.apellido1;
         let apellido2 = req.body.apellido2;
@@ -108,7 +109,7 @@ class EmpleadoController {
         let direccion = req.body.direccion;
     
         try {
-            accesos.editarEmpleado(nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, (err, resultado) => {
+            accesos.editarEmpleado(fecha_nacimiento, nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, (err, resultado) => {
                 
                 if (err) {
                     if (err.code === 'ER_DUP_ENTRY') {
