@@ -6,11 +6,19 @@ const cedula = JSON.parse(localStorage.getItem("userID")) || false;
 const codigoEntrada = document.getElementById('codigoEntrada');
 const tiempoCodigo = document.getElementById('tiempoCodigo');
 
+const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
+const formReportes = document.getElementById('formReportes');
+const fechaInicioRpt = document.getElementById('fechaInicioRpt');
+const fechaFinalRpt = document.getElementById('fechaFinalRpt');
+const resultadoReporte = document.getElementById('resultadoReporte');
+const tablaReportes = document.getElementById('tablaReportes');
+conainerReportes.style.display = 'none';
 
 let opcion = '';
 let resultados = '';
 let marcasEmpleados = [];
 let codigo = '';
+let tablaResultados = '';
 
 
 cargarTabla();
@@ -222,18 +230,78 @@ btnSalida.addEventListener('click', ()=>{
     }
 })
 
+//Abre modal reportes limpio
+btnReportes.addEventListener('click', ()=>{ 
+    fechaInicioRpt.value = "";
+    fechaFinalRpt.value = "";  
+    modalReportes.show();
+});
+
+//Envía la consulta del reporte
+formReportes.addEventListener('submit', (e)=> {
+    e.preventDefault();
+    const urlReporte = 'http://localhost:8000/api/horasExtrasUsr/';
+
+        fetch(urlReporte + cedula, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                fechaInicioRpt:fechaInicioRpt.value,
+                fechaFinalRpt:fechaFinalRpt.value
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                conainerReportes.style.display = 'block';
+                
+                data.forEach(e => {
+
+                    tablaResultados += `
+                        <tr>
+                            <td class="text-center">${(e.id_marca)}</td> 
+                            <td class="text-center">${new Date(e.fecha).toLocaleDateString('es-ES')}</td>
+                            <td class="text-center">${e.hora_entrada}</td> 
+                            <td class="text-center">${e.hora_salida}</td> 
+                            <td class="text-center">${e.horas_ordinarias}</td>   
+                            <td class="text-center">${e.horas_extras}</td>
+                        </tr>
+                    `;
+
+                        
+                    resultadoReporte.innerHTML = tablaResultados;
+                });
+                //tablaReportes.style.display = 'block';  
+            }
+        })
+    modalReportes.hide();
+});
+
 btnImprimir.addEventListener('click', ()=>{
-    console.log('Contenedor', contenedorMarcas)
-    console.log('resultados', resultados)
+    
+    
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     //Título del pdf
-    doc.text(20,20, "Reporte de Marcas");
+    doc.text(20,20, "Reporte de Permisos");
 
     const filas = [];
-    const encabezado = ["Marca", "Fecha", "Entrada",  "Salida",  "Horas Ordinarias", "Horas Extras" ];
-    document.querySelectorAll("tbody tr").forEach(fila => {
+    const encabezado = ["Marca", "Fecha", "Entrada", "Salida", "Horas Ordinarias", "Horas Extras" ];
+    
+    const tabla = document.querySelector("#resultadoReporte");
+    
+    tabla.querySelectorAll("tbody tr").forEach(fila => {
         const datos = [];
         fila.querySelectorAll("td").forEach(celda => {
             datos.push(celda.innerText);
@@ -247,3 +315,4 @@ btnImprimir.addEventListener('click', ()=>{
     })
     doc.save('reporte.pdf')
 });
+

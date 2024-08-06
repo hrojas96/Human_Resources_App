@@ -19,6 +19,17 @@ class HorasExtrasModel {
         conectDB.conexion.query(query, [estado, id_marca,], callback);
     };
 
+    generarReportesUsr(fechaInicioRpt,fechaFinalRpt, id_empleado, callback) {
+        const query =  `SELECT Marcas.id_marca, Marcas.fecha, Marcas.hora_entrada, Marcas.hora_salida, Marcas.horas_ordinarias, Horas_Extras.horas_extras   
+                        FROM Horas_Extras 
+                        LEFT JOIN Marcas ON Horas_Extras.id_marca = Marcas.id_marca
+                        LEFT JOIN Empleado ON Marcas.id_empleado = Empleado.id_empleado
+                        WHERE Marcas.fecha BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}' AND Marcas.id_empleado = ${id_empleado}
+                        ORDER BY Marcas.fecha DESC`;
+        
+        conectDB.conexion.query(query, callback);
+    };
+
     //JEFATURA
 
     consultarHorasExtrasJef(id_jefatura, callback) {

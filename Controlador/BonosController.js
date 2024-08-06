@@ -99,7 +99,7 @@ class BonosController {
                 //throw error;
             } else {
                 console.log(resultado);
-                res.json({message: 'La eliminación del feriado #' + id_bono + ', se ha realizado correctamente'});
+                res.json({message: 'La eliminación del bono #' + id_bono + ', se ha realizado correctamente'});
             };
         });
         

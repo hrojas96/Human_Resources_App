@@ -11,6 +11,7 @@ class Planulla_UsrController {
     inicializarRutas() {
         this.router.get('/:id_empleado', this.consultarPlanillaUsr);
         this.router.put('/:id_salario', this.editarDesglosePlanilla);
+        this.router.post('/:id_empleado', this.generarReportesUsr);
     };
 
     //Consulta todas los salarios de un empleado específico
@@ -60,6 +61,30 @@ class Planulla_UsrController {
             console.error("Error durante el proceso:", error);
             res.status(500).json({ error: "Error durante el proceso" });
         };
+    };
+
+    generarReportesUsr(req, res) {      
+        let id_empleado = req.params.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+        let minimo = req.body.minimo;
+        let maximo = req.body.maximo;
+        let repoteMonetario = req.body.repoteMonetario;
+
+        accesos.generarReportesUsr(fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, id_empleado, (err, filas) => {
+            if (err) {
+                return res.status(500).json({ error: "Error de servidor" });
+                //throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
     
 };

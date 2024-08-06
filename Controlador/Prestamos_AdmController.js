@@ -21,8 +21,7 @@ class PrestamosController {
         
         accesos.consultarPrestamos((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
                 //console.log(filas);
@@ -48,8 +47,7 @@ class PrestamosController {
                 if (error.code === 'ER_DUP_ENTRY') {
                     res.status(400).json({ error: "Datos duplicados" });
                 } else {
-                    console.log('Hubo un error');
-                    //throw error;
+                    console.log('Hubo un error', error);
                 };
             } else {
                 //console.log('Datos insertados')
@@ -79,8 +77,7 @@ class PrestamosController {
                     if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error')
-                        //throw error;
+                        console.log('Hubo un error', error);
                     };
                 } else {
                     //console.log('Datos editados')
@@ -99,8 +96,7 @@ class PrestamosController {
         let id_prestamo = req.params.id_prestamo;
         accesos.eliminarPrestamo(id_prestamo, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -120,7 +116,6 @@ class PrestamosController {
         accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteSaldo,reporteDecision, tipoReporte, (err, filas) => {
             if (err) {
                 res.status(500).json({ error: "Error de servidor" });
-                throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });

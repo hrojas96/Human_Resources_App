@@ -56,7 +56,38 @@
                             </tbody>
                         </table> 
                     </div> 
-                    <button id="btnImprimir" type="button" style="background-color:transparent; color: #255387; border-color:transparent;" >Imprimir  <i class="fa-solid fa-print"></i></button>
+                    <div>
+                        <a id="btnReportes" class=" btn   btn-sm" data-bs-toggle="modal" style="background-color:rgb(82, 80, 80); border-color: #070707; color:white;" data-bs-target="#modalReportes"> 
+                            Generar Reportes <i class="fa-regular fa-paste"></i>
+                        </a>
+                    </div><br> 
+                </div>
+            </div>
+        </section>
+
+        <!--Tabla Reportes-->
+        <section>
+            <div id="conainerReportes" class="container">
+                <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">   
+                    <h4 id="titulo">Reportes</h4>
+                    <div class="" id="tablaReportes" >
+
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 2%;">Marca</th>
+                                    <th style="width: 5%;">Fecha</th>
+                                    <th style="width: 5%;">Entrada</th>
+                                    <th style="width: 5%;">Salida</th>
+                                    <th style="width: 5%;">Horas Ordinarias</th>
+                                    <th style="width: 5%;">Horas Extras</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultadoReporte" class="table-group-divider"> 
+                            </tbody>
+                        </table> <br> 
+                    </div>
+                    <button id="btnImprimir" type="button" style="background-color:transparent; color: #255387; border-color:transparent;" >Generar PDF <i class="fa-solid fa-print"></i></button>
                     
                 </div>
             </div>
@@ -86,6 +117,37 @@
                 </div>
                 </div>    
             </div>
+        </section>
+
+        <!--Modal Reportes-->
+        <section> 
+            <div id="modalReportes" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header  text-white">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Generar Reporte</h1>   
+                    </div>
+                    <div class="modal-body">
+                        <form id="formReportes" class="row g-2">
+                            <div class="col-md-6">
+                                <label for="fechaInicioRpt" class="form-label">Desde:</label><br>
+                                <input type="date" class="form-control" id="fechaInicioRpt" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaFinalRpt" class="form-label">Hasta:</label><br>
+                                <input type="date" class="form-control" id="fechaFinalRpt" required> <br>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Generar</button>
+                    </div>
+                </form>
+                        
+                </div>
+                </div>    
+            </div>
+             
         </section>
     </main>
 

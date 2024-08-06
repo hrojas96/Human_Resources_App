@@ -443,12 +443,16 @@ flexSwitchCheckChecked.addEventListener('click', ()=>{
     if (flexSwitchCheckChecked.checked == true){
         minimo.disabled = false;
         maximo.disabled = false;
+        minimo.value = "";
+        maximo.value = "";
         repoteMonetario = 2
         console.log(repoteMonetario);
     }
     if (flexSwitchCheckChecked.checked == false){
         minimo.disabled = true;
         maximo.disabled = true;
+        minimo.value = "";
+        maximo.value = "";
         repoteMonetario = 1;
         console.log(repoteMonetario);
     }

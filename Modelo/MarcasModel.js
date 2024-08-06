@@ -106,6 +106,26 @@ class MarcasModel {
             });
         });
     }
+
+    generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, callback) {
+        
+        let query2 = ``;
+        
+        if(tipoReporte == 1){
+            query2 = ` AND Marcas.id_empleado = ${id_empleado} `;
+
+        }else{
+            query2 = ``
+        }
+        const query =  `SELECT Marcas.id_marca, Marcas.fecha, Empleado.nombre, Empleado.apellido1, Empleado.apellido2, Marcas.hora_entrada, Marcas.hora_salida, Marcas.horas_ordinarias, Horas_Extras.horas_extras   
+                        FROM Horas_Extras 
+                        LEFT JOIN Marcas ON Horas_Extras.id_marca = Marcas.id_marca
+                        LEFT JOIN Empleado ON Marcas.id_empleado = Empleado.id_empleado
+                        WHERE Marcas.fecha BETWEEN '${fechaInicioRpt}' AND '${fechaFinalRpt}'  ${query2}
+                        ORDER BY Marcas.fecha DESC`;
+        
+        conectDB.conexion.query(query, callback);
+    };
 }
 
 module.exports = new MarcasModel();

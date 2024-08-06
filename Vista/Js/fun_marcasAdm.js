@@ -9,13 +9,43 @@ const horaSalida = document.getElementById('horaSalida');
 const horaOrdinarias = document.getElementById('horaOrdinarias');
 const horasExtras = document.getElementById('horasExtras');
 
+const modalReportes = new bootstrap.Modal(document.getElementById('modalReportes'));
+const formReportes = document.getElementById('formReportes');
+const flexRadioDefault1 = document.getElementById('flexRadioDefault1');
+const flexRadioDefault2 = document.getElementById('flexRadioDefault2');
+const empleadoReporte = document.getElementById('empleadoReporte');
+const fechaInicioRpt = document.getElementById('fechaInicioRpt');
+const fechaFinalRpt = document.getElementById('fechaFinalRpt');
+const resultadoReporte = document.getElementById('resultadoReporte');
+const tablaReportes = document.getElementById('tablaReportes');
+conainerReportes.style.display = 'none';
+
 let resultados = '';
 let opcion = '';
 let marcasEmpleados = [];
+let tipoReporte;
+let tablaResultados = '';
 
 
 cargarTabla();
 cargarEmpleados();
+verificarUsuario ();
+
+//Verifica si el usuario tiene acceso a esta página
+function verificarUsuario () {
+    const urlAccesos = 'http://localhost:8000/api/accesos/';
+    const usuario = JSON.parse(localStorage.getItem("userID")) || false;
+    fetch(urlAccesos + usuario)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data[0])
+            
+            if (data[0].acc_horasExtras_RRHH!== 1) {
+                window.location = "404.html";
+            }
+        })
+        .catch(error => alert(error))
+};
 
 function mostrarTabla(marcas) {
     marcasEmpleados = marcas;
@@ -83,6 +113,8 @@ function cargarEmpleados() {
                 opcion.value = optionData.id_empleado;
                 // Agrega la opción al elemento select
                 empleado.add(opcion);  
+                const opcionCopia = opcion.cloneNode(true);
+                empleadoReporte.add(opcionCopia);
             });
         })
         .catch(error => {
@@ -257,18 +289,104 @@ formMarcasAdm.addEventListener('submit', (e)=> {
 
 });
 
+//Abre modal reportes limpio
+btnReportes.addEventListener('click', ()=>{
+    flexRadioDefault2.checked = true;
+    empleadoReporte.value = ""; 
+    fechaInicioRpt.value = "";
+    fechaFinalRpt.value = "";  
+    modalReportes.show();
+    tipoReporte = 2;
+    reporteDecision = 2;
+    console.log(tipoReporte);
+    console.log(reporteDecision);
+
+});
+
+//Activa el input empleado si se selecciona un reporte individual
+flexRadioDefault1.addEventListener('click', ()=>{
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = false;
+    tipoReporte = 1;
+    console.log(tipoReporte);
+});
+
+//Desactiva el input empleado si se selecciona un reporte individual
+flexRadioDefault2.addEventListener('click', ()=>{
+    empleadoReporte.value = "";
+    empleadoReporte.disabled = true;
+     
+    tipoReporte = 2;
+    console.log(tipoReporte);
+});
+
+//Envía la consulta del reporte
+formReportes.addEventListener('submit', (e)=> {
+    e.preventDefault();
+
+        fetch(url + tipoReporte, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:empleadoReporte.value,
+                fechaInicioRpt:fechaInicioRpt.value,
+                fechaFinalRpt:fechaFinalRpt.value,
+                
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            console.log(data);
+            if (data.error) {
+                
+                alertify
+                    .alert('Aviso', data.error, function(){
+                        alertify.message('OK');
+                    });
+                
+            } else {
+                conainerReportes.style.display = 'block';
+                
+                data.forEach(e => {
+
+                    tablaResultados += `
+                        <tr>
+                            <td class="text-center">${(e.id_marca)}</td> 
+                                <td class="text-center">${new Date(e.fecha).toLocaleDateString('es-ES')}</td> 
+                                <td class="text-center">${e.nombre} ${e.apellido1} ${e.apellido2}</td>
+                            <td class="text-center">${e.hora_entrada}</td> 
+                            <td class="text-center">${e.hora_salida}</td> 
+                            <td class="text-center">${e.horas_ordinarias}</td>   
+                            <td class="text-center">${e.horas_extras}</td>
+                        </tr>
+                    `;
+
+                        
+                    resultadoReporte.innerHTML = tablaResultados;
+                });
+                //tablaReportes.style.display = 'block';  
+            }
+        })
+    modalReportes.hide();
+});
+
 btnImprimir.addEventListener('click', ()=>{
-    console.log('Contenedor', contenedorMarcas)
-    console.log('resultados', resultados)
+    
+    
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     //Título del pdf
-    doc.text(20,20, "Reporte de Marcas");
+    doc.text(20,20, "Reporte de Permisos");
 
     const filas = [];
-    const encabezado = ["Marca", "Fecha", "Entrada",  "Salida",  "Horas Ordinarias", "Horas Extras" ];
-    document.querySelectorAll("tbody tr").forEach(fila => {
+    const encabezado = ["Marca", "Fecha", "Empleado",  "Entrada", "Salida", "Horas Ordinarias", "Horas Extras" ];
+    
+    const tabla = document.querySelector("#resultadoReporte");
+    
+    tabla.querySelectorAll("tbody tr").forEach(fila => {
         const datos = [];
         fila.querySelectorAll("td").forEach(celda => {
             datos.push(celda.innerText);
@@ -282,3 +400,4 @@ btnImprimir.addEventListener('click', ()=>{
     })
     doc.save('reporte.pdf')
 });
+

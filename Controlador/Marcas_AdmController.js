@@ -13,6 +13,7 @@ class Marcas_AdmController {
         this.router.post('/', this.insertarMarcaAdm);
         this.router.put('/:id_marca', this.editarMarcaAdm);
         this.router.delete('/:id_marca', this.eliminarMarcaAdm);
+        this.router.post('/:tipoReporte', this.generarReportes);
     };
 
     //Consulta todas las marcas de todos los empleados (Adm)
@@ -166,6 +167,29 @@ class Marcas_AdmController {
                 res.status(200).json({ message: 'Marca eliminada correctamente' });
             };
         });    
+    };
+
+    generarReportes(req, res) {      
+        console.log('llegooooos')
+        let tipoReporte = req.params.tipoReporte;
+        let id_empleado = req.body.id_empleado;
+        let fechaInicioRpt = req.body.fechaInicioRpt;
+        let fechaFinalRpt = req.body.fechaFinalRpt;
+
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (err, filas) => {
+            if (err) {
+                res.status(500).json({ error: "Error de servidor" });
+                throw err;
+            } else {
+                if (filas.length == 0){
+                    res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
+                }else{
+                    console.log(filas)
+                    res.send(filas);
+                }
+                
+            };
+        });
     };
 
     

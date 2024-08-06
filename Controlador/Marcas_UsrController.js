@@ -13,7 +13,7 @@ class Per_MarcasController {
         this.router.get('/:id_empleado', this.consultarMarcasEmp);
         this.router.post('/:id_empleado', this.enviarCodigo);
         this.router.post('/', this.insertarMarca);
-        this.router.put('/:id_empleado', this.editarMarca);
+        this.router.put('/:id_empleado', this.editarMarca); 
     };
 
     //Consulta todas las marcas de un empleado específico
@@ -175,7 +175,11 @@ class Per_MarcasController {
                 res.status(500).json({ error: "Error de servidor" });
         };
     };
+
+    
 };
+
+
 
 //Convierte la hora en milesegundos para sacar la diferencia entre marcas
 function calcularHoras(marca) {
