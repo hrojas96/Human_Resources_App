@@ -39,8 +39,7 @@ class PlanillaController {
         let id_salario = req.params.id_salario;
         accesos.consultarDesgloseSalario(id_salario, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 console.log(filas)
                 res.send(filas);
@@ -59,10 +58,10 @@ class PlanillaController {
         try {
             if(calculo == 2){
                 filas = await accesos.consultarDatosPlanillaGeneral(fecha_desde, fecha_hasta);
-                console.log( filas);
+                //console.log( filas);
             }else if(calculo == 1){
                 filas = await accesos.consultarDatosPlanillaIndividual(id_empleado, fecha_desde, fecha_hasta);
-                console.log(filas);
+                //console.log(filas);
             }
             if (filas.length == 0) {
                 console.log('No existen datos en el parámetro de fechas dado, para el cálculo de salarios. Revise las fechas dadas.');
@@ -232,10 +231,10 @@ class PlanillaController {
         let maximo = req.body.maximo;
         let repoteMonetario = req.body.repoteMonetario;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error );
                 return res.status(500).json({ error: "Error de servidor" });
-                //throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });

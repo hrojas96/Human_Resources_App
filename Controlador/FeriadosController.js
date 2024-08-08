@@ -22,7 +22,6 @@ class EmpleadoController {
         accesos.consultarFeriados((error, filas) => {
             if (error) {
                 console.log('Hubo un error', error);
-                //throw error;
             } else {
                 res.send(filas);
                 //console.log(filas);
@@ -41,12 +40,11 @@ class EmpleadoController {
         try {
             accesos.insertarFeriados(data, (error, respuesta) => {
                 
-                if (error) {
+                if (err) {
                     if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La feriado que ingresó ya existe." });
                     } else {
                         console.log('Hubo un error', error);
-                        //throw error;
                     };
                 } else {
                     console.log(respuesta)
@@ -74,8 +72,7 @@ class EmpleadoController {
                     if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La feriado que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error')
-                        //throw error;
+                        console.log('Hubo un error', error)
                     };
                 } else {
                     console.log(resultado)
@@ -94,7 +91,6 @@ class EmpleadoController {
         accesos.eliminarFeriados(id_feriado, (error, resultado) => {
             if (error) {
                 console.log('Hubo un error', error);
-                //throw error;
             } else {
                 console.log(resultado);
                 res.json({message: 'La eliminación del feriado #' + id_feriado + ', se ha realizado correctamente'});

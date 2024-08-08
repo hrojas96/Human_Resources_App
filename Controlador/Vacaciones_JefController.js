@@ -19,8 +19,7 @@ class Vacaciones_JefController {
         let id_jefatura = req.params.id_jefatura;
         accesos.consultarVacacionesJef(id_jefatura, (error, resultado) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 res.send(resultado);
             };
@@ -34,11 +33,10 @@ class Vacaciones_JefController {
         let msj_jefatura = req.body.msj_jefatura;
 
         try {
-            accesos.editarVacacionesJef(decision_jefatura, msj_jefatura, id_vacaciones, (err, resultado) => {
+            accesos.editarVacacionesJef(decision_jefatura, msj_jefatura, id_vacaciones, (error, resultado) => {
                 
-                if (err) {
-                    console.log('Hubo un error', err);
-                    //throw err;
+                if (error) {
+                    console.log('Hubo un error', error);
                     return res.status(500).json({ error: 'Error al editar las vacaciones en la base de datos' });
                 } else {
                     console.log(resultado);

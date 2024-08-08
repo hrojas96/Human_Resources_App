@@ -21,8 +21,7 @@ class Per_MarcasController {
         let id_empleado = req.params.id_empleado;
         accesos.consultarMarcasEmp(id_empleado, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -52,13 +51,13 @@ class Per_MarcasController {
         }];
         try {
             console.log('Data 1: '+ JSON.stringify(data[0]));
-            accesos.insertarMarca(data, (err, fila) => {
+            accesos.insertarMarca(data, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error');
+                        console.log('Hubo un error', error);
                         res.status(400).json({ error: "Hubo un error al registrar su marca " });
                     };
                 } else {
@@ -88,10 +87,9 @@ class Per_MarcasController {
         let hora_salida = '14:15:00';*/
 
         try {
-        accesos.consultarMarcaIn(id_empleado, fecha, (err, filas) => {
-            if (err) {
-                console.log('Hubo un error')
-                throw err;
+        accesos.consultarMarcaIn(id_empleado, fecha, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 
             } else {
                 //Revisa si se registró una marca de entrada
@@ -115,14 +113,13 @@ class Per_MarcasController {
 
                     //Hace el registro de las horas ordinarias
                     try {
-                        accesos.editarMarca(hora_salida, horas_ordinarias, id_marca, (err, fila) => {
+                        accesos.editarMarca(hora_salida, horas_ordinarias, id_marca, (error, fila) => {
                             
-                            if (err) {
+                            if (error) {
                                 if (err.code === 'ER_DUP_ENTRY') {
                                     res.status(400).json({ error: "Datos duplicados" });
                                 } else {
-                                    console.log('Hubo un error')
-                                    //throw err;
+                                    console.log('Hubo un error', error);
                                 };
                             } else {
                                 let estado = 'Pendiente';

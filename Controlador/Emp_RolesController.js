@@ -16,7 +16,7 @@ class Emp_RolesController {
     cargarRoles(req, res) {
         accesos.cargarRoles((error, filas) => {
             if (error) {
-                throw error;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas)
                 res.send(filas);

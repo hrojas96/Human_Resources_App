@@ -15,10 +15,9 @@ class Incapacidades_TiposController {
 
     //Consultar las vacaciones de un único empleado
     consultarTiposIncapacidades(req, res) {
-        accesos.consultarTiposIncapacidades((err, resultado) => {
-            if (err) {
-                console.log('Hubo un error');
-                //throw err;
+        accesos.consultarTiposIncapacidades((error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 
                 //console.log(resultado)

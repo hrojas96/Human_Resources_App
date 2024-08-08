@@ -16,7 +16,7 @@ class Emp_PuestosController {
     cargarPuestos(req, res) {
         accesos.cargarPuestos((error, filas) => {
             if (error) {
-                throw error;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas)
                 res.send(filas);
@@ -27,34 +27,3 @@ class Emp_PuestosController {
 
 module.exports = new Emp_PuestosController().router;;
 
-
-
-
-
-
-
-/*const express = require('express');
-const cors = require('cors');
-
-
-const accesos = require('../Modelo/acc_empleados');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-
-//Carga los empleados en el form
-app.get('/', (req, res) => {
-    accesos.cargarPuestos((error, filas) => {
-        if (error) {
-            throw error;
-        } else {
-            //console.log(filas)
-            res.send(filas);
-        }
-    });
-});
-
-
-module.exports = app;*/

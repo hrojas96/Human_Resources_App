@@ -21,13 +21,12 @@ class Incapacidades_AdmController {
 
     //Consultar las incapacidades
     consultarIncapacidadesAdm(req, res) {
-        accesos.consultarIncapacidadesAdm((err, resultado) => {
+        accesos.consultarIncapacidadesAdm((error, resultado) => {
             
-            if (err) {
-                console.log('Hubo un error'), err;
+            if (error) {
+                console.log('Hubo un error', error);
                 
             } else {
-                
                 //console.log(resultado)
                 res.send(resultado);
             };
@@ -42,10 +41,10 @@ class Incapacidades_AdmController {
         let estado = req.body.estado;
 
         try {
-            accesos.consultarDatosIncapacidades(fecha_desde, id_empleado,  async (err, filas) => {
+            accesos.consultarDatosIncapacidades(fecha_desde, id_empleado,  async (error, filas) => {
              
-                if (err) {
-                    console.log('Hubo un error');
+                if (error) {
+                    console.log('Hubo un error', error);
                     return res.status(500).json({ error: 'Hubo un error al consultar datos de las incapacidades' });
                     
                 } else {
@@ -59,7 +58,6 @@ class Incapacidades_AdmController {
 
                     //Identifica el tipo de incapacidad para aplicar la formula correcta
                     if (id_tipo_incapacidad  == 1) {
-                        console.log('llegué acá: ');
                         monto_subcidio = (salarioPromedio / 2) / 30;
                     } else if (id_tipo_incapacidad  == 2) {
                         monto_subcidio = ((salarioPromedio * 0.15) * 4) / 30
@@ -82,9 +80,7 @@ class Incapacidades_AdmController {
                         fecha_hasta,
                         monto_subcidio,
                         estado
-                    }];
-                    console.log('DAta: ', data)
-                        
+                    }];  
                         
                     try{
                         await new Promise((resolve, reject) => {
@@ -96,13 +92,12 @@ class Incapacidades_AdmController {
                                     fecha_hasta,
                                     monto_subcidio
                             }];*/
-                            console.log('DAta: ', data)
-                            accesos.insertarIncapacidadesAdm(data, (err, resultado) => {
+                          
+                            accesos.insertarIncapacidadesAdm(data, (error, resultado) => {
                                 
-                                if (err) {
-                                    //console.log('Hubo un error', err);
-                                    //throw err;
-                                    reject('Hubo un error', err);
+                                if (error) {
+                                    
+                                    reject('Hubo un error', error);
                                     return res.status(500).json({ error: 'Error al registrar la incapacidad en la base de datos' });
                                 } else {
                                     resolve('Proceso realizado', resultado);
@@ -131,9 +126,9 @@ class Incapacidades_AdmController {
         let fecha_hasta = req.body.fecha_hasta
         
         try {
-            accesos.consultarDatosIncapacidades(fecha_hasta, id_empleado,  async (err, filas) => {
+            accesos.consultarDatosIncapacidades(fecha_hasta, id_empleado,  async (error, filas) => {
              
-                if (err) {
+                if (error) {
                     console.log('Hubo un error');
                     return res.status(500).json({ error: 'Hubo un error al consultar datos de las incapacidades' });
                     
@@ -166,11 +161,11 @@ class Incapacidades_AdmController {
                     try{
                         await new Promise((resolve, reject) => {
                             
-                            accesos.editarIncapacidadesAdm(id_empleado, id_tipo_incapacidad, fecha_desde, fecha_hasta, monto_subcidio, id_incapacidad, (err, resultado) => {
+                            accesos.editarIncapacidadesAdm(id_empleado, id_tipo_incapacidad, fecha_desde, fecha_hasta, monto_subcidio, id_incapacidad, (error, resultado) => {
                                 
-                                if (err) {
+                                if (error) {
                                     
-                                    reject('Hubo un error', err);
+                                    reject('Hubo un error', error);
                                     return res.status(500).json({ error: 'Error al editar la incapacidad en la base de datos' });
                                 } else {
                                     resolve('Proceso realizado', resultado);
@@ -193,13 +188,12 @@ class Incapacidades_AdmController {
 
     eliminarIncapacidadesAdm(req,res) {
         let id_incapacidad = req.params.id_incapacidad;
-        accesos.eliminarIncapacidadesAdm(id_incapacidad, (err, resultado) => {
-            if (err) {
-                console.log('Hubo un error', err);
-                //throw err;
+        accesos.eliminarIncapacidadesAdm(id_incapacidad, (error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
-                console.log(resultado);
+                //console.log(resultado);
                 return res.json({message: 'La eliminación del registro de incapacidad #' + id_incapacidad + ', se ha realizado correctamente'});
             }
         });
@@ -211,11 +205,10 @@ class Incapacidades_AdmController {
         let estado = req.body.estado;
 
         try {
-            accesos.aceptarIncapacidad( estado, id_incapacidad, (err, resultado) => {
+            accesos.aceptarIncapacidad( estado, id_incapacidad, (error, resultado) => {
                 
-                if (err) {
-                    console.log('Hubo un error', err);
-                    //throw err;
+                if (error) {
+                    console.log('Hubo un error', error);
                     return res.status(500).json({ error: 'Error al editar la incapacidad en la base de datos' });
                 } else {
                     console.log(resultado);
@@ -231,8 +224,7 @@ class Incapacidades_AdmController {
         }
     };
 
-    generarReportes(req, res) {      
-        console.log('llegooooos')
+    generarReportes(req, res) {  
         let tipoReporte = req.params.tipoReporte;
         let id_empleado = req.body.id_empleado;
         let fechaInicioRpt = req.body.fechaInicioRpt;
@@ -240,15 +232,15 @@ class Incapacidades_AdmController {
         let reporteTipoInc = req.body.reporteTipoInc;
         let reporteDecision = req.body.reporteDecision;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteTipoInc,reporteDecision, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteTipoInc,reporteDecision, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 res.status(500).json({ error: "Error de servidor" });
-                throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

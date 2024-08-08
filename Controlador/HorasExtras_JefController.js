@@ -16,10 +16,9 @@ class HorasExtras_JefController {
     //Consultar los permisos de un único empleado
     consultarHorasExtrasJef(req, res) {
         let id_jefatura = req.params.id_jefatura;
-        accesos.consultarHorasExtrasJef(id_jefatura,(err, resultado) => {
-            if (err) {
-                console.log('Hubo un error');
-                throw err;
+        accesos.consultarHorasExtrasJef(id_jefatura,(error, resultado) => {
+            if (error) {
+                console.log('Hubo un error'), error;
             } else {
                 res.send(resultado);
             };
@@ -39,11 +38,10 @@ class HorasExtras_JefController {
         }
         
         try{   
-            accesos.editarHorasExtrasJef(estado, decision_jefatura, id_marca, (err, resultado) => {
+            accesos.editarHorasExtrasJef(estado, decision_jefatura, id_marca, (error, resultado) => {
                 
-                if (err) {
-                        console.log('Hubo un error', err);
-                        //throw err;
+                if (error) {
+                        console.log('Hubo un error', error);
                         return res.status(500).json({ error: 'Error al realizar la solicitud' });
                 } else {
                     console.log(resultado);

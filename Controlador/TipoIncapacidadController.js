@@ -19,8 +19,7 @@ class TipoIncapacidadController {
         
         accesos.consultarTipoIncapacidad((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -36,14 +35,13 @@ class TipoIncapacidadController {
             dias_subcidio:req.body.dias_subcidio   
         }];
     try {
-        accesos.insertarTipoIncapacidad(data, (err, fila) => {
+        accesos.insertarTipoIncapacidad(data, (error, fila) => {
             
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
+            if (error) {
+                if (error.code === 'ER_DUP_ENTRY') {
                     res.status(400).json({ error: "Datos duplicados" });
                 } else {
-                    console.log('Hubo un error');
-                    throw err;
+                    console.log('Hubo un error', error);
                 };
             } else {
                 //console.log('Datos insertados')
@@ -72,7 +70,6 @@ class TipoIncapacidadController {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
                         console.log('Hubo un error')
-                        //throw err;
                     };
                 } else {
                     //console.log('Datos insertados')
@@ -91,7 +88,6 @@ class TipoIncapacidadController {
         accesos.eliminarTipoIncapacidad(id_tipo_incapacidad, (error, filas) => {
             if (error) {
                 console.log('Hubo un error');
-                //throw err;
             } else {
                 res.send(filas);
             };

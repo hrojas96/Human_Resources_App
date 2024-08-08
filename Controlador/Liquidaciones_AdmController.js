@@ -18,8 +18,7 @@ class LiquidacionesController {
     consultarLiquidaciones(req, res)  {
         accesos.consultarLiquidaciones((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas[0]);
                 res.send(filas);
@@ -43,10 +42,10 @@ class LiquidacionesController {
         console.log(ultimoYYYY, ultimo_aguinaldo);
 
         try {
-            accesos.consultarDatosLiquidacion(fechaYYYY, fechaMM, fecha, ultimo_aguinaldo, id_empleado,  async (err, filas) => {
+            accesos.consultarDatosLiquidacion(fechaYYYY, fechaMM, fecha, ultimo_aguinaldo, id_empleado,  async (error, filas) => {
                 
-                if (err) {
-                    console.log('Hubo un error', err );
+                if (error) {
+                    console.log('Hubo un error', error );
                     return res.status(500).json({ error: 'Hubo un error al consultar datos del empleado' });
                     
                 } else {
@@ -174,14 +173,16 @@ class LiquidacionesController {
                             }];
                         try {
                             new Promise((resolve, reject) => {
-                                accesos.insertaLiquidacion(data, (err, filas) => {
+                                accesos.insertaLiquidacion(data, (error, filas) => {
                                     
-                                    if (err) {
+                                    if (error) {
                                         if (err.code === 'ER_DUP_ENTRY') {
                                             return res.status(400).json({ error: "Datos duplicados. La liquidación de este empleado ha sido ya calculada previamente" });
                                         } else {
-                                            console.log('Hubo un error', err);
-                                            return reject(err);
+                                            console.log('Hubo un error', error);
+                                            reject(error);
+                                            return res.status(400).json({ error: "Hubo un error al calcular la liquidación de empleado" });
+                                            
                                         };
                                     } else {
                                         // Enviamos respuesta de BD
@@ -230,15 +231,15 @@ class LiquidacionesController {
         let fechaInicioRpt = req.body.fechaInicioRpt;
         let fechaFinalRpt = req.body.fechaFinalRpt;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error );
                 return res.status(500).json({ error: "Error de servidor" });
-                //throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

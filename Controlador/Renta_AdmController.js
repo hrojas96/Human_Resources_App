@@ -16,10 +16,9 @@ class Planilla_RentaController {
     //Consultar cargas sociales
     consultarImpuestoRenta(req, res) {
         
-        accesos.consultarImpuestoRenta((error, filas) => {
-            if (error) {
-                console.log('Hubo un error');
-                //throw err;
+        accesos.consultarImpuestoRenta((err, filas) => {
+            if (err) {
+                console.log('Hubo un error', err);
             } else {
                 //console.log(filas);
                 res.send(filas);
@@ -126,8 +125,7 @@ class Planilla_RentaController {
                     if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error')
-                        //throw err;
+                        console.log('Hubo un error');
                     };
                 } else {
                     

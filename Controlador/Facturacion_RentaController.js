@@ -18,9 +18,9 @@ class Facturacion_RentaController {
     //Consultar facturacion renta
     consultarFactRenta(req, res)  {
         let factRenta = req.params.factRenta;
-        accesos.consultarFactRenta(factRenta,(err, filas) => {
-            if (err) {
-                console.log('Hubo un error', err);
+        accesos.consultarFactRenta(factRenta,(error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 let saldo = filas[0].monto_por_cobrar;
                 filas.forEach(a => {
@@ -35,7 +35,7 @@ class Facturacion_RentaController {
     };
 
      //Insertar prestamos
-     insertarFactRenta(req, res) {
+    insertarFactRenta(req, res) {
         let monto_fact = req.body.monto_fact;
         let id_rentaxc = req.body.id_rentaxc;
         let saldo_renta = req.body.saldo_renta;
@@ -69,18 +69,18 @@ class Facturacion_RentaController {
         let saldo_renta = req.body.saldo_renta;
 
         try {
-            accesos.editarFactRenta(monto_fact, id_factRenta, id_rentaxc, saldo_renta, (err, fila) => {
+            accesos.editarFactRenta(monto_fact, id_factRenta, id_rentaxc, saldo_renta, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error', err )    
+                        console.log('Hubo un error', error )    
                         res.status(500).json({ error: 'Error al editar el abono en la base de datos' });
                     }
                 } else {
                     //console.log(fila);
-                    res.json({message: 'La edición del abono #' + id_factRenta + ', se ha realizado correctamente'});
+                    res.json({message: 'La edición del registro #' + id_factRenta + ', se ha realizado correctamente'});
                 }
             });
         } catch (error) {
@@ -94,14 +94,13 @@ class Facturacion_RentaController {
         let id_factRenta = req.params.id_factRenta;
         let id_rentaxc = req.body.id_rentaxc;
         let saldo_renta = req.body.saldo_renta;
-        accesos.eliminarFactRenta(id_rentaxc,saldo_renta, id_factRenta, (err, resultado) => {
-            if (err) {
-                console.log('Hubo un error', err);
-                //throw err;
+        accesos.eliminarFactRenta(id_rentaxc,saldo_renta, id_factRenta, (error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
                 console.log(resultado);
-                return res.json({message: 'La eliminación del registro #' + id_factRenta + ', se ha realizado correctamente. Recuerde, si este fue una deducción realizado automaticamente por planillas, modifique la planilla'});
+                return res.json({message: 'La eliminación del registro #' + id_factRenta + ', se ha realizado correctamente.'});
             }
         });
         

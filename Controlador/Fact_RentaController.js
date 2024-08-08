@@ -63,7 +63,6 @@ class Fact_RentaController {
         accesos.eliminarRentaxCobrar(id_rentaxc, (err, filas) => {
             if (err) {
                 console.log('Hubo un error', err);
-                //throw err;
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
                 console.log(filas);

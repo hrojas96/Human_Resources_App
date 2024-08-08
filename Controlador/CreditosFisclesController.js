@@ -17,8 +17,7 @@ class CreditosFiscalesController {
         
         accesos.consultarCreditosFiscales((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas);
                 res.send(filas);
@@ -31,14 +30,13 @@ class CreditosFiscalesController {
         let monto_rebajo = req.body.monto_rebajo;
 
         try {
-            accesos.editarCreditosFiscales(monto_rebajo, id_credFiscal, (err, fila) => {
+            accesos.editarCreditosFiscales(monto_rebajo, id_credFiscal, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error', err)
-                        //throw err;
+                        console.log('Hubo un error', error);
                     };
                 } else {
                     

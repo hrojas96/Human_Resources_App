@@ -19,8 +19,7 @@ class PuestosController {
         
         accesos.consultarPuestos((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -38,21 +37,21 @@ class PuestosController {
         
         try {
             //Se hace la solicitud de insertar y se envián los datos 
-            accesos.insertarPuesto(data, (err, resultado) => {
+            accesos.insertarPuesto(data, (error, resultado) => {
                 //Si ocurre un error se verifica el tipo de error y se notifica al usuario
-                if (err) {
+                if (error) {
                     //Si es un error de duplicidad de datos
-                    if (err.code === 'ER_DUP_ENTRY') {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados. El registro ya existe" });
                     } else {
                         //De lo contrario
-                        console.log('Hubo un error', err);
+                        console.log('Hubo un error', error);
                         res.status(500).json({ error: 'Error al insertar el puesto en la base de datos' });
                     };
                 //Si la inserción es un éxito se notifica al usuario
                 } else {
-                    console.log(resultado);
-                        res.json({message:'La solicitud de su permiso se ha realizado correctamente'});
+                    //console.log(resultado);
+                    res.json({message:'La solicitud de su permiso se ha realizado correctamente'});
                 }
             });
         //Si no se ejecuta el proceso
@@ -71,14 +70,14 @@ class PuestosController {
 
         try {
             //Se hace la solicitud de editar y se envián los datos 
-            accesos.editarPuesto(nombre_puesto, monto_por_hora, salario_base, id_puesto, (err, resultado) => {
+            accesos.editarPuesto(nombre_puesto, monto_por_hora, salario_base, id_puesto, (error, resultado) => {
                 //Si ocurre un error se verifica el tipo de error y se notifica al usuario
-                if (err) {
+                if (error) {
                     //Si es un error de duplicidad de datos
                     if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados. El registro ya existe" });
                     } else {
-                        console.log('Hubo un error', err)
+                        console.log('Hubo un error', error)
                         res.status(500).json({ error: 'Error al editar el puesto en la base de datos' });
                     }
                 //Si la edición es un éxito se notifica al usuario
@@ -98,10 +97,10 @@ class PuestosController {
         let id_puesto = req.params.id_puesto;
             try{
                 //Se hace la solicitud de insertar y se envián el identificador
-                accesos.eliminarPuesto(id_puesto, (err, resultado) => {
+                accesos.eliminarPuesto(id_puesto, (error, resultado) => {
                     //Si ocurre un error se notifica al usuario
-                    if (err) {
-                        console.log('Hubo un error', err);
+                    if (error) {
+                        console.log('Hubo un error', error);
                         res.status(500).json({ error: 'Error al eliminar el registro' });
                     //Si la eliminacion es un éxito se notifica al usuario
                     } else {

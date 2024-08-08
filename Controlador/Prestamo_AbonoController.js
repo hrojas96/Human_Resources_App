@@ -20,8 +20,7 @@ class Prest_AbonoController {
         let prestamo = req.params.prestamo;
         accesos.consultarAbonos(prestamo,(error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 let saldo = filas[0].monto_solicitado;
                 filas.forEach(a => {
@@ -42,9 +41,9 @@ class Prest_AbonoController {
         let saldo = req.body.saldo;
         
         try {
-            accesos.insertarAbono(id_prestamo, monto, saldo, (err, fila) => {
+            accesos.insertarAbono(id_prestamo, monto, saldo, (error, fila) => {
                 
-                if (err) {
+                if (error) {
                     if (err.code === 'ER_DUP_ENTRY') {
                         return res.status(400).json({ error: "Datos duplicados" });
                     } else {
@@ -70,13 +69,13 @@ class Prest_AbonoController {
         let saldo = req.body.saldo;
 
         try {
-            accesos.editarAbono(monto, id_abono, id_prestamo, saldo, (err, fila) => {
+            accesos.editarAbono(monto, id_abono, id_prestamo, saldo, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error', err )    
+                        console.log('Hubo un error', error )    
                         res.status(500).json({ error: 'Error al editar el abono en la base de datos' });
                     }
                 } else {
@@ -94,10 +93,9 @@ class Prest_AbonoController {
         let id_abono = req.params.id_abono;
         let id_prestamo = req.body.id_prestamo;
         let saldo = req.body.saldo;
-        accesos.eliminarAbono(id_prestamo,saldo, id_abono, (err, resultado) => {
-            if (err) {
-                console.log('Hubo un error', err);
-                //throw err;
+        accesos.eliminarAbono(id_prestamo,saldo, id_abono, (error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
                 console.log(resultado);

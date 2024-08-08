@@ -20,8 +20,7 @@ class Planulla_UsrController {
         let id_empleado = req.params.id_empleado;
         accesos.consultarPlanillaUsr(id_empleado, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -71,15 +70,15 @@ class Planulla_UsrController {
         let maximo = req.body.maximo;
         let repoteMonetario = req.body.repoteMonetario;
 
-        accesos.generarReportesUsr(fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, id_empleado, (err, filas) => {
-            if (err) {
+        accesos.generarReportesUsr(fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, id_empleado, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 return res.status(500).json({ error: "Error de servidor" });
-                //throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

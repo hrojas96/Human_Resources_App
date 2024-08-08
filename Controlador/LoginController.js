@@ -26,8 +26,7 @@ class LoginController {
         //console.log('Esta es la contraseña vieja2', contrasenaCryp);
         accesos.consultarUsuario(id_empleado, (error, filas) => {
             if (error) {
-                console.log('hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 if (filas.length > 0) {
                 const contrasenaAlmacenada = filas[0].contrasena;  
@@ -39,19 +38,17 @@ class LoginController {
                             const contrasena = crypto.createHash('md5').update(nuevaContrasena).digest('hex');
                             try {
                                 
-                                accesos.editarContrasena(id_empleado, contrasena,  (err, fila) => {
+                                accesos.editarContrasena(id_empleado, contrasena,  (error, fila) => {
                                 
-                                    if (err) {
-                                            console.log('Hubo un error')
-                                            
-                            
+                                    if (error) {
+                                        console.log('Hubo un error', error)
                                     } else {
-                                        console.log(fila)
+                                        //console.log(fila)
                                         res.send(fila);
                                     }
                                 });
                             } catch (error) {
-                                console.log("Error durante la insert:", error);      
+                                console.log("Error durante el insert:", error);      
                             }
                         }else {
                             res.json({ success: true, message: 'Inicio de sesión exitoso' }); 

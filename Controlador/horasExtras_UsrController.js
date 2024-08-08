@@ -17,10 +17,9 @@ class HorasExtras_UsrController {
     //Consultar los permisos de un único empleado
     consultarHorasExtrasUsr(req, res) {
         let id_empleado = req.params.empleado;
-        accesos.consultarHorasExtrasUsr(id_empleado,(err, resultado) => {
-            if (err) {
-                console.log('Hubo un error');
-                //throw err;
+        accesos.consultarHorasExtrasUsr(id_empleado,(error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 res.send(resultado);
             };
@@ -33,14 +32,13 @@ class HorasExtras_UsrController {
         let estado = req.body.estado;
         
         try{   
-            accesos.editarHorasExtrasUsr(estado, id_marca, (err, resultado) => {
+            accesos.editarHorasExtrasUsr(estado, id_marca, (error, resultado) => {
                 
-                if (err) {
-                        console.log('Hubo un error', err);
-                        //throw err;
+                if (error) {
+                        console.log('Hubo un error', error);
                         return res.status(500).json({ error: 'Error al realizar la solicitud' });
                 } else {
-                    console.log(resultado);
+                    //console.log(resultado);
                     return res.json({message: 'La solicitud #' + id_marca + ', se ha realizado correctamente'});
                 }
             });
@@ -56,14 +54,15 @@ class HorasExtras_UsrController {
         let fechaInicioRpt = req.body.fechaInicioRpt;
         let fechaFinalRpt = req.body.fechaFinalRpt;
     
-        accesos.generarReportesUsr(fechaInicioRpt,fechaFinalRpt, id_empleado, (err, filas) => {
-            if (err) {
+        accesos.generarReportesUsr(fechaInicioRpt,fechaFinalRpt, id_empleado, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 res.status(500).json({ error: "Error de servidor" });
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

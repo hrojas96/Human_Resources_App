@@ -16,10 +16,9 @@ class HorasExtras_AdmController {
 
     //Consultar los permisos de un único empleado
     consultarHorasExtrasAdm(req, res) {
-        accesos.consultarHorasExtrasAdm((err, resultado) => {
-            if (err) {
-                console.log('Hubo un error');
-                throw err;
+        accesos.consultarHorasExtrasAdm((error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 res.send(resultado);
             };
@@ -41,11 +40,10 @@ class HorasExtras_AdmController {
         }
         
         try{   
-             accesos.editarHorasExtrasAdm(estado, decision_RRHH, id_marca, (err, resultado) => {
+             accesos.editarHorasExtrasAdm(estado, decision_RRHH, id_marca, (error, resultado) => {
                 
-                if (err) {
-                        console.log('Hubo un error', err);
-                        //throw err;
+                if (error) {
+                        console.log('Hubo un error', error);
                         return res.status(500).json({ error: 'Error al realizar la solicitud' });
                 } else {
                     console.log(resultado);
@@ -59,48 +57,6 @@ class HorasExtras_AdmController {
         }
     };
 
-    /*/Editar registro de permisos de un único empleado
-    async editarHorasExtrasAdm(req, res) {
-        let id_marca = req.params.id_marca;
-        let decision_RRHH = req.body.decision_RRHH;
-        
-        try{   
-             accesos.editarHorasExtrasAdm(decision_RRHH, id_marca, (err, resultado) => {
-                
-                if (err) {
-                        console.log('Hubo un error', err);
-                        //throw err;
-                        return res.status(500).json({ error: 'Error al realizar la solicitud' });
-                } else {
-                    console.log(resultado);
-                    let estado = "";
-                    if (decision_RRHH == "Aprobado"){
-                        estado = "Aprobado"
-                    } else if (decision_RRHH == "Denegado"){
-                        estado = "Denegado"
-                    } else{
-                        estado = "Pendiente"
-                    }
-                    
-                    accesos.editarHorasExtrasUsr(estado, id_marca, (err, resultado) => {
-                    
-                        if (err) {
-                                console.log('Hubo un error', err);
-                                return res.status(500).json({ error: 'Error al insertar los permisos en la base de datos' });
-                        } else {
-                            console.log('Se ha editado correctamente el estado de la solicitud', resultado);
-                        }
-                    });
-                    return res.json({message: 'La solicitud #' + id_marca + ', se ha deligenciado correctamente'});
-                }
-            });
-            
-        } catch (error) {
-            console.error('Error durante el proceso:', error);
-            return res.status(500).json({ error: 'Error durante el proceso' });
-        }
-    };*/
-
     generarReportes(req, res) {      
         console.log('llegooooos')
         let tipoReporte = req.params.tipoReporte;
@@ -110,10 +66,10 @@ class HorasExtras_AdmController {
         let decision = req.body.decision;
         let reporteDecision = req.body.reporteDecision;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 res.status(500).json({ error: "Error de servidor" });
-                throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });

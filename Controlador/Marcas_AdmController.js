@@ -21,8 +21,7 @@ class Marcas_AdmController {
         
         accesos.consultarMarcasAdm((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -49,7 +48,6 @@ class Marcas_AdmController {
                         res.status(400).json({ error: "La marca que ingresó ya existe." });
                     } else {
                         console.log('Hubo un error', error);
-                        //throw error;
                     };
                 } else {
                     console.log(respuesta);
@@ -68,14 +66,13 @@ class Marcas_AdmController {
                             }];
                             console.log(dataHE)
                             //Hace el resgistro de las extras
-                            accesos.insertarHoraExtra(dataHE, (err, fila) => {
+                            accesos.insertarHoraExtra(dataHE, (error, fila) => {
                                 
-                                if (err) {
-                                    if (err.code === 'ER_DUP_ENTRY') {
+                                if (error) {
+                                    if (error.code === 'ER_DUP_ENTRY') {
                                         res.status(400).json({ error: "Datos duplicados" });
                                     } else {
-                                        console.log('Hubo un error')
-                                        //throw err;
+                                        console.log('Hubo un error', error)
                                     };
                                 } else {
                                     console.log('Horas extras registradas')
@@ -117,7 +114,6 @@ class Marcas_AdmController {
                         res.status(400).json({ error: "La marca que ingresó ya existe." });
                     } else {
                         console.log('Hubo un error', error);
-                        //throw error;
                     };
                 } else {
                     console.log(respuesta);
@@ -126,15 +122,14 @@ class Marcas_AdmController {
                      
                         try {
                             //Hace el resgistro de las extras
-                            accesos.editarHoraExtraAdm(horas_extras, id_marca, (err, fila) => {
+                            accesos.editarHoraExtraAdm(horas_extras, id_marca, (error, fila) => {
                                 
-                                if (err) {
-                                    console.log('Hubo un error', err)
+                                if (error) {
+                                    console.log('Hubo un error', error)
                                     res.status(400).json({ error: "La marca se ha editado correctamente, sin embargo, ha ocurrido un error con la edición de horas extras" });
-                                    //throw err;
                                 
                                 } else {
-                                    console.log(fila)
+                                    //console.log(fila)
                                     // Envia respuesta de BD
                                     res.json({message:'El edición de la marca se ha realizado correctamente'});
                                 };
@@ -169,22 +164,21 @@ class Marcas_AdmController {
         });    
     };
 
-    generarReportes(req, res) {      
-        console.log('llegooooos')
+    generarReportes(req, res) {  
         let tipoReporte = req.params.tipoReporte;
         let id_empleado = req.body.id_empleado;
         let fechaInicioRpt = req.body.fechaInicioRpt;
         let fechaFinalRpt = req.body.fechaFinalRpt;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error );
                 res.status(500).json({ error: "Error de servidor" });
-                throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

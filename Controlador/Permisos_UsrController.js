@@ -20,10 +20,9 @@ class Permisos_UsrController {
     //Consultar los permisos de un único empleado
     consultarPermisosUsr(req, res) {
         let id_empleado = req.params.empleado;
-        accesos.consultarPermisosUsr(id_empleado,(err, resultado) => {
-            if (err) {
-                console.log('Hubo un error');
-                //throw err;
+        accesos.consultarPermisosUsr(id_empleado,(error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 res.send(resultado);
             };
@@ -54,11 +53,10 @@ class Permisos_UsrController {
                     derecho_pago:req.body.derecho_pago
                 }];
                 
-                accesos.insertarPermisosUsr(data, (err, resultado) => {
+                accesos.insertarPermisosUsr(data, (error, resultado) => {
                     
-                    if (err) {
-                            console.log('Hubo un error', err);
-                            //throw err;
+                    if (error) {
+                            console.log('Hubo un error', error);
                             return res.status(500).json({ error: 'Error al insertar los permisos en la base de datos' });
                     } else {
                         console.log(resultado);
@@ -85,7 +83,6 @@ class Permisos_UsrController {
             if (filas.length <= 0){
                 return res.status(400).json({ error: 'Seleccione días viables para la solicitud de su permiso.' });
             } else{
-                console.log ('Hola dias: ', filas.length);
                 
                 const cant_dias_solicitados = filas.length;
 
@@ -97,10 +94,10 @@ class Permisos_UsrController {
                 let decision_RRHH = req.body.decision_RRHH;
                 let derecho_pago = req.body.derecho_pago;
                 
-                accesos.editarPermisosUsr(inicio_permiso, final_permiso, cant_dias_solicitados, msj_empleado, decision_jefatura, decision_RRHH, derecho_pago,  id_permiso, (err, resultado) => {
+                accesos.editarPermisosUsr(inicio_permiso, final_permiso, cant_dias_solicitados, msj_empleado, decision_jefatura, decision_RRHH, derecho_pago,  id_permiso, (error, resultado) => {
                     
-                    if (err) {
-                            console.log('Hubo un error', err);
+                    if (error) {
+                            console.log('Hubo un error', error);
                             
                             return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                     } else {
@@ -117,10 +114,9 @@ class Permisos_UsrController {
 
     eliminarPermisosUsr(req,res) {
         let id_permiso = req.params.id_permiso;
-        accesos.eliminarPermisosUsr(id_permiso, (err, resultado) => {
-            if (err) {
-                console.log('Hubo un error', err);
-                //throw err;
+        accesos.eliminarPermisosUsr(id_permiso, (error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 return res.status(500).json({ error: 'Error al eliminar el registro' });
             } else {
                 console.log(resultado);

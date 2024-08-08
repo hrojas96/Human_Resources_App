@@ -20,8 +20,7 @@ class RolesController {
         
         accesos.consultarRoles((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -46,25 +45,22 @@ class RolesController {
             acc_permisos_jefatura:req.body.acc_permisos_jefatura,
             acc_marcas:req.body.acc_marcas
         }];
-        console.log ('Planilla',data.acc_planilla)
     try {
-        accesos.insertarRol(data, (err, fila) => {
+        accesos.insertarRol(data, (error, fila) => {
             
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
+            if (error) {
+                if (error.code === 'ER_DUP_ENTRY') {
                     res.status(400).json({ error: "Datos duplicados" });
                 } else {
-                    console.log('Hubo un error');
-                    throw err;
+                    console.log('Hubo un error', error);
                 };
             } else {
-                //console.log('Datos insertados')
                 // Enviamos respuesta de BD
-                res.send(fila);
+                res.json({message:'El rol se ha registrado correctamente'});
             }
         });
         } catch (error) {
-            console.error("Error during database insertion:", error);
+            console.error("Error durante la inserición de datos:", error);
             res.status(500).json({ error: "Error de servidor" });
         };
     };
@@ -90,23 +86,21 @@ class RolesController {
         try {
             accesos.editarRol(nombre_rol, acc_mantenimeintos, acc_planilla, acc_horasExtras_RRHH, acc_prestamos, acc_permisos_RRHH,
                             acc_vacaciones_RRHH, acc_incapacidades, acc_aguinaldo, acc_liquidacion, acc_horasExtras_jefatura, 
-                            acc_vacaciones_jefatura, acc_permisos_jefatura, acc_marcas, id_rol, (err, fila) => {
+                            acc_vacaciones_jefatura, acc_permisos_jefatura, acc_marcas, id_rol, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error')
-                        throw err;
+                        console.log('Hubo un error', error);
                     };
                 } else {
-                    //console.log('Datos insertados')
                     // Enviamos respuesta de BD
-                    res.send(fila);
+                    res.json({message: 'La edición del rol #' + id_rol + ', se ha realizado correctamente'});
                 };
             });
             } catch (error) {
-                console.error("Error during database insertion:", error);
+                console.error("Error durante la inserción de datos:", error);
                 res.status(500).json({ error: "Error de servidor" });
         };
     };
@@ -115,10 +109,9 @@ class RolesController {
         let id_rol = req.params.id_rol;
         accesos.eliminarRol(id_rol, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                throw err;
+                console.log('Hubo un error'), error;
             } else {
-                res.send(filas);
+                res.json({message: 'La eliminación del rol #' + id_rol + ', se ha realizado correctamente. '});
             };
         });
         

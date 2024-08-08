@@ -16,10 +16,9 @@ class NotificacionesController {
     consultarNotificacionesJef(req, res) {
         let id_jefatura = req.params.id_jefatura
         
-        accesos.consultarNotificacionesJef(id_jefatura, (err, filas) => {
-            if (err) {
-                console.log('Hubo un error',err);
-                //throw error;
+        accesos.consultarNotificacionesJef(id_jefatura, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error',error);
             } else {
 
                 res.send(filas);
@@ -34,9 +33,9 @@ class NotificacionesController {
 
         if (roles[0].acc_horasExtras_RRHH == 1 || roles[0].acc_permisos_RRHH == 1 || roles[0].acc_vacaciones_RRHH == 1){
             try{
-                accesos.consultarNotificacionesAdm( (err, filas) => {
-                    if (err) {
-                        console.log('Hubo un error',err);
+                accesos.consultarNotificacionesAdm( (error, filas) => {
+                    if (error) {
+                        console.log('Hubo un error',error);
                     } else {
 
                         res.send(filas);

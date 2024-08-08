@@ -19,8 +19,7 @@ class Permisos_AdmController {
     consultarPermisoAdm(req, res) {
         accesos.consultarPermisoAdm( (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };
@@ -35,11 +34,10 @@ class Permisos_AdmController {
         let derecho_pago = req.body.derecho_pago;
 
         try {
-            accesos.editarPermisoAdm(decision_RRHH, msj_RRHH, derecho_pago, id_permiso, (err, resultado) => {
+            accesos.editarPermisoAdm(decision_RRHH, msj_RRHH, derecho_pago, id_permiso, (error, resultado) => {
                 
-                if (err) {
-                    console.log('Hubo un error', err);
-                    //throw err;
+                if (error) {
+                    console.log('Hubo un error', error);
                     return res.status(500).json({ error: 'Error al editar el permiso en la base de datos' });
                 } else {
                     console.log(resultado);
@@ -55,8 +53,7 @@ class Permisos_AdmController {
         }
     };
 
-    generarReportes(req, res) {      
-        console.log('llegooooos')
+    generarReportes(req, res) {  
         let tipoReporte = req.params.tipoReporte;
         let id_empleado = req.body.id_empleado;
         let fechaInicioRpt = req.body.fechaInicioRpt;
@@ -64,10 +61,10 @@ class Permisos_AdmController {
         let decision = req.body.decision;
         let reporteDecision = req.body.reporteDecision;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, decision,reporteDecision, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 res.status(500).json({ error: "Error de servidor" });
-                throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });

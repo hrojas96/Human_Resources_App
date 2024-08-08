@@ -50,9 +50,8 @@ class PrestamosController {
                     console.log('Hubo un error', error);
                 };
             } else {
-                //console.log('Datos insertados')
                 // Enviamos respuesta de BD
-                res.send(fila);
+                res.json({message:'El préstamo se ha registrado correctamente'});
             }
         });
         } catch (error) {
@@ -80,9 +79,8 @@ class PrestamosController {
                         console.log('Hubo un error', error);
                     };
                 } else {
-                    //console.log('Datos editados')
                     // Enviamos respuesta de BD
-                    res.send(fila);
+                    res.json({message: 'La edición del préstamo #' + id_prestamo + ', se ha realizado correctamente'});
                 };
             });
             } catch (error) {
@@ -98,14 +96,13 @@ class PrestamosController {
             if (error) {
                 console.log('Hubo un error', error);
             } else {
-                res.send(filas);
+                res.json({message: 'La eliminación del préstamo #' + id_prestamo + ', se ha realizado correctamente. '});
             };
         });
         
     };
 
-    generarReportes(req, res) {      
-        console.log('llegooooos')
+    generarReportes(req, res) {  
         let tipoReporte = req.params.tipoReporte;
         let id_empleado = req.body.id_empleado;
         let fechaInicioRpt = req.body.fechaInicioRpt;
@@ -113,14 +110,15 @@ class PrestamosController {
         let reporteSaldo = req.body.reporteSaldo;
         let reporteDecision = req.body.reporteDecision;
 
-        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteSaldo,reporteDecision, tipoReporte, (err, filas) => {
-            if (err) {
+        accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, reporteSaldo,reporteDecision, tipoReporte, (error, filas) => {
+            if (error) {
+                console.log('Hubo un error', error);
                 res.status(500).json({ error: "Error de servidor" });
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });
                 }else{
-                    console.log(filas)
+                    //console.log(filas)
                     res.send(filas);
                 }
                 

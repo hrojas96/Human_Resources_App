@@ -20,8 +20,7 @@ class AguinaldosController {
     consultarAguinaldo(req, res)  {
         accesos.consultarAguinaldo((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw error;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas[0]);
                 res.send(filas);
@@ -45,9 +44,8 @@ class AguinaldosController {
                 accesos.consultarDesgloseAguinaldo(id_empleado, fecha_desde, fecha_hasta, (err, filas) => {
                     if (err) {
                         console.log('Hubo un error', err);
-                        //throw err;
                     } else {
-                        console.log(filas)
+                        //console.log(filas)
                         res.send(filas);
                     };
                 });
@@ -97,8 +95,6 @@ class AguinaldosController {
                         accesos.insertarAguinaldo(data, (err, resultado) => {
                             
                             if (err) {
-                                //console.log('Hubo un error', err);
-                                //throw err;
                                 reject('Hubo un error', err);
                                 return res.status(500).json({ error: 'Error al registrar los aguinaldos en la base de datos' });
                             } else {
@@ -121,7 +117,6 @@ class AguinaldosController {
     };                             
     
     eliminarAguinaldo(req,res) {
-        console.log('llego a eliminar');
         let id_empleado = req.body.id_empleado;
         let fecha_desde = req.body.fecha_desde;
         let fecha_hasta = req.body.fecha_hasta;
@@ -131,7 +126,6 @@ class AguinaldosController {
                 accesos.eliminarAguinaldoGeneral(fecha_desde, fecha_hasta,  (err, filas) => {
                     if (err) {
                         console.log('Hubo un error', err);
-                        //throw err;
                         return res.status(500).json({ error: 'Error al eliminar el registro' });
                     } else {
                         if (filas.affectedRows === 0) {
@@ -153,7 +147,6 @@ class AguinaldosController {
                 accesos.eliminarAguinaldoIndividual(id_empleado, fecha_desde, fecha_hasta,  (err, filas) => {
                     if (err) {
                         console.log('Hubo un error', err);
-                        //throw err;
                         return res.status(500).json({ error: 'Error al eliminar el registro' });
                     } else {
                         if (filas.affectedRows === 0) {
@@ -172,8 +165,7 @@ class AguinaldosController {
         } 
     };
 
-    generarReportes(req, res) {      
-        console.log('llegooooos')
+    generarReportes(req, res) {  
         let tipoReporte = req.params.tipoReporte;
         let id_empleado = req.body.id_empleado;
         let fechaInicioRpt = req.body.fechaInicioRpt;
@@ -184,8 +176,8 @@ class AguinaldosController {
 
         accesos.generarReportes(id_empleado, fechaInicioRpt,fechaFinalRpt, minimo,maximo,repoteMonetario, tipoReporte, (err, filas) => {
             if (err) {
+                console.log('Hubo un error', err);
                 return res.status(500).json({ error: "Error de servidor" });
-                //throw err;
             } else {
                 if (filas.length == 0){
                     res.status(500).json({ error: 'No existen datos en los parámetros seleccionados' });

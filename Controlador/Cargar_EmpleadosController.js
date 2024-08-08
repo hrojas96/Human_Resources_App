@@ -17,7 +17,7 @@ class Prest_EmpleadosController {
         //console.log('llegó a la logica cargar empleados');
         accesos.cargarEmpleados((error, filas) => {
             if (error) {
-                throw error;
+                console.log('Hubo un error', error)
             } else {
                 //console.log(filas)
                 res.send(filas);

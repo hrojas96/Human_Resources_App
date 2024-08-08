@@ -23,7 +23,7 @@ class EmpleadoController {
             if (error) {
                 console.log('Error', error);
             } else {
-                console.log(filas);
+                //console.log(filas);
                 res.send(filas);
                 
             };
@@ -66,13 +66,13 @@ class EmpleadoController {
             direccion:req.body.direccion
         }];
         try {
-            accesos.insertarEmpleado(data, pass, (err, respuesta) => {
+            accesos.insertarEmpleado(data, pass, (error, respuesta) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La cédula que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error', err);
+                        console.log('Hubo un error', error);
                     };
                 } else {
                     console.log(respuesta)
@@ -109,14 +109,13 @@ class EmpleadoController {
         let direccion = req.body.direccion;
     
         try {
-            accesos.editarEmpleado(fecha_nacimiento, nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, (err, resultado) => {
+            accesos.editarEmpleado(fecha_nacimiento, nombre, apellido1, apellido2, genero, id_puesto, id_rol, id_jefatura, fecha_ingreso, estado, correo, telefono, estado_civil, hijos_dependientes, id_provincia, id_canton, id_distrito, direccion, id_empleado, (error, resultado) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La cédula que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error', err)
-                        //throw error;
+                        console.log('Hubo un error', error);
                     };
                 } else {
                     console.log(resultado)
@@ -132,10 +131,9 @@ class EmpleadoController {
     
     eliminarEmpleado(req,res){
         let id_empleado = req.params.id_empleado;
-        accesos.eliminarEmpleado(id_empleado, (err, resultado) => {
-            if (err) {
-                console.log('Hubo un error', err);
-                //throw error;
+        accesos.eliminarEmpleado(id_empleado, (error, resultado) => {
+            if (error) {
+                console.log('Hubo un error', error);
             } else {
                 console.log(resultado);
                 res.json({message: 'La eliminación del empleado #' + id_empleado + ', se ha realizado correctamente'});

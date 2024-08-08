@@ -22,10 +22,8 @@ class BonosController {
         accesos.consultarBonos((error, filas) => {
             if (error) {
                 console.log('Hubo un error', error);
-                //throw error;
             } else {
                 res.send(filas);
-                //console.log(filas);
             };
         });
     };
@@ -40,17 +38,16 @@ class BonosController {
             razon:req.body.razon
         }];
         try {
-            accesos.insertarBonos(data, (error, respuesta) => {
+            accesos.insertarBonos(data, (err, respuesta) => {
                 
-                if (error) {
-                    if (error.code === 'ER_DUP_ENTRY') {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "La bono que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error', error);
-                        //throw error;
+                        console.log('Hubo un error', err);
                     };
                 } else {
-                    console.log(respuesta)
+                    //console.log(respuesta)
                     // Enviamos respuesta de BD
                     res.json({message:'El registro del bono se ha realizado correctamente'});
                 }
@@ -70,17 +67,16 @@ class BonosController {
         let razon = req.body.razon;
     
         try {
-            accesos.editarBonos(id_empleado, fecha, monto_bono, razon, id_bono, (error, resultado) => {
+            accesos.editarBonos(id_empleado, fecha, monto_bono, razon, id_bono, (err, resultado) => {
                 
-                if (error) {
-                    if (error.code === 'ER_DUP_ENTRY') {
-                        res.status(400).json({ error: "El bono que ingresó ya existe." });
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        res.status(400).json({ err: "El bono que ingresó ya existe." });
                     } else {
-                        console.log('Hubo un error')
-                        //throw error;
+                        console.log('Hubo un error', err)
                     };
                 } else {
-                    console.log(resultado)
+                    //console.log(resultado)
                     // Enviamos respuesta de BD
                     res.json({message: 'La edición del bono #' + id_bono + ', se ha realizado correctamente'});
                 };
@@ -93,9 +89,9 @@ class BonosController {
     
     eliminarBonos(req,res){
         let id_bono = req.params.id_bono;
-        accesos.eliminarBonos(id_bono, (error, resultado) => {
-            if (error) {
-                console.log('Hubo un error', error);
+        accesos.eliminarBonos(id_bono, (err, resultado) => {
+            if (err) {
+                console.log('Hubo un error', err);
                 //throw error;
             } else {
                 console.log(resultado);

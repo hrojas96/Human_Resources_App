@@ -18,8 +18,7 @@ class Aguinaldo_UsrController {
         let id_empleado = req.params.id_empleado;
         accesos.consultarAguinaldoUsr(id_empleado, (error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 res.send(filas);
             };

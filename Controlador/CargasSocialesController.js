@@ -17,8 +17,7 @@ class CargasSocialesController {
         
         accesos.consultarCargasSociales((error, filas) => {
             if (error) {
-                console.log('Hubo un error');
-                //throw err;
+                console.log('Hubo un error', error);
             } else {
                 //console.log(filas);
                 res.send(filas);
@@ -31,14 +30,13 @@ class CargasSocialesController {
         let porcentaje_salarial = req.body.porcentaje_salarial;
 
         try {
-            accesos.editarCargasSociales(porcentaje_salarial, id_deduccion, (err, fila) => {
+            accesos.editarCargasSociales(porcentaje_salarial, id_deduccion, (error, fila) => {
                 
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
+                if (error) {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         res.status(400).json({ error: "Datos duplicados" });
                     } else {
-                        console.log('Hubo un error')
-                        //throw err;
+                        console.log('Hubo un error', error)
                     };
                 } else {
                     
