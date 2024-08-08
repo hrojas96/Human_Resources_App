@@ -161,6 +161,7 @@ on(document, 'click', '.btnEditar', e => {
     const rebajoForm = fila.getAttribute('data-rebajo');
    
     empleado.value = empleadoForm;
+    empleado.disabled = true;
     fecha.value = fechaForm;
     monto.value = montoForm;
     rebajo.value = rebajoForm;
@@ -244,39 +245,40 @@ formPrestamos.addEventListener('submit', (e)=> {
             })
             .catch((error) => console.error("Error en la solicitud:", error));
         };
-        //Update
-        if(opcion == 'editar'){
-        
-            fetch(url+idForm, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    id_empleado:empleado.value,
-                    fecha_solicitud:fecha.value,
-                    monto_solicitado:monto.value,
-                    rebajo_salarial:rebajo.value,
-                    saldo:monto.value
-                })
-            })
-            .then( response => response.json())
-            .then( data =>{
-                if (data.error) {
-                    
-                    alertify
-                        .alert(data.error, function(){
-                            alertify.message('OK');
-                        });
-                    //alert(data.error)
-                } else {
-                    //console.log('algo pasó')
-                    location.reload();
-                }
-            })
-            .catch((error) => console.error("Error en la solicitud:", error));
-        };
     }
+    //Update
+    if(opcion == 'editar'){
+        
+        fetch(url+idForm, {
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id_empleado:empleado.value,
+                fecha_solicitud:fecha.value,
+                monto_solicitado:monto.value,
+                rebajo_salarial:rebajo.value,
+                saldo:monto.value
+            })
+        })
+        .then( response => response.json())
+        .then( data =>{
+            if (data.error) {
+                
+                alertify
+                    .alert(data.error, function(){
+                        alertify.message('OK');
+                    });
+                //alert(data.error)
+            } else {
+                //console.log('algo pasó')
+                location.reload();
+            }
+        })
+        .catch((error) => console.error("Error en la solicitud:", error));
+    };
+    
     
     modalPrestamos.hide();
 
