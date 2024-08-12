@@ -254,7 +254,6 @@ formPlanillas.addEventListener('submit', (e)=> {
     };
 
     if (opcion == 'renta'){
-        alert(calculo);
         if (calculo == '2'){
             fetch(urlrenta, {
                 method: 'POST',
@@ -550,7 +549,7 @@ formReportes.addEventListener('submit', (e)=> {
                                 <tr>
                                     <td class="text-end">${colon.format(p.salario_bruto)}</td>
                                     <td class="text-end">${colon.format(p.total_deducciones)}</td>
-                                    <td class="text-end">${colon.format(p.monto_cancelado)}</td>
+                                    <td class="text-end"> ${colon.format(p.monto_cancelado)}</td>
                                 </tr>
                             </tbody>
                         </table>

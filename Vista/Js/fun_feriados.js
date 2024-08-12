@@ -43,8 +43,8 @@ function mostrar(feriados) {
         resultados += ` <tr data-fecha="${p.fecha_feriado.slice(0, 10)}">
                             <td class="text-center">${p.id_feriado}</td>
                             <td class="text-center">${p.nombre_feriado}</td> 
-                            <td class="text-end">${new Date(p.fecha_feriado).toLocaleDateString('es-ES')}</td> 
-                            <td class="text-end">${p.pago_obligatorio}</td>  
+                            <td class="text-center">${new Date(p.fecha_feriado).toLocaleDateString('es-ES')}</td> 
+                            <td class="text-center">${p.pago_obligatorio}</td>  
                             <td class="centrar"> 
                                 <a class="btnEditar btn btn-primary btn-sm" style="background-color:#255387; border-color: #255387;">
                                     <i class="fa-regular fa-pen-to-square"></i>
