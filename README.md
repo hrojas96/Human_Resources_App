@@ -3,34 +3,32 @@
 
 ### Overview
 
-
-This is my graduation project, a Human Resources application designed for a company and built to comply with Costa Rican labor laws. It automates payroll processes, manages hours worked, vacations, incapacity compensation, and pay advances.
-
+For my graduation thesis, I spent six months planning, writing, and implementing a Human Resources application designed for Faustica, a family-owned farming company with over 50 employees based in San Carlos, Costa Rica. Before this project, it took their one-person Human Resources team a full day to calculate payroll by hand. This app automates that effort in mere minutes and fully complies with Costa Rican labor laws.
 
 ### Features
 
-**User Management:** Handle employees' details and records.
+* **User Management:** Handle employees' details and records.
 
-**Payroll Automation:** Calculate and process payroll based on hours worked.
+* **Payroll Automation:** Calculate and process payroll based on hours worked.
 
-**Vacation and Leave Tracking:** Manage employees' vacation days and compensations.
+* **Vacation and Leave Tracking:** Manage employees' vacation days and compensations.
 
-**Custom Reports:** Generate reports for HR and administrative purposes.
+* **Custom Reports:** Generate reports for HR and administrative purposes.
 
 
 ### Technologies Used
 
-**Frontend:** HTML, CSS, JavaScript
+* **Frontend:** HTML, CSS, JavaScript
 
-**Backend:** Node.js, Express.js
+* **Backend:** Node.js, Express.js
 
-**Database:** MySQL
+* **Database:** MySQL
 
-**Architecture:** Model-View-Controller (MVC)
+* **Architecture:** Model-View-Controller (MVC)
 
 ### Screenshots
 
-**Note:** The application interface is in Spanish as it was developed for a company in Costa Rica, ensuring compliance with local labor laws. Some screenshots are included below to provide a better understanding of the app's features.
+**Note:** The application interface is in Spanish as it was developed for a company in Costa Rica. The screenshots below highlight some of the app's features.
 
 **Attendance Registration:** Each employee has access to the system to clock in and out. The system tracks the hours worked, accounting for overtime.
 
